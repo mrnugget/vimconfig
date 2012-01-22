@@ -1,0 +1,11 @@
+eunuch	eunuch.txt	/*eunuch*
+eunuch-:Find	eunuch.txt	/*eunuch-:Find*
+eunuch-:Locate	eunuch.txt	/*eunuch-:Locate*
+eunuch-:Remove	eunuch.txt	/*eunuch-:Remove*
+eunuch-:Rename	eunuch.txt	/*eunuch-:Rename*
+eunuch-:SudoWrite	eunuch.txt	/*eunuch-:SudoWrite*
+eunuch-:Unlink	eunuch.txt	/*eunuch-:Unlink*
+eunuch-:W	eunuch.txt	/*eunuch-:W*
+eunuch-about	eunuch.txt	/*eunuch-about*
+eunuch-commands	eunuch.txt	/*eunuch-commands*
+eunuch.txt	eunuch.txt	/*eunuch.txt*
