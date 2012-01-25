@@ -7,7 +7,7 @@ set nocompatible
 set hidden
 set wildmenu
 set scrolloff=2
-"set relativenumber  " My computer is apparently to slow for this
+set number
 set colorcolumn=80
 set nowrap
 
@@ -106,4 +106,7 @@ if has("gui_running")
   colorscheme molokai
   set guioptions=agc
   set lines=60 columns=90
+endif
+if has("mac")
+  set guifont=Monaco:h12
 endif
