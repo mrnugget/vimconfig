@@ -1,6 +1,9 @@
 call pathogen#infect()
 call pathogen#helptags()
 
+" In order to get rails-vim to work with RVM, use bash
+set shell=bash
+
 set showmode
 set history=100
 set nocompatible
@@ -99,7 +102,6 @@ augroup encrypted
     autocmd BufWritePost,FileWritePost  *.gpg set nobin
 augroup END
 
-
 " GVim
 if has("gui_running")
   set guifont=Monospace\ 9
@@ -110,3 +112,4 @@ endif
 if has("mac")
   set guifont=Monaco:h12
 endif
+
