@@ -11,6 +11,7 @@ set hidden
 set wildmenu
 set scrolloff=2
 set number
+set cursorline
 set colorcolumn=80
 set nowrap
 
@@ -112,4 +113,3 @@ endif
 if has("mac")
   set guifont=Monaco:h12
 endif
-
