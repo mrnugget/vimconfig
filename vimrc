@@ -61,7 +61,7 @@ ino jj <esc>
 cno jj <c-c>
 
 " NERDTree
-nmap <F5> :NERDTreeToggle<CR>
+nmap <silent> <leader>n :NERDTreeToggle<CR>
 
 
 """""""""""""""""""
