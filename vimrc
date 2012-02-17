@@ -13,15 +13,26 @@ set scrolloff=2
 set number
 set cursorline
 set colorcolumn=80
+set textwidth=80
 set nowrap
+
+" Folding
+set foldmethod=indent
+set foldnestmax=10
+set nofoldenable
+set foldlevel=1
+set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
 
 set showmatch
 set backspace=2
 set ignorecase
 set smartcase
-set incsearch
-set nohlsearch
 
+" Searching
+set incsearch
+set hlsearch
+
+" Indenting
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
@@ -38,7 +49,6 @@ filetype on
 filetype plugin on
 filetype indent on
 
-set textwidth=80
 set noerrorbells
 set visualbell
 
@@ -51,6 +61,9 @@ let mapleader = ","
 
 " Toggle paste mode
 nmap <silent> <leader>p :set invpaste<CR>:set paste?<CR>
+
+" Toggle hlsearch
+nmap <silent> <leader>h :set invhlsearch<CR>
 
 " Open and source vimrc file
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
