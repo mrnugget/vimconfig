@@ -76,7 +76,6 @@ cno jj <c-c>
 " NERDTree
 nmap <silent> <leader>n :NERDTreeToggle<CR>
 
-
 """""""""""""""""""
 " GPG
 " Transparent editing of gpg encrypted files.
