@@ -117,11 +117,14 @@ augroup END
 
 " GVim
 if has("gui_running")
-  set guifont=Monospace\ 9
   colorscheme mrmolokai
   set guioptions=agc
   set lines=60 columns=90
 endif
+
+" Fonts
 if has("mac")
   set guifont=Monaco:h12
+else
+  set guifont=Monospace\ 9
 endif
