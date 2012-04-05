@@ -1,9 +1,6 @@
 call pathogen#infect()
 call pathogen#helptags()
 
-" In order to get rails-vim to work with RVM, use bash
-set shell=bash
-
 set showmode
 set history=100
 set nocompatible
