@@ -65,6 +65,8 @@ nmap <silent> <leader>h :set invhlsearch<CR>
 " Open and source vimrc file
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
+" Wipe out ALL the buffers
+nmap <silent> <leader>bw :0,200bwipeout<CR>
 
 " Typing 'jj' == Esc
 ino jj <esc>
@@ -72,6 +74,11 @@ cno jj <c-c>
 
 " NERDTree
 nmap <silent> <leader>n :NERDTreeToggle<CR>
+
+" Rails.vim
+"
+" Command+R runs Rake on current spec file
+nmap <silent> <D-r> :Rake<CR>
 
 """""""""""""""""""
 " GPG
