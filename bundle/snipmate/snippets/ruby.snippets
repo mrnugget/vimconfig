@@ -18,7 +18,7 @@ snippet beg
 	end
 
 snippet req
-	require "${1}"${2}
+	require '${1}'${2}
 snippet #
 	# =>
 snippet end
@@ -547,7 +547,7 @@ snippet mrenc
 	rename_column :${1:table_name}, :${2:old_column_name}, :${3:new_column_name}
 #rspec
 snippet it
-	it "${1:spec_name}" do
+	it '${1:spec_name}' do
 		${2}
 	end
 snippet desc
@@ -555,7 +555,7 @@ snippet desc
 		${2}
 	end
 snippet cont
-	context "${1:message}" do
+	context '${1:message}' do
 		${2}
 	end
 snippet bef

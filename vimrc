@@ -3,6 +3,7 @@ call pathogen#helptags()
 
 set showmode
 set history=100
+set nobackup
 set nocompatible
 set hidden
 set wildmenu
@@ -37,7 +38,7 @@ set expandtab
 set autoindent
 set smartindent
 
-set stl=%f\ %m\ %r\ Line:%l/%L[%p%%]\ Col:%v\ Buf:#%n
+set stl=%{fugitive#statusline()\ }%f\ %m\ %r\ Line:%l/%L[%p%%]\ Col:%v\ Buf:#%n
 set ruler
 set laststatus=2
 
@@ -67,13 +68,12 @@ nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
 " Wipe out ALL the buffers
 nmap <silent> <leader>bw :0,200bwipeout<CR>
+" Delete current buffer
+nmap <silent> <leader>bd :bd<CR>
 
 " Typing 'jj' == Esc
 ino jj <esc>
 cno jj <c-c>
-
-" NERDTree
-nmap <silent> <leader>n :NERDTreeToggle<CR>
 
 " Rails.vim
 "
