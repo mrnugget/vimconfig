@@ -1,4 +1,3 @@
 # vim configuration
 
-This is the content of my ~/.vim directory. 
-
+This is the content of my ~/.vim directory.

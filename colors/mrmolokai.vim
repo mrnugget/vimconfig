@@ -5,7 +5,7 @@
 " Modified by: Thorsten Ball <mrnugget@gmail.com>
 "
 " Note: Based on the monokai theme for textmate
-" by Wimer Hazenberg and its darker variant 
+" by Wimer Hazenberg and its darker variant
 " by Hamish Stuart Macpherson
 "
 
@@ -78,6 +78,8 @@ hi SpecialKey      guifg=#66D9EF               gui=italic
 hi InterestingWord1 guifg=#000000 guibg=#FFA700
 hi InterestingWord2 guifg=#000000 guibg=#53FF00
 hi InterestingWord3 guifg=#000000 guibg=#FF74F8
+
+hi TrailingWhiteSpace guifg=red guibg=red  gui=bold
 
 hi MatchParen      guifg=#E4E400 guibg=#434748 gui=bold
 hi ModeMsg         guifg=#E6DB74

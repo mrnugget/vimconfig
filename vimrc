@@ -21,6 +21,7 @@ set nofoldenable
 set foldlevel=1
 set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
 
+
 set showmatch
 set backspace=2
 set ignorecase
@@ -55,7 +56,7 @@ set visualbell
 " Mappings
 "
 " <leader> is ,
-let mapleader = "," 
+let mapleader = ","
 
 " Toggle paste mode
 nmap <silent> <leader>p :set invpaste<CR>:set paste?<CR>
@@ -71,6 +72,11 @@ nmap <silent> <leader>bw :0,200bwipeout<CR>
 " Delete current buffer
 nmap <silent> <leader>bd :bd<CR>
 
+" Delete all trailing whitespaces
+match TrailingWhiteSpace /\s\+\%#\@<!$/
+nmap <silent> <leader>tw :%s/\s\+$//<CR>
+
+
 " Typing 'jj' == Esc
 ino jj <esc>
 cno jj <c-c>
@@ -79,6 +85,27 @@ cno jj <c-c>
 "
 " Command+R runs Rake on current spec file
 nmap <silent> <D-r> :Rake<CR>
+
+" CTRL-P Plugin
+" Don't mess with my working directory!
+let g:ctrlp_working_path_mode = 0
+
+"""""""""""""""""""
+" Filetypes
+"
+
+" Ruby
+augroup ft_ruby
+  au!
+  au Filetype ruby setlocal foldmethod=syntax
+  au Filetype ruby setlocal foldlevel=9
+augroup END
+
+" eruby, html
+augroup ft_html
+  au!
+  au BufNewFile,BufRead *.html.erb setlocal filetype=eruby.html
+augroup END
 
 """""""""""""""""""
 " GPG
