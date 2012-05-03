@@ -4,6 +4,7 @@ call pathogen#helptags()
 set showmode
 set history=100
 set nobackup
+set noswapfile
 set nocompatible
 set hidden
 set wildmenu
@@ -14,6 +15,11 @@ set colorcolumn=80
 set textwidth=80
 set nowrap
 
+" Time out on key codes, not mappings.
+set notimeout
+set ttimeout
+set ttimeoutlen=10
+
 " Folding
 set foldmethod=indent
 set foldnestmax=10
@@ -21,6 +27,7 @@ set nofoldenable
 set foldlevel=1
 set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
 
+au VimResized * :wincmd =
 
 set showmatch
 set backspace=2
@@ -91,6 +98,12 @@ let g:ctrlp_working_path_mode = 0
 
 " Powerline
 let g:Powerline_symbols = 'fancy'
+
+" Tabular
+nmap <Leader>a= :Tabularize /=<CR>
+vmap <Leader>a= :Tabularize /=<CR>
+nmap <Leader>a: :Tabularize /:\zs<CR>
+vmap <Leader>a: :Tabularize /:\zs<CR>
 
 """""""""""""""""""
 " Filetypes
