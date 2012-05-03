@@ -67,7 +67,7 @@ let s:bwc.gravel         = ['857f78', 243]
 let s:bwc.mediumgravel   = ['666462', 241]
 let s:bwc.deepgravel     = ['45413b', 238]
 let s:bwc.deepergravel   = ['35322d', 236]
-let s:bwc.darkgravel     = ['242321', 235]
+let s:bwc.darkgravel     = ['242321', 235]  
 let s:bwc.blackgravel    = ['1c1b1a', 233]
 let s:bwc.blackestgravel = ['141413', 232]
 
@@ -486,8 +486,6 @@ call s:HL('mailQuoted5', 'lime', '', 'none')
 " }}}
 " Markdown {{{
 
-call s:HL('markdownHeadingRule', 'lightgravel', '', 'bold')
-call s:HL('markdownHeadingDelimiter', 'lightgravel', '', 'bold')
 call s:HL('markdownOrderedListMarker', 'lightgravel', '', 'bold')
 call s:HL('markdownListMarker', 'lightgravel', '', 'bold')
 call s:HL('markdownItalic', 'snow', '', 'bold')

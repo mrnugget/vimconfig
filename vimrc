@@ -73,7 +73,6 @@ nmap <silent> <leader>bw :0,200bwipeout<CR>
 nmap <silent> <leader>bd :bd<CR>
 
 " Delete all trailing whitespaces
-match TrailingWhiteSpace /\s\+\%#\@<!$/
 nmap <silent> <leader>tw :%s/\s\+$//<CR>
 
 
@@ -89,6 +88,9 @@ nmap <silent> <D-r> :Rake<CR>
 " CTRL-P Plugin
 " Don't mess with my working directory!
 let g:ctrlp_working_path_mode = 0
+
+" Powerline
+let g:Powerline_symbols = 'fancy'
 
 """""""""""""""""""
 " Filetypes
@@ -146,9 +148,12 @@ augroup encrypted
     autocmd BufWritePost,FileWritePost  *.gpg set nobin
 augroup END
 
+
 " GVim
 if has("gui_running")
-  colorscheme mrmolokai
+  autocmd ColorScheme * highlight TrailingWhiteSpace ctermbg=red guibg=red
+  colorscheme badwolf
+  match TrailingWhiteSpace /\s\+\%#\@<!$/
   set guioptions=agc
   set lines=60 columns=90
 endif
