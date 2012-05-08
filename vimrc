@@ -37,7 +37,6 @@ set smartcase
 " Searching
 set incsearch
 set hlsearch
-
 " Indenting
 set tabstop=2
 set shiftwidth=2
@@ -82,6 +81,9 @@ nmap <silent> <leader>bd :bd<CR>
 " Delete all trailing whitespaces
 nmap <silent> <leader>tw :%s/\s\+$//<CR>
 
+" Converting symbols from ruby 1.8 syntax to 1.9
+nmap <silent> <leader>19 f:xepld3l
+
 
 " Typing 'jj' == Esc
 ino jj <esc>
@@ -89,8 +91,10 @@ cno jj <c-c>
 
 " Rails.vim
 "
-" Command+R runs Rake on current spec file
-nmap <silent> <D-r> :Rake<CR>
+" ,ra runs Rake on current spec file
+" ,rt runs Rake on current spec
+nmap <silent> <leader>ra :Rake<CR>
+nmap <silent> <leader>rt :.Rake<CR>
 
 " CTRL-P Plugin
 " Don't mess with my working directory!
