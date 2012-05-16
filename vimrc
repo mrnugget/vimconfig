@@ -1,6 +1,7 @@
 call pathogen#infect()
 call pathogen#helptags()
 
+set clipboard=unnamed
 set showmode
 set history=100
 set nobackup
@@ -46,6 +47,8 @@ set autoindent
 set smartindent
 
 set stl=%{fugitive#statusline()\ }%f\ %m\ %r\ Line:%l/%L[%p%%]\ Col:%v\ Buf:#%n
+set list
+set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
 set ruler
 set laststatus=2
 
@@ -77,13 +80,14 @@ nmap <silent> <leader>sv :so $MYVIMRC<CR>
 nmap <silent> <leader>bw :0,200bwipeout<CR>
 " Delete current buffer
 nmap <silent> <leader>bd :bd<CR>
-
 " Delete all trailing whitespaces
 nmap <silent> <leader>tw :%s/\s\+$//<CR>
 
+" Ruby
 " Converting symbols from ruby 1.8 syntax to 1.9
 nmap <silent> <leader>19 f:xepld3l
-
+" Converting ruby symbols to strings
+nmap <silent> <leader>tst f:xviwS"
 
 " Typing 'jj' == Esc
 ino jj <esc>
@@ -99,15 +103,23 @@ nmap <silent> <leader>rt :.Rake<CR>
 " CTRL-P Plugin
 " Don't mess with my working directory!
 let g:ctrlp_working_path_mode = 0
+nmap <leader>cc :CtrlPClearAllCaches<CR>
 
 " Powerline
 let g:Powerline_symbols = 'fancy'
 
 " Tabular
-nmap <Leader>a= :Tabularize /=<CR>
-vmap <Leader>a= :Tabularize /=<CR>
-nmap <Leader>a: :Tabularize /:\zs<CR>
-vmap <Leader>a: :Tabularize /:\zs<CR>
+nmap <leader>a= :Tabularize /=<CR>
+vmap <leader>a= :Tabularize /=<CR>
+nmap <leader>a: :Tabularize /:\zs<CR>
+vmap <leader>a: :Tabularize /:\zs<CR>
+
+" Show trailing whitespaces
+" highlight TrailingWhiteSpace ctermbg=red guibg=red
+" autocmd BufWinEnter * match TrailingWhiteSpace /\s\+$/
+" autocmd InsertEnter * match TrailingWhiteSpace /\s\+\%#\@<!$/
+" autocmd InsertLeave * match TrailingWhiteSpace /\s\+$/
+" autocmd BufWinLeave * call clearmatches()
 
 """""""""""""""""""
 " Filetypes
@@ -168,10 +180,8 @@ augroup END
 
 " GVim
 if has("gui_running")
-  autocmd ColorScheme * highlight TrailingWhiteSpace ctermbg=red guibg=red
   colorscheme badwolf
-  match TrailingWhiteSpace /\s\+\%#\@<!$/
-  set guioptions=agc
+  set guioptions=gc
   set lines=60 columns=90
 endif
 

@@ -40,10 +40,6 @@ function! s:startswith(string,prefix)
   return strpart(a:string, 0, strlen(a:prefix)) ==# a:prefix
 endfunction
 
-function! s:compact(ary)
-  return s:sub(s:sub(s:gsub(a:ary,'\n\n+','\n'),'\n$',''),'^\n','')
-endfunction
-
 function! s:uniq(list)
   let seen = {}
   let i = 0
@@ -56,19 +52,6 @@ function! s:uniq(list)
     endif
   endwhile
   return a:list
-endfunction
-
-function! s:scrub(collection,item)
-  " Removes item from a newline separated collection
-  let col = "\n" . a:collection
-  let idx = stridx(col,"\n".a:item."\n")
-  let cnt = 0
-  while idx != -1 && cnt < 100
-    let col = strpart(col,0,idx).strpart(col,idx+strlen(a:item)+1)
-    let idx = stridx(col,"\n".a:item."\n")
-    let cnt += 1
-  endwhile
-  return strpart(col,1)
 endfunction
 
 function! s:escarg(p)
@@ -375,16 +358,16 @@ function! s:readable_model_name(...) dict abort
     return s:sub(f,'.*<test/unit/(.*)_test\.rb$','\1')
   elseif f =~ '\<spec/models/.*_spec\.rb$'
     return s:sub(f,'.*<spec/models/(.*)_spec\.rb$','\1')
-  elseif f =~ '\<\%(test\|spec\)/fixtures/.*\.\w*\~\=$'
-    return rails#singularize(s:sub(f,'.*<%(test|spec)/fixtures/(.*)\.\w*\~=$','\1'))
   elseif f =~ '\<\%(test\|spec\)/blueprints/.*\.rb$'
     return s:sub(f,'.*<%(test|spec)/blueprints/(.{-})%(_blueprint)=\.rb$','\1')
   elseif f =~ '\<\%(test\|spec\)/exemplars/.*_exemplar\.rb$'
     return s:sub(f,'.*<%(test|spec)/exemplars/(.*)_exemplar\.rb$','\1')
-  elseif f =~ '\<\%(test/\|spec/\)\=factories/.*\.rb$'
-    return s:sub(f,'.*<%(test/|spec/)=factories/(.{-})%(_factory)=\.rb$','\1')
+  elseif f =~ '\<\%(test/\|spec/\)\=factories/.*_factory\.rb$'
+    return s:sub(f,'.*<%(test/|spec/)=factories/(.{-})_factory.rb$','\1')
   elseif f =~ '\<\%(test/\|spec/\)\=fabricators/.*\.rb$'
-    return s:sub(f,'.*<%(test/|spec/)=fabricators/(.{-})%(_fabricator)=\.rb$','\1')
+    return s:sub(f,'.*<%(test/|spec/)=fabricators/(.{-})_fabricator.rb$','\1')
+  elseif f =~ '\<\%(test\|spec\)/\%(fixtures\|factories\|fabricators\)/.*\.\w\+$'
+    return rails#singularize(s:sub(f,'.*<%(test|spec)/\w+/(.*)\.\w+$','\1'))
   elseif a:0 && a:1
     return rails#singularize(self.controller_name())
   endif
@@ -445,6 +428,8 @@ endfunction
 function! s:environment()
   if exists('$RAILS_ENV')
     return $RAILS_ENV
+  elseif exists('$RACK_ENV')
+    return $RACK_ENV
   else
     return "development"
   endif
@@ -727,6 +712,8 @@ function! s:readable_calculate_file_type() dict abort
     else
       let r = "fixtures" . (e == "" ? "" : "-" . e)
     endif
+  elseif f =~ '\<\%(test\|spec\)/\%(factories\|fabricators\)\>'
+    let r = "fixtures-replacement"
   elseif f =~ '\<test/.*_test\.rb'
     let r = "test"
   elseif f =~ '\<spec/.*_spec\.rb'
@@ -1977,8 +1964,10 @@ function! s:RailsFind()
   if buffer.type_name('controller')
     let contr = s:controller()
     let view = s:findit('\s*\<def\s\+\(\k\+\)\>(\=','/\1')
-    let res = s:findview(contr.'/'.view)
-    if res != ""|return res|endif
+    if view !=# ''
+      let res = s:findview(contr.'/'.view)
+      if res != ""|return res|endif
+    endif
   endif
 
   let old_isfname = &isfname
@@ -2283,7 +2272,12 @@ function! s:observerList(A,L,P)
 endfunction
 
 function! s:fixturesList(A,L,P)
-  return s:completion_filter(rails#app().relglob("test/fixtures/","**/*")+rails#app().relglob("spec/fixtures/","**/*"),a:A)
+  return s:completion_filter(
+        \ rails#app().relglob('test/fixtures/', '**/*') +
+        \ rails#app().relglob('spec/fixtures/', '**/*') +
+        \ rails#app().relglob('test/factories/', '**/*') +
+        \ rails#app().relglob('spec/factories/', '**/*'),
+        \ a:A)
 endfunction
 
 function! s:localeList(A,L,P)
@@ -2566,11 +2560,12 @@ function! s:fixturesEdit(cmd,...)
   let e = fnamemodify(c,':e')
   let e = e == '' ? e : '.'.e
   let c = fnamemodify(c,':r')
-  let file = get(rails#app().test_suites(),0,'test').'/fixtures/'.c.e
-  if file =~ '\.\w\+$' && rails#app().find_file(c.e,["test/fixtures","spec/fixtures"]) ==# ''
+  let dirs = ['test/fixtures', 'spec/fixtures', 'test/factories', 'spec/factories']
+  let file = get(filter(copy(dirs), 'isdirectory(rails#app().path(v:val))'), 0, dirs[0]).'/'.c.e
+  if file =~ '\.\w\+$' && rails#app().find_file(c.e, dirs) ==# ''
     call s:edit(a:cmd,file)
   else
-    call s:findedit(a:cmd,rails#app().find_file(c.e,["test/fixtures","spec/fixtures","test/factories","spec/factories"],[".yml",".csv",".rb"],file))
+    call s:findedit(a:cmd, rails#app().find_file(c.e, dirs, ['.yml', '.csv', '.rb'], file))
   endif
 endfunction
 
@@ -2680,7 +2675,7 @@ function! s:viewEdit(cmd,...)
     call s:edit(a:cmd,'app/views/'.view)
     call s:djump(djump)
   else
-    call s:findedit(a:cmd,file)
+    call s:findedit(a:cmd,view)
   endif
 endfunction
 
@@ -3048,12 +3043,11 @@ function! s:readable_related(...) dict abort
   if a:0 && a:1
     let lastmethod = self.last_method(a:1)
     if self.type_name('controller','mailer') && lastmethod != ""
-      let root = s:sub(s:sub(s:sub(f,'/application%(_controller)=\.rb$','/shared_controller.rb'),'/%(controllers|models|mailers)/','/views/'),'%(_controller)=\.rb$','/'.lastmethod)
-      let format = self.format(a:1)
-      if glob(self.app().path().'/'.root.'.'.format.'.*[^~]') != ''
-        return root . '.' . format
+      let view = self.resolve_view(lastmethod, line('.'))
+      if view !=# ''
+        return view
       else
-        return root
+        return s:sub(s:sub(s:sub(f,'/application%(_controller)=\.rb$','/shared_controller.rb'),'/%(controllers|models|mailers)/','/views/'),'%(_controller)=\.rb$','/'.lastmethod)
       endif
     elseif f =~ '\<config/environments/'
       return "config/database.yml#". fnamemodify(f,':t:r')
@@ -3595,7 +3589,7 @@ function! s:BufSyntax()
         syn keyword rubyRailsARCallbackMethod around_create around_destroy around_save around_update
         syn keyword rubyRailsARCallbackMethod after_commit after_find after_initialize after_rollback after_touch
         syn keyword rubyRailsARClassMethod attr_accessible attr_protected attr_readonly
-        syn keyword rubyRailsARValidationMethod validate validates validate_on_create validate_on_update validates_acceptance_of validates_associated validates_confirmation_of validates_each validates_exclusion_of validates_format_of validates_inclusion_of validates_length_of validates_numericality_of validates_presence_of validates_size_of validates_uniqueness_of
+        syn keyword rubyRailsARValidationMethod validate validates validate_on_create validate_on_update validates_acceptance_of validates_associated validates_confirmation_of validates_each validates_exclusion_of validates_format_of validates_inclusion_of validates_length_of validates_numericality_of validates_presence_of validates_size_of validates_uniqueness_of validates_with
         syn keyword rubyRailsMethod logger
       endif
       if buffer.type_name('model-aro')
@@ -4382,23 +4376,6 @@ function! RailsBufInit(path)
   " IO related).  This caching is a temporary hack; if it doesn't cause
   " problems it should probably be refactored.
   let b:rails_cached_file_type = buffer.calculate_file_type()
-  if g:rails_history_size > 0
-    if !exists("g:RAILS_HISTORY")
-      let g:RAILS_HISTORY = ""
-    endif
-    let path = a:path
-    let g:RAILS_HISTORY = s:scrub(g:RAILS_HISTORY,path)
-    if has("win32")
-      let g:RAILS_HISTORY = s:scrub(g:RAILS_HISTORY,s:gsub(path,'\\','/'))
-    endif
-    let path = fnamemodify(path,':p:~:h')
-    let g:RAILS_HISTORY = s:scrub(g:RAILS_HISTORY,path)
-    if has("win32")
-      let g:RAILS_HISTORY = s:scrub(g:RAILS_HISTORY,s:gsub(path,'\\','/'))
-    endif
-    let g:RAILS_HISTORY = path."\n".g:RAILS_HISTORY
-    let g:RAILS_HISTORY = s:sub(g:RAILS_HISTORY,'%(.{-}\n){,'.g:rails_history_size.'}\zs.*','')
-  endif
   call app.source_callback("config/syntax.vim")
   if expand('%:t') =~ '\.yml\.example$'
     setlocal filetype=yaml
