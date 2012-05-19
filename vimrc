@@ -98,16 +98,20 @@ nmap <silent> <leader>tst f:xviwS"
 ino jj <esc>
 cno jj <c-c>
 
-" Rails.vim
+" Rspec
 "
-" ,ra runs Rake on current spec file
-" ,rt runs Rake on current spec
-nmap <silent> <leader>ra :Rake<CR>
-nmap <silent> <leader>rt :.Rake<CR>
+" ,rt runs rspec on current spec ('run this')
+" ,rf runs rspec on current spec file ('run file')
+" ,ra runs rspec on all spec in current specs directory ('run all')
+nmap <silent> <leader>rt :exec ":!bundle exec rspec % -l ".line('.')<CR>
+nmap <silent> <leader>rf :exec ":!bundle exec rspec %"<CR>
+nmap <silent> <leader>ra :exec ":!bundle exec rspec %:p:h"<CR>
 
 " CTRL-P Plugin
 " Don't mess with my working directory!
 let g:ctrlp_working_path_mode = 0
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/vendor/bundle/*
+" Clear cache with ,cc
 nmap <leader>cc :CtrlPClearAllCaches<CR>
 
 " Powerline
@@ -116,6 +120,8 @@ let g:Powerline_symbols = 'fancy'
 " Tabular
 nmap <leader>a= :Tabularize /=<CR>
 vmap <leader>a= :Tabularize /=<CR>
+nmap <leader>ah :Tabularize /=>\?<CR>
+vmap <leader>ah :Tabularize /=>\?<CR>
 nmap <leader>a: :Tabularize /:\zs<CR>
 vmap <leader>a: :Tabularize /:\zs<CR>
 
