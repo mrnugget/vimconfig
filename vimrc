@@ -38,6 +38,7 @@ set smartcase
 " Searching
 set incsearch
 set hlsearch
+
 " Indenting
 set tabstop=2
 set shiftwidth=2
@@ -72,6 +73,10 @@ nmap <silent> <leader>p :set invpaste<CR>:set paste?<CR>
 
 " Toggle hlsearch
 nmap <silent> <leader>h :set invhlsearch<CR>
+
+" Center next search result
+nnoremap n nzzzv
+nnoremap N Nzzzv
 
 " Open and source vimrc file
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
