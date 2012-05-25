@@ -68,6 +68,9 @@ set visualbell
 " <leader> is ,
 let mapleader = ","
 
+" Big mode
+nmap <silent> <leader>bm :set columns=180<CR>
+
 " Toggle paste mode
 nmap <silent> <leader>p :set invpaste<CR>:set paste?<CR>
 
@@ -103,9 +106,9 @@ cno jj <c-c>
 " ,rt runs rspec on current spec ('run this')
 " ,rf runs rspec on current spec file ('run file')
 " ,ra runs rspec on all spec in current specs directory ('run all')
-nmap <silent> <leader>rt :exec ":!bundle exec rspec % -l ".line('.')<CR>
-nmap <silent> <leader>rf :exec ":!bundle exec rspec %"<CR>
-nmap <silent> <leader>ra :exec ":!bundle exec rspec %:p:h"<CR>
+nmap <silent> <leader>rt :exec ":!bundle exec rspec --no-color % -l ".line('.')<CR>
+nmap <silent> <leader>rf :exec ":!bundle exec rspec --no-color %"<CR>
+nmap <silent> <leader>ra :exec ":!bundle exec rspec --no-color %:p:h"<CR>
 
 " CTRL-P Plugin
 " Don't mess with my working directory!
