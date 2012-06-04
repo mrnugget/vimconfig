@@ -146,6 +146,10 @@ augroup ft_ruby
   au Filetype ruby setlocal foldlevel=9
 augroup END
 
+" Rspec Files
+autocmd BufRead *_spec.rb syn keyword rubyRspec describe context it specify it_should_behave_like before after setup subject its shared_examples_for shared_context let
+highlight def link rubyRspec Function
+
 " eruby, html
 augroup ft_html
   au!
