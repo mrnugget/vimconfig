@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 *.swp
 .netrwhist
-=======
-/rails.zip
-/rails.vba
 /doc/tags
->>>>>>> 04c7b18f66963e3bdb6307052c2dbeb89aad7ead
+/tmp/backup
+/tmp/undo

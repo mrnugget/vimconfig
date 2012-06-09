@@ -1,11 +1,17 @@
 call pathogen#infect()
 call pathogen#helptags()
 
+syntax enable
+filetype on
+filetype plugin on
+filetype indent on
+
+set noerrorbells
+set visualbell
+
 set clipboard=unnamed
 set showmode
 set history=100
-set nobackup
-set noswapfile
 set nocompatible
 set hidden
 set wildmenu
@@ -20,6 +26,13 @@ set nowrap
 set notimeout
 set ttimeout
 set ttimeoutlen=10
+
+" Backup
+set undofile
+set undodir=~/.vim/tmp/undo//
+set backupdir=~/.vim/tmp/backup//
+set backup
+set noswapfile
 
 " Folding
 set foldmethod=indent
@@ -53,14 +66,8 @@ set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
 set ruler
 set laststatus=2
 
-syntax enable
-filetype on
-filetype plugin on
-filetype indent on
-
-set noerrorbells
-set visualbell
-
+" ctags tags file
+set tags=tags;/
 
 """""""""""""""""""
 " Mappings
@@ -70,6 +77,8 @@ let mapleader = ","
 
 " Big mode
 nmap <silent> <leader>bm :set columns=180<CR>
+" Small mode
+nmap <silent> <leader>sm :set columns=90<CR>
 
 " Toggle paste mode
 nmap <silent> <leader>p :set invpaste<CR>:set paste?<CR>
@@ -128,13 +137,6 @@ vmap <leader>ah :Tabularize /=>\?<CR>
 nmap <leader>a: :Tabularize /:\zs<CR>
 vmap <leader>a: :Tabularize /:\zs<CR>
 
-" Show trailing whitespaces
-" highlight TrailingWhiteSpace ctermbg=red guibg=red
-" autocmd BufWinEnter * match TrailingWhiteSpace /\s\+$/
-" autocmd InsertEnter * match TrailingWhiteSpace /\s\+\%#\@<!$/
-" autocmd InsertLeave * match TrailingWhiteSpace /\s\+$/
-" autocmd BufWinLeave * call clearmatches()
-
 """""""""""""""""""
 " Filetypes
 "
@@ -168,6 +170,8 @@ augroup encrypted
     autocmd BufReadPre,FileReadPre      *.gpg set viminfo=
     " We don't want a swap file, as it writes unencrypted data to disk
     autocmd BufReadPre,FileReadPre      *.gpg set noswapfile
+    autocmd BufReadPre,FileReadPre      *.gpg set noundofile
+    autocmd BufReadPre,FileReadPre      *.gpg set nobackup
     " Switch to binary mode to read the encrypted file
     autocmd BufReadPre,FileReadPre      *.gpg set bin
     autocmd BufReadPre,FileReadPre      *.gpg let ch_save = &ch|set ch=2
