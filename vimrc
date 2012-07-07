@@ -130,7 +130,7 @@ set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/vendor/bundle/*
 nmap <leader>cc :CtrlPClearAllCaches<CR>
 
 " Powerline
-" let g:Powerline_symbols = 'fancy'
+let g:Powerline_symbols = 'fancy'
 
 " Tabular
 nmap <leader>a= :Tabularize /=<CR>
