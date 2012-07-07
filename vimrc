@@ -97,10 +97,13 @@ nmap <silent> <leader>sv :so $MYVIMRC<CR>
 nmap <silent> <leader>bw :0,200bwipeout<CR>
 " Delete current buffer
 nmap <silent> <leader>bd :bd<CR>
+" Close current window
+nmap <silent> <leader>q <C-w>q
 " Delete all trailing whitespaces
 nmap <silent> <leader>tw :%s/\s\+$//<CR>
 
 " Ruby
+nmap <leader>ru :!ruby %<CR>
 " Converting symbols from ruby 1.8 syntax to 1.9
 nmap <silent> <leader>19 f:xepld3l
 " Converting ruby symbols to strings
@@ -127,7 +130,7 @@ set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/vendor/bundle/*
 nmap <leader>cc :CtrlPClearAllCaches<CR>
 
 " Powerline
-let g:Powerline_symbols = 'fancy'
+" let g:Powerline_symbols = 'fancy'
 
 " Tabular
 nmap <leader>a= :Tabularize /=<CR>
