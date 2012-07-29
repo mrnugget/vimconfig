@@ -67,7 +67,7 @@ set ruler
 set laststatus=2
 
 " ctags tags file
-set tags=tags;/
+set tags=./tags,./tmp/tags;/
 
 """""""""""""""""""
 " Mappings
