@@ -46,7 +46,6 @@ au VimResized * :wincmd =
 set showmatch
 set backspace=2
 set ignorecase
-set smartcase
 
 " Searching
 set incsearch
@@ -108,6 +107,9 @@ nmap <leader>ru :!ruby %<CR>
 nmap <silent> <leader>19 f:xepld3l
 " Converting ruby symbols to strings
 nmap <silent> <leader>tst f:xviwS"
+
+" node.js
+nmap <leader>no :!node %<CR>
 
 " Typing 'jj' == Esc
 ino jj <esc>
