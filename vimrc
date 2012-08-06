@@ -207,6 +207,7 @@ augroup END
 
 " GVim
 if has("gui_running")
+  set background=dark
   colorscheme badwolf
   set guioptions=gc
   set lines=60 columns=90
