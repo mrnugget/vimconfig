@@ -66,7 +66,7 @@ set ruler
 set laststatus=2
 
 " ctags tags file
-set tags=./tags,./tmp/tags;/
+set tags=./tags;
 
 """""""""""""""""""
 " Mappings
@@ -161,6 +161,11 @@ highlight def link rubyRspec Function
 augroup ft_html
   au!
   au BufNewFile,BufRead *.html.erb setlocal filetype=eruby.html
+augroup END
+
+augroup ft_markdown
+  au!
+  au BufNewFile,BufRead *.md setlocal filetype=markdown
 augroup END
 
 """""""""""""""""""
