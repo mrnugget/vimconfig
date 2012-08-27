@@ -1,4 +1,9 @@
-<<<<<<< HEAD
-# vim configuration
+## Behind The Scenes...
+# Thorsten Ball's Vim Configuration
 
-This is the content of my ~/.vim directory.
+### Setup
+
+```bash
+git clone git://github.com/mrnugget/vimconfig.git ~/.vim
+ln -s ~/.vim/vimrc ~/.vimrc
+```
