@@ -19,6 +19,7 @@ Bundle 'vim-ruby/vim-ruby'
 Bundle 'kana/vim-textobj-user'
 Bundle 'nelstrom/vim-textobj-rubyblock'
 Bundle 'bronson/vim-visual-star-search'
+Bundle 'nanotech/jellybeans.vim'
 
 " Syntax and filetype specific indentation and plugins on
 syntax enable
@@ -231,17 +232,17 @@ augroup encrypted
   autocmd BufWritePost,FileWritePost  *.gpg set nobin
 augroup END
 
-set background=dark
-
 " GVim
 if has("gui_running")
-  colorscheme molokai
   set guioptions=gc
   set lines=60 columns=90
 else
-  colorscheme desert
+  set t_Co=256
   set nocursorline
 endif
+
+set background=dark
+colorscheme jellybeans
 
 " Fonts
 if has("mac")
