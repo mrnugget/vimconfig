@@ -4,12 +4,12 @@
 function! s:VSetSearch()
   let temp = @s
   norm! gv"sy
-  let @/ = '\V' . substitute(escape(@s, '/\'), '\n', '\\n', 'g')
+  let @/ = '\V' . substitute(escape(@s, '\'), '\n', '\\n', 'g')
   let @s = temp
 endfunction
 
-xnoremap * :<C-u>call <SID>VSetSearch()<CR>/<C-R>=@/<CR><CR>
-xnoremap # :<C-u>call <SID>VSetSearch()<CR>?<C-R>=@/<CR><CR>
+vmap * :<C-u>call <SID>VSetSearch()<CR>//<CR>
+vmap # :<C-u>call <SID>VSetSearch()<CR>??<CR>
 
 " recursively vimgrep for word under cursor or selection if you hit leader-star
 nmap <leader>* :execute 'noautocmd vimgrep /\V' . substitute(escape(expand("<cword>"), '\'), '\n', '\\n', 'g') . '/ **'<CR>

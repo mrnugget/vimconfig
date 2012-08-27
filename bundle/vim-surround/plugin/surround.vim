@@ -127,6 +127,7 @@ endfunction
 function! s:wrap(string,char,type,...)
   let keeper = a:string
   let newchar = a:char
+  let s:tag = ""
   let type = a:type
   let linemode = type ==# 'V' ? 1 : 0
   let special = a:0 ? a:1 : 0
@@ -178,8 +179,10 @@ function! s:wrap(string,char,type,...)
     if dounmapb
       silent! cunmap >
     endif
+    let s:tag = tag
     if tag != ""
       let tag = substitute(tag,'>*$','','')
+      let s:tag = tag . '>'
       let before = '<'.tag.'>'
       if tag =~ '/$'
         let after = ''
@@ -426,13 +429,13 @@ function! s:dosurround(...) " {{{1
   if getline('.') =~ '^\s\+$' && keeper =~ '^\s*\n'
     silent norm! cc
   endif
-  call setreg('"',removed,regtype)
+  call setreg('"',original,otype)
   let s:lastdel = removed
   let &clipboard = cb_save
   if newchar == ""
     silent! call repeat#set("\<Plug>Dsurround".char,scount)
   else
-    silent! call repeat#set("\<Plug>Csurround".char.newchar,scount)
+    silent! call repeat#set("\<Plug>Csurround".char.newchar.s:tag,scount)
   endif
 endfunction " }}}1
 
@@ -505,7 +508,9 @@ function! s:opfunc(type,...) " {{{1
   let &selection = sel_save
   let &clipboard = cb_save
   if a:type =~ '^\d\+$'
-    silent! call repeat#set("\<Plug>Y".(a:0 && a:1 ? "S" : "s")."surround".char,a:type)
+    silent! call repeat#set("\<Plug>Y".(a:0 && a:1 ? "S" : "s")."surround".char.s:tag,a:type)
+  else
+    silent! call repeat#set("\<Plug>SurroundRepeat".char.s:tag)
   endif
 endfunction
 
@@ -529,6 +534,7 @@ function! s:closematch(str) " {{{1
   endif
 endfunction " }}}1
 
+nnoremap <silent> <Plug>SurroundRepeat .
 nnoremap <silent> <Plug>Dsurround  :<C-U>call <SID>dosurround(<SID>inputtarget())<CR>
 nnoremap <silent> <Plug>Csurround  :<C-U>call <SID>changesurround()<CR>
 nnoremap <silent> <Plug>Yssurround :<C-U>call <SID>opfunc(v:count1)<CR>
@@ -551,9 +557,6 @@ if !exists("g:surround_no_mappings") || ! g:surround_no_mappings
   nmap ySS <Plug>YSsurround
   xmap S   <Plug>VSurround
   xmap gS  <Plug>VgSurround
-  if maparg('s', 'x') ==# ''
-    xnoremap <silent> s :<C-U>echoerr 'surround.vim: Visual mode s has been removed in favor of S'<CR>
-  endif
   if !hasmapto("<Plug>Isurround","i") && "" == mapcheck("<C-S>","i")
     imap    <C-S> <Plug>Isurround
   endif

@@ -1,11 +1,11 @@
-==== textobj_user_plugin
----- It should define default UI key mappings.
+==== textobj_user_plugin 
+---- It should define default UI key mappings. 
 ........
----- It should define named key mappings.
+---- It should define named key mappings. 
 ......
----- It should define an Ex command to define default UI key mappings.
+---- It should define an Ex command to define default UI key mappings. 
 
----- It should work.
+---- It should work. 
 
 
 

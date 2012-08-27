@@ -1,14 +1,36 @@
-call pathogen#infect()
-call pathogen#helptags()
+" Initialize Vundle
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+Bundle 'gmarik/vundle'
 
+" Set up plugins
+Bundle 'kien/ctrlp.vim'
+Bundle 'tomtom/tcomment_vim'
+Bundle 'godlygeek/tabular'
+Bundle 'mileszs/ack.vim'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-rails'
+Bundle 'tpope/vim-surround'
+Bundle 'tsaleh/vim-matchit'
+Bundle 'pangloss/vim-javascript'
+Bundle 'Lokaltog/vim-powerline'
+Bundle 'vim-ruby/vim-ruby'
+Bundle 'kana/vim-textobj-user'
+Bundle 'nelstrom/vim-textobj-rubyblock'
+Bundle 'bronson/vim-visual-star-search'
+
+" Syntax and filetype specific indentation and plugins on
 syntax enable
 filetype on
 filetype plugin on
 filetype indent on
 
+" Shut up.
 set noerrorbells
 set visualbell
 
+" Basic stuff
 set clipboard=unnamed
 set showmode
 set history=100
@@ -21,6 +43,8 @@ set cursorline
 set colorcolumn=80
 set textwidth=80
 set nowrap
+set showmatch
+set backspace=2
 
 " Time out on key codes, not mappings.
 set notimeout
@@ -41,24 +65,20 @@ set nofoldenable
 set foldlevel=1
 set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
 
+" Resize vim windows when resizing the main window
 au VimResized * :wincmd =
-
-set showmatch
-set backspace=2
-set ignorecase
-set smartcase
 
 " Searching
 set incsearch
 set hlsearch
+set ignorecase
+set smartcase
 
 " Indenting
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set expandtab
-" set autoindent
-" set smartindent
 
 set stl=%{fugitive#statusline()\ }%f\ %m\ %r\ Line:%l/%L[%p%%]\ Col:%v\ Buf:#%n
 set list
@@ -94,7 +114,7 @@ nnoremap N Nzzzv
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
 " Wipe out ALL the buffers
-nmap <silent> <leader>bw :0,200bwipeout<CR>
+nmap <silent> <leader>bw :0,999bwipeout<CR>
 " Delete current buffer
 nmap <silent> <leader>bd :bd<CR>
 " Close current window
@@ -112,12 +132,7 @@ nmap <silent> <leader>tst f:xviwS"
 " node.js
 nmap <leader>no :!node %<CR>
 
-" Typing 'jj' == Esc
-ino jj <esc>
-cno jj <c-c>
-
-" Rspec
-"
+" RSpec
 " ,rt runs rspec on current spec ('run this')
 " ,rf runs rspec on current spec file ('run file')
 " ,ra runs rspec on all spec in current specs directory ('run all')
@@ -125,7 +140,10 @@ nmap <silent> <leader>rt :exec ":!bundle exec rspec --no-color % -l ".line('.')<
 nmap <silent> <leader>rf :exec ":!bundle exec rspec --no-color %"<CR>
 nmap <silent> <leader>ra :exec ":!bundle exec rspec --no-color %:p:h"<CR>
 
-" CTRL-P Plugin
+"""""""""""""""""""
+" Plugin Configuration
+"
+" CTRL-P
 " Don't mess with my working directory!
 let g:ctrlp_working_path_mode = 0
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/vendor/bundle/*
@@ -222,6 +240,7 @@ if has("gui_running")
   set lines=60 columns=90
 else
   colorscheme desert
+  set nocursorline
 endif
 
 " Fonts

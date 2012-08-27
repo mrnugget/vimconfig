@@ -40,8 +40,8 @@ that are part of Git repositories).
                         -     |:Git| add
                         -     |:Git| reset (staged files)
                         C     |:Gcommit|
-                        cA    |Gcommit| --amend --reuse-message=HEAD
-                        ca    |Gcommit| --amend
+                        cA    |:Gcommit| --amend --reuse-message=HEAD
+                        ca    |:Gcommit| --amend
                         D     |:Gdiff|
                         ds    |:Gsdiff|
                         dp    |:Git!| diff (p for patch; use :Gw to apply)
@@ -53,6 +53,7 @@ that are part of Git repositories).
                         p     |:Git| reset --patch (staged files)
                         q     close status
                         R     reload status
+                        S     |:Gvsplit|
 
                                                 *fugitive-:Gcommit*
 :Gcommit [args]         A wrapper around git-commit.  If there is nothing
@@ -69,12 +70,20 @@ that are part of Git repositories).
                                                 *fugitive-:Ggrep*
 :Ggrep [args]           |:grep| with git-grep as 'grepprg'.
 
+                                                *fugitive-:Glgrep*
+:Glgrep [args]          |:lgrep| with git-grep as 'grepprg'.
+
                                                 *fugitive-:Glog*
 :Glog [args]            Load all previous revisions of the current file into
                         the quickfix list.  Additional git-log arguments can
                         be given (for example, --reverse).  If "--" appears as
                         an argument, no file specific filtering is done, and
-                        commits are loaded into the quickfix list.
+                        previous commits rather than previous file revisions
+                        are loaded.
+
+                                                *fugitive-:Gllog*
+:Gllog [args]           Like |:Glog|, but use the location list instead of the
+                        quickfix list.
 
                                         *fugitive-:Gedit* *fugitive-:Ge*
 :Gedit [revision]       |:edit| a |fugitive-revision|.
@@ -166,6 +175,9 @@ that are part of Git repositories).
                         along to git-blame.  The following maps, which work on
                         the cursor line commit where sensible, are provided:
 
+                        A     resize to end of author column
+                        C     resize to end of commit column
+                        D     resize to end of date/time column
                         q     close blame and return to blamed window
                         gq    q, then |:Gedit| to return to work tree version
                         i     q, then open commit
@@ -224,8 +236,15 @@ These maps are available in Git objects.
                                                 *fugitive-o*
 o                       Jump to the revision under the cursor in a new split.
 
+                                                *fugitive-S*
+S                       Jump to the revision under the cursor in a new
+                        vertical split.
+
                                                 *fugitive-O*
 O                       Jump to the revision under the cursor in a new tab.
+
+                                                *fugitive--*
+-                       Go to the tree containing the current tree or blob.
 
                                                 *fugitive-~*
 ~                       Go to the current file in the [count]th first
@@ -277,6 +296,12 @@ a statusline, this one matches the default when 'ruler' is set:
 >
     set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 <
+                                                *fugitive#head(...)*
+Use fugitive#head() to return the name of the current branch. If the current
+HEAD is detached, fugitive#head() will return the empty string, unless the
+optional argument is given, in which case the hash of the current commit will
+be truncated to the given number of characters.
+
 ABOUT                                           *fugitive-about*
 
 Grab the latest version or report a bug on GitHub:

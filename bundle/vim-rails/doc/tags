@@ -135,7 +135,6 @@ rails-syntax-keywords	rails.txt	/*rails-syntax-keywords*
 rails-syntax-strings	rails.txt	/*rails-syntax-strings*
 rails-syntax-yaml	rails.txt	/*rails-syntax-yaml*
 rails-tabs	rails.txt	/*rails-tabs*
-rails-template-types	rails.txt	/*rails-template-types*
 rails-type-navigation	rails.txt	/*rails-type-navigation*
 rails-vim-integration	rails.txt	/*rails-vim-integration*
 rails.txt	rails.txt	/*rails.txt*
