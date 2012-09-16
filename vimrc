@@ -109,6 +109,9 @@ nmap <leader>ru :!ruby %<CR>
 nmap <silent> <leader>19 f:xepld3l
 " Converting ruby symbols to strings
 nmap <silent> <leader>tst f:xviwS"
+" Insert hash rockets
+imap <C-l> =>
+nmap <silent> <C-l> a=><Esc>
 
 " node.js
 nmap <leader>no :!node %<CR>
@@ -116,10 +119,10 @@ nmap <leader>no :!node %<CR>
 " RSpec
 " ,rt runs rspec on current spec ('run this')
 " ,rf runs rspec on current spec file ('run file')
-" ,ra runs rspec on all spec in current specs directory ('run all')
-nmap <silent> <leader>rt :exec ":!bundle exec rspec --no-color % -l ".line('.')<CR>
-nmap <silent> <leader>rf :exec ":!bundle exec rspec --no-color %"<CR>
-nmap <silent> <leader>ra :exec ":!bundle exec rspec --no-color %:p:h"<CR>
+" ,ra runs rspec on all specs in spec directory
+nmap <silent> <leader>rt :exec ":!bundle exec rspec --color % -l ".line('.')<CR>
+nmap <silent> <leader>rf :exec ":!bundle exec rspec --color %"<CR>
+nmap <silent> <leader>ra :exec ":!bundle exec rspec --color"<CR>
 
 """""""""""""""""""
 " Plugin Configuration
