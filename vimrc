@@ -18,7 +18,7 @@ set history=100
 set nocompatible
 set hidden
 set wildmenu
-set scrolloff=2
+set scrolloff=5
 set number
 set cursorline
 set colorcolumn=80
@@ -86,10 +86,6 @@ nmap <silent> <leader>p :set invpaste<CR>:set paste?<CR>
 
 " Toggle hlsearch
 nmap <silent> <leader>h :set invhlsearch<CR>
-
-" Center next search result
-nnoremap n nzzzv
-nnoremap N Nzzzv
 
 " Open and source vimrc file
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
