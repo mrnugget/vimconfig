@@ -14,7 +14,7 @@ set visualbell
 " Basic stuff
 set clipboard=unnamed
 set showmode
-set history=100
+set history=500
 set nocompatible
 set hidden
 set wildmenu
@@ -167,8 +167,8 @@ augroup ft_markdown
   au BufNewFile,BufRead *.md setlocal filetype=markdown
 augroup END
 
-" C
 autocmd FileType c setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
+autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 """""""""""""""""""
 " GPG
