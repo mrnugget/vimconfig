@@ -53,7 +53,6 @@ au VimResized * :wincmd =
 set incsearch
 set hlsearch
 set ignorecase
-set smartcase
 
 " Indenting
 set tabstop=2
@@ -217,7 +216,6 @@ if has("gui_running")
   set lines=60 columns=90
 else
   set t_Co=256
-  set nocursorline
 endif
 
 set background=dark
