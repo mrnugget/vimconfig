@@ -223,7 +223,7 @@ colorscheme jellybeans
 
 " Fonts
 if has("mac")
-  set guifont=Monaco:h12
+  set guifont=Inconsolata:h15
 else
   set guifont=Monospace\ 9
 endif
