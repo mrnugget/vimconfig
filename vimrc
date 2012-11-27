@@ -75,10 +75,11 @@ set tags=./tags;
 " <leader> is ,
 let mapleader = ","
 
-" Big mode
-nmap <silent> <leader>bm :set columns=180<CR>
-" Small mode
-nmap <silent> <leader>sm :set columns=90<CR>
+" Move around splits with <C-[hjkl]>
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
 
 " Toggle paste mode
 nmap <silent> <leader>p :set invpaste<CR>:set paste?<CR>
@@ -104,9 +105,6 @@ nmap <leader>ru :!ruby %<CR>
 nmap <silent> <leader>19 f:xepld3l
 " Converting ruby symbols to strings
 nmap <silent> <leader>tst f:xviwS"
-" Insert hash rockets
-imap <C-l> =>
-nmap <silent> <C-l> a=><Esc>
 
 " node.js
 nmap <leader>no :!node %<CR>
