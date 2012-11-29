@@ -109,13 +109,57 @@ nmap <silent> <leader>tst f:xviwS"
 " node.js
 nmap <leader>no :!node %<CR>
 
-" RSpec
-" ,rt runs rspec on current spec ('run this')
-" ,rf runs rspec on current spec file ('run file')
-" ,ra runs rspec on all specs in spec directory
-nmap <silent> <leader>rt :exec ":!bundle exec rspec --color % -l ".line('.')<CR>
-nmap <silent> <leader>rf :exec ":!bundle exec rspec --color %"<CR>
-nmap <silent> <leader>ra :exec ":!bundle exec rspec --color"<CR>
+" Running tests
+" ,rt runs rspec on current (or previously set ) single spec ('run this')
+" ,rf runs rspec on current (or previously set) spec file ('run file')
+" ,ra runs all specs ('run all')
+nmap <silent> <leader>rt :call RunNearestTest()<CR>
+nmap <silent> <leader>rf :call RunTestFile()<CR>
+nmap <silent> <leader>ra :call RunTests('')<CR>
+
+
+""""""""""""""""""""""""
+"
+" Setting test file/single test and running it
+"
+function! RunTestFile(...)
+  if a:0
+    let command_suffix = a:1
+  else
+    let command_suffix = ""
+  endif
+
+  let in_test_file = match(expand("%"), '_spec.rb$') != -1
+  if in_test_file
+    call SetTestFile()
+  elseif !exists("t:grb_test_file")
+    return
+  end
+  call RunTests(t:grb_test_file . command_suffix)
+endfunction
+
+function! RunNearestTest()
+  let in_test_file = match(expand("%"), '_spec.rb$') != -1
+  if in_test_file
+    let t:grb_test_file_line=line(".")
+  elseif !exists("t:grb_test_file_line")
+    return
+  end
+  call RunTestFile(":" . t:grb_test_file_line . " -b")
+endfunction
+
+function! SetTestFile()
+  let t:grb_test_file=@%
+endfunction
+
+function! RunTests(filename)
+  :silent !echo;echo;echo;echo;echo;echo;echo;echo;echo;echo
+  if filereadable("Gemfile")
+    exec ":!bundle exec rspec --color " . a:filename
+  else
+    exec ":!rspec --color " . a:filename
+  end
+endfunction
 
 """""""""""""""""""
 " Plugin Configuration
