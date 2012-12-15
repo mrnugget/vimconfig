@@ -210,6 +210,7 @@ augroup END
 
 autocmd FileType c setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
+autocmd FileType go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
 
 """""""""""""""""""
 " GPG
