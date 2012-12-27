@@ -58,6 +58,7 @@ set ignorecase
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
+set shiftround
 set expandtab
 
 set stl=%{fugitive#statusline()\ }%f\ %m\ %r\ Line:%l/%L[%p%%]\ Col:%v\ Buf:#%n
