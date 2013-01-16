@@ -149,7 +149,7 @@ function! RunNearestTest()
   elseif !exists("t:grb_test_file_line")
     return
   end
-  call RunTestFile(":" . t:grb_test_file_line . " -b")
+  call RunTestFile(":" . t:grb_test_file_line)
 endfunction
 
 function! SetTestFile()
