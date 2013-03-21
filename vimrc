@@ -95,6 +95,9 @@ nmap <silent> <leader>p :set invpaste<CR>:set paste?<CR>
 " Toggle hlsearch
 nmap <silent> <leader>h :set invhlsearch<CR>
 
+" Toggle hardmode
+nmap <silent> <leader>m :call ToggleHardMode()<CR>
+
 " Open and source vimrc file
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
@@ -191,6 +194,9 @@ nmap <leader>ah :Tabularize /=>\?<CR>
 vmap <leader>ah :Tabularize /=>\?<CR>
 nmap <leader>a: :Tabularize /:\zs<CR>
 vmap <leader>a: :Tabularize /:\zs<CR>
+
+" Turn on HardMode by default
+autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
 
 """""""""""""""""""
 " Filetypes
