@@ -180,7 +180,7 @@ endfunction
 " CTRL-P
 " Don't mess with my working directory!
 let g:ctrlp_working_path_mode = 0
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/vendor/bundle/*
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/vendor/bundle/*,*/node_modules/*
 " Clear cache with ,cc
 nmap <leader>cc :CtrlPClearAllCaches<CR>
 
