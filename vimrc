@@ -22,7 +22,7 @@ set scrolloff=5
 set number
 set cursorline
 set colorcolumn=80
-set textwidth=80
+" set textwidth=80
 set nowrap
 set showmatch
 set backspace=2
@@ -78,6 +78,7 @@ set formatoptions-=or
 "
 " <leader> is ,
 let mapleader = ","
+noremap \ ,
 
 " Move around splits with <C-[hjkl]>
 nnoremap <C-j> <C-w>j
@@ -94,9 +95,6 @@ nmap <silent> <leader>p :set invpaste<CR>:set paste?<CR>
 
 " Toggle hlsearch
 nmap <silent> <leader>h :set invhlsearch<CR>
-
-" Toggle hardmode
-nmap <silent> <leader>m :call ToggleHardMode()<CR>
 
 " Open and source vimrc file
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
@@ -119,6 +117,9 @@ nmap <silent> <leader>tst f:xviwS"
 
 " node.js
 nmap <leader>no :!node %<CR>
+
+" Golang
+nmap <leader>gos :e /usr/local/go/src/pkg/<CR>
 
 " Running tests
 " ,rt runs rspec on current (or previously set ) single spec ('run this')
@@ -195,8 +196,8 @@ vmap <leader>ah :Tabularize /=>\?<CR>
 nmap <leader>a: :Tabularize /:\zs<CR>
 vmap <leader>a: :Tabularize /:\zs<CR>
 
-" Turn on HardMode by default
-autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
+" Rails.vim
+let g:rails_no_abbreviations = 1
 
 """""""""""""""""""
 " Filetypes
