@@ -111,9 +111,22 @@ nmap <silent> <leader>tw :%s/\s\+$//<CR>
 " Ruby
 nmap <leader>ru :!ruby %<CR>
 " Converting symbols from ruby 1.8 syntax to 1.9
-nmap <silent> <leader>19 f:xepld3l
+nmap <silent> <leader>19 hf:xepld3l
 " Converting ruby symbols to strings
 nmap <silent> <leader>tst f:xviwS"
+" Insert hashrocket
+imap <c-l> <space>=><space>
+
+" Brittle function to convert instance variables in rspec tests
+" to let statements
+function! InstanceToLet()
+  normal "zdt=w
+  normal "xd$
+  normal ?doOlet(:"zpF@xEa) doend
+  normal O"xp==``dd
+endfunction
+
+nmap <leader>itol :call InstanceToLet()<CR>
 
 " node.js
 nmap <leader>no :!node %<CR>
@@ -166,6 +179,8 @@ endfunction
 
 function! RunTests(filename)
   :silent !echo;echo;echo;echo;echo;echo;echo;echo;echo;echo
+  :silent !echo;echo;echo;echo;echo;echo;echo;echo;echo;echo
+
   if filereadable("zeus.json")
     exec ":!zeus rspec " . a:filename
   elseif filereadable("Gemfile")
@@ -175,12 +190,25 @@ function! RunTests(filename)
   end
 endfunction
 
+" Renaming a file
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+map <leader>rn :call RenameFile()<cr>
+
 """""""""""""""""""
 " Plugin Configuration
 "
 " CTRL-P
 " Don't mess with my working directory!
 let g:ctrlp_working_path_mode = 0
+let g:ctrl_max_height = 20
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/vendor/bundle/*,*/node_modules/*
 " Clear cache with ,cc
 nmap <leader>cc :CtrlPClearAllCaches<CR>
