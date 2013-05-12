@@ -61,7 +61,7 @@ set softtabstop=2
 set shiftround
 set expandtab
 
-set statusline=%<\ %{mode()}\ \|\ %F\ \|\ %{fugitive#head()\ }%=\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %p%%\ \|\ LN\ %l:%c\ 
+set statusline=%<\ %{mode()}\ \|\ %f%m\ \|\ %{fugitive#head()\ }%=\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %p%%\ \|\ LN\ %l:%c\ 
 
 set list
 set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
