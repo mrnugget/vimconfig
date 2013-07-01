@@ -1,5 +1,5 @@
-call pathogen#infect()
-call pathogen#helptags()
+ call pathogen#infect()
+ call pathogen#helptags()
 
 " Syntax and filetype specific indentation and plugins on
 syntax enable
@@ -26,6 +26,10 @@ set colorcolumn=80
 set nowrap
 set showmatch
 set backspace=2
+
+" Fix slow completion. See:
+" http://stackoverflow.com/questions/2169645/vims-autocomplete-is-excruciatingly-slow
+set complete-=i
 
 " Time out on key codes, not mappings.
 set notimeout
@@ -62,7 +66,7 @@ set shiftround
 set expandtab
 
 set statusline=%<\ %{mode()}\ \|\ %f%m\ \|\ %{fugitive#head()\ }
-set statusline+=%=\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %p%%\ 
+set statusline+=%=\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %p%%\
 
 set list
 set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
@@ -117,7 +121,7 @@ nmap <silent> <leader>19 hf:xepld3l
 " Converting ruby symbols to strings
 nmap <silent> <leader>tst f:xviwS"
 " Insert hashrocket
-imap <c-l> <space>=><space>
+imap <c-l> =>
 
 " Brittle function to convert instance variables in rspec tests
 " to let statements
@@ -234,6 +238,7 @@ let g:rails_no_abbreviations = 1
 "
 
 " Ruby
+let g:ruby_path = system('echo $HOME/.rbenv/shims')
 augroup ft_ruby
   au!
   au Filetype ruby setlocal foldmethod=syntax
@@ -250,16 +255,18 @@ augroup ft_html
   au BufNewFile,BufRead *.html.erb setlocal filetype=eruby.html
 augroup END
 
+" Markdown
 augroup ft_markdown
   au!
   au BufNewFile,BufRead *.md setlocal filetype=markdown
 augroup END
 
+" C
 autocmd FileType c setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
+" Python
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
+" Go
 autocmd FileType go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
-
-au BufNewFile,BufRead *.ejs set filetype=html
 
 """""""""""""""""""
 " GPG
