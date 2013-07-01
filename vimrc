@@ -239,11 +239,6 @@ let g:rails_no_abbreviations = 1
 
 " Ruby
 let g:ruby_path = system('echo $HOME/.rbenv/shims')
-augroup ft_ruby
-  au!
-  au Filetype ruby setlocal foldmethod=syntax
-  au Filetype ruby setlocal foldlevel=9
-augroup END
 
 " Rspec Files
 autocmd BufRead *_spec.rb syn keyword rubyRspec describe context it specify it_should_behave_like before after setup subject its shared_examples_for shared_context let
