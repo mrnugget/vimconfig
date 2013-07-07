@@ -22,7 +22,6 @@ set scrolloff=5
 set number
 set cursorline
 set colorcolumn=80
-" set textwidth=80
 set nowrap
 set showmatch
 set backspace=2
@@ -238,6 +237,7 @@ augroup END
 augroup ft_markdown
   au!
   au BufNewFile,BufRead *.md setlocal filetype=markdown
+  au BufNewFile,BufRead *.md setlocal textwidth=80
 augroup END
 
 " C
