@@ -27,10 +27,6 @@ set nowrap
 set showmatch
 set backspace=2
 
-" Fix slow completion. See:
-" http://stackoverflow.com/questions/2169645/vims-autocomplete-is-excruciatingly-slow
-set complete-=i
-
 " Time out on key codes, not mappings.
 set notimeout
 set ttimeout
@@ -42,13 +38,6 @@ set undodir=~/.vim/tmp/undo//
 set backupdir=~/.vim/tmp/backup//
 set backup
 set noswapfile
-
-" Folding
-set foldmethod=indent
-set foldnestmax=10
-set nofoldenable
-set foldlevel=1
-set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
 
 " Resize vim windows when resizing the main window
 au VimResized * :wincmd =
@@ -219,16 +208,11 @@ set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/vendor/bundle/*,*/node_modules/*
 " Clear cache with ,cc
 nmap <leader>cc :CtrlPClearAllCaches<CR>
 
-" Powerline
-let g:Powerline_symbols = 'fancy'
-
 " Tabular
 nmap <leader>a= :Tabularize /=<CR>
 vmap <leader>a= :Tabularize /=<CR>
 nmap <leader>ah :Tabularize /=>\?<CR>
 vmap <leader>ah :Tabularize /=>\?<CR>
-nmap <leader>a: :Tabularize /:\zs<CR>
-vmap <leader>a: :Tabularize /:\zs<CR>
 
 " Rails.vim
 let g:rails_no_abbreviations = 1
@@ -236,9 +220,9 @@ let g:rails_no_abbreviations = 1
 """""""""""""""""""
 " Filetypes
 "
-
 " Ruby
 let g:ruby_path = system('echo $HOME/.rbenv/shims')
+let ruby_no_expensive = 1
 
 " Rspec Files
 autocmd BufRead *_spec.rb syn keyword rubyRspec describe context it specify it_should_behave_like before after setup subject its shared_examples_for shared_context let
@@ -308,11 +292,8 @@ augroup END
 if has("gui_running")
   set guioptions=gc
   set lines=60 columns=90
-else
-  set t_Co=256
 endif
 
-set background=dark
 colorscheme jellybeans
 
 " Fonts
