@@ -64,9 +64,6 @@ set laststatus=2
 " ctags tags file
 set tags=./tags;
 
-" Do not add comments when making new line above/below comment
-set formatoptions-=or
-
 """""""""""""""""""
 " Mappings
 "
