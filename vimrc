@@ -1,5 +1,5 @@
- call pathogen#infect()
- call pathogen#helptags()
+call pathogen#infect()
+call pathogen#helptags()
 
 " Syntax and filetype specific indentation and plugins on
 syntax enable
@@ -83,6 +83,9 @@ nnoremap j gj
 
 " Toggle paste mode
 nmap <silent> <leader>p :set invpaste<CR>:set paste?<CR>
+
+" Make Y behave like C and D
+nmap <silent> Y y$
 
 " Toggle hlsearch
 nmap <silent> <leader>h :set invhlsearch<CR>
@@ -216,10 +219,6 @@ let g:rails_no_abbreviations = 1
 """""""""""""""""""
 " Filetypes
 "
-" Ruby
-let g:ruby_path = system('echo $HOME/.rbenv/shims')
-let ruby_no_expensive = 1
-
 " Rspec Files
 autocmd BufRead *_spec.rb syn keyword rubyRspec describe context it specify it_should_behave_like before after setup subject its shared_examples_for shared_context let
 highlight def link rubyRspec Function
