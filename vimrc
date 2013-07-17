@@ -64,6 +64,8 @@ set laststatus=2
 " ctags tags file
 set tags=./tags;
 
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/vendor/bundle/*,*/node_modules/*
+
 """""""""""""""""""
 " Mappings
 "
@@ -100,7 +102,7 @@ nmap <silent> <leader>bd :bd<CR>
 " Close current window
 nmap <silent> <leader>q <C-w>q
 " Delete all trailing whitespaces
-nmap <silent> <leader>tw %s/\s\+$//<CR>:let @/=''<CR>
+nmap <silent> <leader>tw :%s/\s\+$//<CR>:let @/=''<CR>
 
 " Ruby
 nmap <leader>ru :!ruby %<CR>
@@ -203,7 +205,7 @@ map <leader>rn :call RenameFile()<cr>
 " Don't mess with my working directory!
 let g:ctrlp_working_path_mode = 0
 let g:ctrl_max_height = 20
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/vendor/bundle/*,*/node_modules/*
+let g:ctrlp_extensions = ['tag']
 " Clear cache with ,cc
 nmap <leader>cc :CtrlPClearAllCaches<CR>
 
