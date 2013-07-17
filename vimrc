@@ -102,7 +102,7 @@ nmap <silent> <leader>bd :bd<CR>
 " Close current window
 nmap <silent> <leader>q <C-w>q
 " Delete all trailing whitespaces
-nmap <silent> <leader>tw :%s/\s\+$//<CR>:let @/=''<CR>
+nmap <silent> <leader>tw :%s/\s\+$//<CR>:let @/=''<CR>``
 
 " Ruby
 nmap <leader>ru :!ruby %<CR>
