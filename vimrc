@@ -103,6 +103,8 @@ nmap <silent> <leader>bd :bd<CR>
 nmap <silent> <leader>q <C-w>q
 " Delete all trailing whitespaces
 nmap <silent> <leader>tw :%s/\s\+$//<CR>:let @/=''<CR>``
+" Make the just typed word uppercase
+imap <C-f> <esc>gUiwgi
 
 " Ruby
 nmap <leader>ru :!ruby %<CR>
