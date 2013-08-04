@@ -224,8 +224,11 @@ let g:rails_no_abbreviations = 1
 " Filetypes
 "
 " Rspec Files
-autocmd BufRead *_spec.rb syn keyword rubyRspec describe context it specify it_should_behave_like before after setup subject its shared_examples_for shared_context let
-highlight def link rubyRspec Function
+augroup ft_rspec
+  au!
+  au BufNewFile,BufRead *_spec.rb syn keyword rubyRspec describe context it specify it_should_behave_like before after setup subject its shared_examples_for shared_context let
+  au BufNewFile,BufRead *_spec.rb highlight def link rubyRspec Function
+augroup END
 
 " eruby, html
 augroup ft_html
@@ -241,7 +244,14 @@ augroup ft_markdown
 augroup END
 
 " C
-autocmd FileType c setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
+augroup ft_c
+  au!
+  au Filetype c setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
+  " Kernel Settings
+  " au FileType c setlocal tabstop=8 shiftwidth=8 textwidth=80 noexpandtab
+  " au FileType c setlocal cindent formatoptions=tcqlron cinoptions=:0,l1,t0,g0
+augroup END
+
 " Python
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 " Go
