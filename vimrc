@@ -14,6 +14,7 @@ set visualbell
 " Basic stuff
 set clipboard=unnamed
 set showmode
+set showcmd
 set history=500
 set nocompatible
 set hidden
