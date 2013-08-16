@@ -180,8 +180,8 @@ function! RunTests(filename)
   :silent !echo;echo;echo;echo;echo;echo;echo;echo;echo;echo
   :silent !echo;echo;echo;echo;echo;echo;echo;echo;echo;echo
 
-  if filereadable("zeus.json")
-    exec ":!zeus rspec " . a:filename
+  if glob(".zeus.sock") != ""
+    exec ":!zeus rspec --color " . a:filename
   elseif filereadable("Gemfile")
     exec ":!bundle exec rspec --color " . a:filename
   else
