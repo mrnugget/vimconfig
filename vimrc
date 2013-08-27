@@ -181,11 +181,11 @@ function! RunTests(filename)
   :silent !echo;echo;echo;echo;echo;echo;echo;echo;echo;echo
 
   if glob(".zeus.sock") != ""
-    exec ":!zeus rspec --color " . a:filename
+    exec ":Dispatch zeus rspec --color " . a:filename
   elseif filereadable("Gemfile")
-    exec ":!bundle exec rspec --color " . a:filename
+    exec ":Dispatch bundle exec rspec --color " . a:filename
   else
-    exec ":!rspec --color " . a:filename
+    exec ":Dispatch rspec --color " . a:filename
   end
 endfunction
 
