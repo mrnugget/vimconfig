@@ -228,6 +228,10 @@ let g:rails_no_abbreviations = 1
 " Markdown
 let g:markdown_fenced_languages = ['ruby', 'html', 'javascript', 'bash=sh']
 
+" Ack.vim
+" Use the_silver_searcher instead
+let g:ackprg = 'ag --nogroup --nocolor --column'
+
 """""""""""""""""""
 " Filetypes
 "
