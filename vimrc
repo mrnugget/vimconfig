@@ -32,6 +32,10 @@ set notimeout
 set ttimeout
 set ttimeoutlen=10
 
+" Some tuning for macvim
+set ttyfast
+set lazyredraw
+
 " Backup
 set undofile
 set undodir=~/.vim/tmp/undo//
