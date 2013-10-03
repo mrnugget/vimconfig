@@ -104,8 +104,6 @@ nmap <silent> <leader>sv :so $MYVIMRC<CR>
 nmap <silent> <leader>bw :0,999bwipeout<CR>
 " Delete current buffer
 nmap <silent> <leader>bd :bd<CR>
-" Close current window
-nmap <silent> <leader>q <C-w>q
 " Delete all trailing whitespaces
 nmap <silent> <leader>tw :%s/\s\+$//<CR>:let @/=''<CR>``
 " Make the just typed word uppercase
