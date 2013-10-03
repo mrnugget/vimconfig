@@ -223,7 +223,7 @@ nmap <leader>ah :Tabularize /=>\?<CR>
 vmap <leader>ah :Tabularize /=>\?<CR>
 
 " Rails.vim
-let g:rails_no_abbreviations = 1
+let g:rails_no_abbreviations = 0
 
 " Markdown
 let g:markdown_fenced_languages = ['ruby', 'html', 'javascript', 'bash=sh']
