@@ -102,12 +102,12 @@ endfunction
 " Highlights - Vim >= 7 ------------------------------------{{{
 if version >= 700
   call s:h("CursorLine",  { "bg": s:faint })
-  call s:h("MatchParen",  { "fg": s:accent1, "bg": s:faint, "gui": "bold" })
+  call s:h("MatchParen",  { "fg": s:accent1, "bg": s:faintGreen, "gui": "bold" })
   call s:h("Pmenu",       { "bg": s:faint })
   call s:h("PmenuThumb",  { "bg": s:norm })
   call s:h("PmenuSBar",   { "bg": s:subtle })
   call s:h("PmenuSel",    { "bg": s:faintBlue })
-  call s:h("ColorColumn", { "bg": s:faintRed })
+  call s:h("ColorColumn", { "bg": s:faint })
   call s:h("SpellBad",    { "sp": s:normRed, "gui": "undercurl" })
   call s:h("SpellCap",    { "sp": s:accent1, "gui": "undercurl" })
   call s:h("SpellRare",   { "sp": s:normGreen, "gui": "undercurl" })
