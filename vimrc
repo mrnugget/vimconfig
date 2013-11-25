@@ -102,12 +102,12 @@ nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
 " Wipe out ALL the buffers
 nmap <silent> <leader>bw :0,999bwipeout<CR>
-" Delete current buffer
-nmap <silent> <leader>bd :bd<CR>
 " Delete all trailing whitespaces
 nmap <silent> <leader>tw :%s/\s\+$//<CR>:let @/=''<CR>``
 " Make the just typed word uppercase
 imap <C-f> <esc>gUiwgi
+" Yank the whole file
+nmap <leader>yf ggyG
 
 " Ruby
 nmap <leader>ru :!ruby %<CR>
@@ -134,6 +134,21 @@ nmap <leader>no :!node %<CR>
 
 " Golang
 nmap <leader>gos :e /usr/local/go/src/pkg/<CR>
+
+" Selecta
+function! SelectaCommand(choice_command, vim_command)
+  try
+    silent! exec a:vim_command . " " . system(a:choice_command . " | selecta")
+  catch /Vim:Interrupt/
+    " Swallow the ^C so that the redraw below happens; otherwise there will be
+    " leftovers from selecta on the screen
+  endtry
+  redraw!
+endfunction
+
+" Find all files in all non-dot directories starting in the working directory.
+" Fuzzy select one of those. Open the selected file with :e.
+map <leader>f :call SelectaCommand("find * -type f", ":e")<cr>
 
 " Running tests
 " ,rt runs rspec on current (or previously set ) single spec ('run this')
@@ -206,6 +221,12 @@ map <leader>rn :call RenameFile()<cr>
 """""""""""""""""""
 " Plugin Configuration
 "
+" netrw
+let g:netrw_liststyle = 3
+
+" fugitive.vim
+nmap <leader>gb :Gblame<CR>
+
 " CTRL-P
 " Don't mess with my working directory!
 let g:ctrlp_working_path_mode = 0
@@ -229,6 +250,10 @@ let g:markdown_fenced_languages = ['ruby', 'html', 'javascript', 'bash=sh']
 " Ack.vim
 " Use the_silver_searcher instead
 let g:ackprg = 'ag --nogroup --nocolor --column'
+
+" Surround.vim
+let g:surround_45 = "<% \r %>"
+let g:surround_61 = "<%= \r %>"
 
 """""""""""""""""""
 " Filetypes
@@ -314,6 +339,7 @@ if has("gui_running")
   set lines=60 columns=90
 endif
 
+set background=dark
 colorscheme jellybeans
 
 " Fonts
