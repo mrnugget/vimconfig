@@ -71,6 +71,11 @@ set tags=./tags;
 
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/vendor/bundle/*,*/node_modules/*
 
+" Use The Silver Searcher as :grep
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --nocolor
+endif
+
 """""""""""""""""""
 " Mappings
 "
@@ -221,6 +226,7 @@ map <leader>rn :call RenameFile()<cr>
 """""""""""""""""""
 " Plugin Configuration
 "
+
 " netrw
 let g:netrw_liststyle = 3
 
@@ -231,7 +237,12 @@ nmap <leader>gb :Gblame<CR>
 " Don't mess with my working directory!
 let g:ctrlp_working_path_mode = 0
 let g:ctrl_max_height = 20
-let g:ctrlp_extensions = ['tag']
+
+if executable('ag')
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  let g:ctrlp_use_caching = 0
+endif
+
 " Clear cache with ,cc
 nmap <leader>cc :CtrlPClearAllCaches<CR>
 
