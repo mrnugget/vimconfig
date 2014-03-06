@@ -7,6 +7,9 @@ filetype on
 filetype plugin on
 filetype indent on
 
+" Make syntax highlighting faster
+syntax sync minlines=256
+
 " Shut up.
 set noerrorbells
 set visualbell
