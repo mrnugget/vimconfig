@@ -29,6 +29,8 @@ set colorcolumn=80
 set nowrap
 set showmatch
 set backspace=2
+" Make J not insert whitespace
+set nojoinspaces
 
 " Time out on key codes, not mappings.
 set notimeout
