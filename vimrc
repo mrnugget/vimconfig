@@ -158,7 +158,8 @@ endfunction
 
 " Find all files in all non-dot directories starting in the working directory.
 " Fuzzy select one of those. Open the selected file with :e.
-map <leader>f :call SelectaCommand("find * -type f", ":e")<cr>
+map <leader>f :call SelectaCommand("ag -l --nocolor -g ''", ":e")<cr>
+
 
 " Running tests
 " ,rt runs rspec on current (or previously set ) single spec ('run this')
