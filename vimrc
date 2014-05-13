@@ -354,10 +354,12 @@ augroup END
 if has("gui_running")
   set guioptions=gc
   set lines=60 columns=90
+  set background=light
+  colorscheme hemisu
+else
+  set background=dark
+  colorscheme jellybeans
 endif
-
-set background=dark
-colorscheme jellybeans
 
 " Fonts
 if has("mac")
