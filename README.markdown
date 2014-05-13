@@ -17,3 +17,19 @@ git submodule update --init
 cd ~/.vim
 git submodule foreach git pull origin master
 ```
+
+### Adding a new plugin
+
+```bash
+cd ~/.vim
+git submodule add <path to repo> bundle/<name>
+```
+
+
+### Removing a plugin
+
+```bash
+cd ~/.vim
+git submodule deinit bundle/<name>
+git rm bundle/<name>
+```
