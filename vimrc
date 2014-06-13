@@ -119,6 +119,8 @@ imap <C-f> <esc>gUiwgi
 " Yank the whole file
 nmap <leader>yf ggyG
 
+nmap <leader>gr :gr! <C-r><C-w><CR>
+
 " Ruby
 nmap <leader>ru :!ruby %<CR>
 " Converting symbols from ruby 1.8 syntax to 1.9
