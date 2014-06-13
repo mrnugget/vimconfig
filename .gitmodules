@@ -49,3 +49,9 @@
 [submodule "bundle/vim-hemisu"]
 	path = bundle/vim-hemisu
 	url = https://github.com/noahfrederick/vim-hemisu.git
+[submodule "bundle/splitjoin.vim"]
+	path = bundle/splitjoin.vim
+	url = https://github.com/AndrewRadev/splitjoin.vim.git
+[submodule "bundle/rust.vim"]
+	path = bundle/rust.vim
+	url = git://github.com/wting/rust.vim.git
