@@ -76,9 +76,9 @@ set tags=./tags;
 
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/vendor/bundle/*,*/node_modules/*
 
-" Use The Silver Searcher as :grep
+" Use The Silver Searcher with fzz as :grep
 if executable('ag')
-  set grepprg=ag\ --nogroup\ --nocolor
+  set grepprg=fzz\ ag\ --nogroup\ --nocolor\ \{\{\$*}\}
 endif
 
 """""""""""""""""""
