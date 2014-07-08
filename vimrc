@@ -274,6 +274,9 @@ let g:ackprg = 'ag --nogroup --nocolor --column'
 let g:surround_45 = "<% \r %>"
 let g:surround_61 = "<%= \r %>"
 
+" Nerdtree
+nmap <leader>nt :NERDTreeToggle<CR>
+
 """""""""""""""""""
 " Filetypes
 "
