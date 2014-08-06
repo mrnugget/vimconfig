@@ -235,6 +235,10 @@ map <leader>rn :call RenameFile()<cr>
 " Plugin Configuration
 "
 
+" Enable matchit.vim, which ships with Vim but isn't enabled by default
+" somehow
+runtime macros/matchit.vim
+
 " netrw
 let g:netrw_liststyle = 3
 
