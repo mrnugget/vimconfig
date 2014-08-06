@@ -270,10 +270,6 @@ let g:rails_no_abbreviations = 0
 " Markdown
 let g:markdown_fenced_languages = ['ruby', 'html', 'javascript', 'bash=sh']
 
-" Ack.vim
-" Use the_silver_searcher instead
-let g:ackprg = 'ag --nogroup --nocolor --column'
-
 " Surround.vim
 let g:surround_45 = "<% \r %>"
 let g:surround_61 = "<%= \r %>"
