@@ -146,6 +146,10 @@ nmap <leader>no :!node %<CR>
 
 " Golang
 nmap <leader>gos :e /usr/local/go/src/pkg/<CR>
+nmap <leader>goi <Plug>(go-info)
+nmap <leader>god <Plug>(go-def)
+nmap <leader>gor <Plug>(go-run)
+nmap <leader>got <Plug>(go-test)
 
 " Selecta
 function! SelectaCommand(choice_command, vim_command)
