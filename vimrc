@@ -316,7 +316,7 @@ augroup END
 " Python
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 " Go
-autocmd FileType go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
+autocmd FileType go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist completeopt-=preview
 
 " GNU Assembler
 " Insert comments automatically on return in insert and when using O/o in
