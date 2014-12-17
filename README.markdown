@@ -32,4 +32,5 @@ git submodule add <path to repo> bundle/<name>
 cd ~/.vim
 git submodule deinit bundle/<name>
 git rm bundle/<name>
+rm -rf .git/modules/<name>
 ```
