@@ -67,6 +67,3 @@
 [submodule "bundle/vim-go"]
 	path = bundle/vim-go
 	url = https://github.com/fatih/vim-go.git
-[submodule "bundle/vim-fzz"]
-	path = bundle/vim-fzz
-	url = git@github.com:mrnugget/vim-fzz.git
