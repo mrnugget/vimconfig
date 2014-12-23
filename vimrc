@@ -150,6 +150,7 @@ nmap <leader>goi <Plug>(go-info)
 nmap <leader>god <Plug>(go-def)
 nmap <leader>gor <Plug>(go-run)
 nmap <leader>got <Plug>(go-test)
+nmap <leader>gom :GoImports<CR>
 
 " Selecta
 function! SelectaCommand(choice_command, vim_command)
