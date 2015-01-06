@@ -282,6 +282,12 @@ let g:surround_61 = "<%= \r %>"
 " Nerdtree
 nmap <leader>nt :NERDTreeToggle<CR>
 
+" tslime.vim
+let g:tslime_ensure_trailing_newlines = 1 " Always send newline
+let g:tslime_normal_mapping = '<leader>sl'
+let g:tslime_visual_mapping = '<leader>sl'
+let g:tslime_vars_mapping = '<leader>csl' " Connect SLime
+
 """""""""""""""""""
 " Filetypes
 "
