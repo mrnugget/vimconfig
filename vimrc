@@ -151,6 +151,7 @@ nmap <leader>god <Plug>(go-def)
 nmap <leader>gor <Plug>(go-run)
 nmap <leader>got <Plug>(go-test)
 nmap <leader>gom :GoImports<CR>
+let g:go_highlight_structs = 1
 
 " Selecta
 function! SelectaCommand(choice_command, vim_command)
@@ -328,6 +329,8 @@ augroup ft_golang
   au!
   au BufNewFile,BufRead *.go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
   au BufNewFile,BufRead *.go setlocal completeopt-=preview
+
+  au BufNewFile,BufRead *.tmpl setlocal filetype=html
 augroup END
 
 " GNU Assembler
