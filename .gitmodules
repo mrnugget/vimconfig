@@ -52,9 +52,6 @@
 [submodule "bundle/rust.vim"]
 	path = bundle/rust.vim
 	url = git://github.com/wting/rust.vim.git
-[submodule "bundle/nerdtree"]
-	path = bundle/nerdtree
-	url = https://github.com/scrooloose/nerdtree.git
 [submodule "bundle/vim-clojure-static"]
 	path = bundle/vim-clojure-static
 	url = https://github.com/guns/vim-clojure-static
