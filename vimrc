@@ -111,7 +111,7 @@ nmap <silent> <leader>h :set invhlsearch<CR>
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
 " Wipe out ALL the buffers
-nmap <silent> <leader>bw :0,999bwipeout<CR>
+nmap <silent> <leader>bw :%bwipeout<CR>
 " Delete all trailing whitespaces
 nmap <silent> <leader>tw :%s/\s\+$//<CR>:let @/=''<CR>``
 " Make the just typed word uppercase
