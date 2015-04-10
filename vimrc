@@ -129,6 +129,9 @@ nmap <silent> <leader>19 hf:xepld3l
 nmap <silent> <leader>tst f:xviwS"
 " Insert hashrocket
 imap <c-l> =>
+" puts the selected expression in the line above
+" like this: `puts "<myexpression>=#{<myexpression>}"`
+vmap <silent> <leader>pe mz"eyOputs "<ESC>"epa=#{<ESC>"epa}"<ESC>`z
 
 " Brittle function to convert instance variables in rspec tests
 " to let statements
