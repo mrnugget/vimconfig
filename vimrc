@@ -119,6 +119,7 @@ imap <C-f> <esc>gUiwgi
 " Yank the whole file
 nmap <leader>yf ggyG
 
+" Greps the current word under the cursor
 nmap <leader>gr :gr! <C-r><C-w><CR>
 
 " Ruby
@@ -348,7 +349,7 @@ if has("gui_running")
   set background=light
   colorscheme hemisu
   if has("mac")
-    set guifont=Inconsolata:h15
+    set guifont=Source\ Code\ Pro:h11
   else
     set guifont=Monospace\ 9
   endif
