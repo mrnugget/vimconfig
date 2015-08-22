@@ -152,9 +152,11 @@ nmap <leader>no :!node %<CR>
 nmap <leader>gos :e /usr/local/go/src/pkg/<CR>
 nmap <leader>goi <Plug>(go-info)
 nmap <leader>god <Plug>(go-def)
-nmap <leader>gor <Plug>(go-run)
-nmap <leader>got <Plug>(go-test)
+nmap <leader>gou <Plug>(go-run)
+nmap <leader>gor <Plug>(go-rename)
+nmap <leader>got :GoTest!<CR>
 nmap <leader>gom :GoImports<CR>
+let g:go_fmt_command = "goimports"
 let g:go_highlight_structs = 1
 
 " Selecta
@@ -276,6 +278,11 @@ vmap <leader>ah :Tabularize /=>\?<CR>
 
 " Rails.vim
 let g:rails_no_abbreviations = 0
+
+autocmd FileType ruby set omnifunc=rubycomplete#Complete
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_classes_in_global = 1
+let g:rubycomplete_rails = 1
 
 " Markdown
 let g:markdown_fenced_languages = ['ruby', 'html', 'javascript', 'bash=sh']
