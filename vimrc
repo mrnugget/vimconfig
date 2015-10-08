@@ -14,6 +14,11 @@ syntax sync minlines=256
 set noerrorbells
 set visualbell
 
+" Check if we can load the FZF vim plugin
+if filereadable("/usr/local/Cellar/fzf/0.10.5/bin/fzf")
+  set rtp+=/usr/local/Cellar/fzf/0.10.5
+end
+
 " Basic stuff
 set clipboard=unnamed
 set showmode
@@ -159,22 +164,6 @@ nmap <leader>gom :GoImports<CR>
 let g:go_fmt_command = "goimports"
 let g:go_highlight_structs = 1
 
-" Selecta
-function! SelectaCommand(choice_command, vim_command)
-  try
-    silent! exec a:vim_command . " " . system(a:choice_command . " | selecta")
-  catch /Vim:Interrupt/
-    " Swallow the ^C so that the redraw below happens; otherwise there will be
-    " leftovers from selecta on the screen
-  endtry
-  redraw!
-endfunction
-
-" Find all files in all non-dot directories starting in the working directory.
-" Fuzzy select one of those. Open the selected file with :e.
-map <leader>f :call SelectaCommand("ag -l --nocolor -g ''", ":e")<cr>
-
-
 " Running tests
 " ,rt runs rspec on current (or previously set ) single spec ('run this')
 " ,rf runs rspec on current (or previously set) spec file ('run file')
@@ -182,6 +171,8 @@ map <leader>f :call SelectaCommand("ag -l --nocolor -g ''", ":e")<cr>
 nmap <silent> <leader>rt :call RunNearestTest()<CR>
 nmap <silent> <leader>rf :call RunTestFile()<CR>
 nmap <silent> <leader>ra :call RunTests('')<CR>
+
+nmap <silent> <leader>nl :FZF ~/Dropbox/notes<CR>
 
 
 """"""""""""""""""""""""
@@ -253,22 +244,23 @@ runtime macros/matchit.vim
 
 " netrw
 let g:netrw_liststyle = 3
+let g:netrw_keepj="keepj"
 
 " fugitive.vim
 nmap <leader>gb :Gblame<CR>
 
 " CTRL-P
 " Don't mess with my working directory!
-let g:ctrlp_working_path_mode = 0
-let g:ctrl_max_height = 20
-
-if executable('ag')
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-  let g:ctrlp_use_caching = 0
-endif
-
-" Clear cache with ,cc
-nmap <leader>cc :CtrlPClearAllCaches<CR>
+" let g:ctrlp_working_path_mode = 0
+" let g:ctrl_max_height = 20
+"
+" if executable('ag')
+"   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+"   let g:ctrlp_use_caching = 0
+" endif
+"
+" " Clear cache with ,cc
+" nmap <leader>cc :CtrlPClearAllCaches<CR>
 
 " Tabular
 nmap <leader>a= :Tabularize /=<CR>
@@ -299,6 +291,54 @@ let g:tslime_ensure_trailing_newlines = 1 " Always send newline
 let g:tslime_normal_mapping = '<leader>sl'
 let g:tslime_visual_mapping = '<leader>sl'
 let g:tslime_vars_mapping = '<leader>csl' " Connect SLime
+
+" FZF mappings and custom functions
+function! s:buflist()
+  redir => ls
+  silent ls
+  redir END
+  return split(ls, '\n')
+endfunction
+
+function! s:bufopen(e)
+  execute 'buffer' matchstr(a:e, '^[ 0-9]*')
+endfunction
+
+function! s:line_handler(l)
+  let keys = split(a:l, ':\t')
+  exec 'buf' keys[0]
+  exec keys[1]
+  normal! ^zz
+endfunction
+
+function! s:buffer_lines()
+  let res = []
+  for b in filter(range(1, bufnr('$')), 'buflisted(v:val)')
+    call extend(res, map(getbufline(b,0,"$"), 'b . ":\t" . (v:key + 1) . ":\t" . v:val '))
+  endfor
+  return res
+endfunction
+
+" map <leader>fb to fuzzy find open buffers
+nnoremap <silent> <leader>fb :call fzf#run({
+\   'source':  reverse(<sid>buflist()),
+\   'sink':    function('<sid>bufopen'),
+\   'options': '+m',
+\   'down':    len(<sid>buflist()) + 2
+\ })<CR>
+
+" map <leader>fl to fuzzy find a line in all open buffers
+nnoremap <silent> <leader>fl :call fzf#run({
+\   'source':  <sid>buffer_lines(),
+\   'sink':    function('<sid>line_handler'),
+\   'options': '--extended --nth=3..',
+\   'down':    '60%'
+\})<CR>
+
+" map <leader>fi to fuzzy find files
+nnoremap <silent> <leader>fi :FZF<CR>
+nnoremap <silent> <C-p> :FZF<CR>
+
 
 """""""""""""""""""
 " Filetypes
