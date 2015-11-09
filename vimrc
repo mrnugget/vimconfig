@@ -19,6 +19,10 @@ if filereadable("/usr/local/Cellar/fzf/0.10.5/bin/fzf")
   set rtp+=/usr/local/Cellar/fzf/0.10.5
 end
 
+if filereadable("/home/mrnugget/.fzf/bin/fzf")
+  set rtp+=/home/mrnugget/.fzf
+end
+
 " Basic stuff
 set clipboard=unnamed
 set showmode
