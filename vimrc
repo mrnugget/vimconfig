@@ -15,8 +15,8 @@ set noerrorbells
 set visualbell
 
 " Check if we can load the FZF vim plugin
-if filereadable("/usr/local/Cellar/fzf/0.10.5/bin/fzf")
-  set rtp+=/usr/local/Cellar/fzf/0.10.5
+if filereadable("/usr/local/opt/fzf/bin/fzf")
+  set rtp+=/usr/local/opt/fzf
 end
 
 if filereadable("/home/mrnugget/.fzf/bin/fzf")
