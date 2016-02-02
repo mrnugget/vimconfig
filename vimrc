@@ -116,6 +116,8 @@ nmap <silent> Y y$
 
 " Toggle hlsearch
 nmap <silent> <leader>h :set invhlsearch<CR>
+" Toggle case sensitive search
+nmap <silent> <leader>c :set invignorecase<CR>
 
 " Open and source vimrc file
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
@@ -128,6 +130,9 @@ nmap <silent> <leader>tw :%s/\s\+$//<CR>:let @/=''<CR>``
 imap <C-f> <esc>gUiwgi
 " Yank the whole file
 nmap <leader>yf ggyG
+
+" Highlight the current word under the cursor
+nmap <leader>sw :set hlsearch<CR>mm*N`m
 
 " Greps the current word under the cursor
 nmap <leader>gr :gr! <C-r><C-w><CR>
@@ -167,7 +172,7 @@ nmap <leader>gor <Plug>(go-rename)
 nmap <leader>got :GoTest!<CR>
 nmap <leader>gom :GoImports<CR>
 let g:go_fmt_command = "goimports"
-let g:go_highlight_structs = 1
+let g:go_highlight_structs = 0
 
 " Running tests
 " ,rt runs rspec on current (or previously set ) single spec ('run this')
@@ -254,19 +259,6 @@ let g:netrw_keepj="keepj"
 " fugitive.vim
 nmap <leader>gb :Gblame<CR>
 
-" CTRL-P
-" Don't mess with my working directory!
-" let g:ctrlp_working_path_mode = 0
-" let g:ctrl_max_height = 20
-"
-" if executable('ag')
-"   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-"   let g:ctrlp_use_caching = 0
-" endif
-"
-" " Clear cache with ,cc
-" nmap <leader>cc :CtrlPClearAllCaches<CR>
-
 " Tabular
 nmap <leader>a= :Tabularize /=<CR>
 vmap <leader>a= :Tabularize /=<CR>
@@ -282,7 +274,7 @@ let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_rails = 1
 
 " Markdown
-let g:markdown_fenced_languages = ['ruby', 'html', 'javascript', 'bash=sh']
+let g:markdown_fenced_languages = ['ruby', 'html', 'javascript', 'bash=sh', 'sql']
 
 " Surround.vim
 let g:surround_45 = "<% \r %>"
@@ -385,6 +377,7 @@ augroup ft_golang
   au!
   au BufNewFile,BufRead *.go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
   au BufNewFile,BufRead *.go setlocal completeopt-=preview
+  au Filetype go nmap <c-]> <Plug>(go-def)
 
   au BufNewFile,BufRead *.tmpl setlocal filetype=html
 augroup END
