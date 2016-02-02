@@ -4,9 +4,6 @@
 [submodule "bundle/javascript"]
 	path = bundle/javascript
 	url = git://github.com/pangloss/vim-javascript.git
-[submodule "bundle/ruby"]
-	path = bundle/ruby
-	url = https://github.com/vim-ruby/vim-ruby.git
 [submodule "bundle/surround"]
 	path = bundle/surround
 	url = https://github.com/tpope/vim-surround
