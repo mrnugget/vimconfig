@@ -375,11 +375,14 @@ autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 " Go
 augroup ft_golang
   au!
-  au BufNewFile,BufRead *.go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
-  au BufNewFile,BufRead *.go setlocal completeopt-=preview
+  au BufEnter,BufNewFile,BufRead *.go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
+  au BufEnter,BufNewFile,BufRead *.go setlocal completeopt-=preview
+  " Enable automatic continuation of comment inserting
+  au BufEnter,BufNewFile,BufRead *.go setlocal formatoptions+=ro
+  au BufEnter,BufNewFile,BufRead *.tmpl setlocal filetype=html
+
   au Filetype go nmap <c-]> <Plug>(go-def)
 
-  au BufNewFile,BufRead *.tmpl setlocal filetype=html
 augroup END
 
 " GNU Assembler
