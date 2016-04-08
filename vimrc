@@ -360,6 +360,8 @@ augroup ft_markdown
   au!
   au BufNewFile,BufRead *.md setlocal filetype=markdown
   au BufNewFile,BufRead *.md setlocal textwidth=80
+  " au BufNewFile,BufRead *.md setlocal wrap
+  " au BufNewFile,BufRead *.md setlocal linebreak
 augroup END
 
 " C
