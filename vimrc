@@ -33,7 +33,7 @@ set hidden
 set wildmenu
 set scrolloff=5
 set number
-set cursorline
+" set cursorline
 set colorcolumn=80
 set nowrap
 set showmatch
@@ -138,6 +138,8 @@ nmap <leader>sw :set hlsearch<CR>mm*N`m
 nmap <leader>gr :gr! <C-r><C-w><CR>
 
 " Ruby
+let b:ruby_no_expensive = 1
+let ruby_no_special_methods = 1
 nmap <leader>ru :!ruby %<CR>
 " Converting symbols from ruby 1.8 syntax to 1.9
 nmap <silent> <leader>19 hf:xepld3l
