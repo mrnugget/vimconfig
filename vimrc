@@ -98,15 +98,20 @@ endif
 let mapleader = ","
 noremap \ ,
 
-" Move around splits with <C-[hjkl]>
+" Move around splits with <C-[hjkl]> in normal mode
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 
+" Move visual block selection with <C-[jk]> in visual mode
+vnoremap <C-j> :m '>+1<CR>gv=gv
+vnoremap <C-k> :m '<-2<CR>gv=gv
+
 " Move sanely through wrapped lines
 nnoremap k gk
 nnoremap j gj
+
 
 " Toggle paste mode
 nmap <silent> <leader>p :set invpaste<CR>:set paste?<CR>
