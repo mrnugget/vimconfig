@@ -275,10 +275,11 @@ vmap <leader>ah :Tabularize /=>\?<CR>
 " Rails.vim
 let g:rails_no_abbreviations = 0
 
-autocmd FileType ruby set omnifunc=rubycomplete#Complete
+" autocmd FileType ruby set omnifunc=rubycomplete#Complete
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_rails = 1
+let g:rubycomplete_load_gemfile = 1
 
 " Markdown
 let g:markdown_fenced_languages = ['ruby', 'html', 'javascript', 'bash=sh', 'sql']
@@ -286,9 +287,6 @@ let g:markdown_fenced_languages = ['ruby', 'html', 'javascript', 'bash=sh', 'sql
 " Surround.vim
 let g:surround_45 = "<% \r %>"
 let g:surround_61 = "<%= \r %>"
-
-" Nerdtree
-nmap <leader>nt :NERDTreeToggle<CR>
 
 " tslime.vim
 let g:tslime_ensure_trailing_newlines = 1 " Always send newline
@@ -391,7 +389,6 @@ augroup ft_golang
   au BufEnter,BufNewFile,BufRead *.tmpl setlocal filetype=html
 
   au Filetype go nmap <c-]> <Plug>(go-def)
-
 augroup END
 
 " GNU Assembler
