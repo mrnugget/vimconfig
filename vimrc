@@ -64,6 +64,7 @@ au VimResized * :wincmd =
 set incsearch
 set hlsearch
 set ignorecase
+set smartcase " Do not ignore case, if uppercase is in search term
 
 " Indenting
 set tabstop=2
@@ -155,6 +156,8 @@ imap <c-l> =>
 " puts the selected expression in the line above
 " like this: `puts "<myexpression>=#{<myexpression>}"`
 vmap <silent> <leader>pe mz"eyOputs "<ESC>"epa=#{<ESC>"epa}"<ESC>`z
+" pipes the selected region to `jq` for formatting
+vmap <silent> <leader>jq :!cat\|jq . <CR>
 
 " Brittle function to convert instance variables in rspec tests
 " to let statements
@@ -171,13 +174,7 @@ nmap <leader>itol :call InstanceToLet()<CR>
 nmap <leader>no :!node %<CR>
 
 " Golang
-nmap <leader>gos :e /usr/local/go/src/pkg/<CR>
-nmap <leader>goi <Plug>(go-info)
-nmap <leader>god <Plug>(go-def)
-nmap <leader>gou <Plug>(go-run)
-nmap <leader>gor <Plug>(go-rename)
-nmap <leader>got :GoTest!<CR>
-nmap <leader>gom :GoImports<CR>
+nmap <leader>gos :e /usr/local/go/src/<CR>
 let g:go_fmt_command = "goimports"
 let g:go_highlight_structs = 0
 
@@ -363,6 +360,8 @@ augroup ft_markdown
   au!
   au BufNewFile,BufRead *.md setlocal filetype=markdown
   au BufNewFile,BufRead *.md setlocal textwidth=80
+  au BufNewFile,BufRead *.md setlocal smartindent " Indent lists correctly
+
   " au BufNewFile,BufRead *.md setlocal wrap
   " au BufNewFile,BufRead *.md setlocal linebreak
 augroup END
@@ -389,6 +388,13 @@ augroup ft_golang
   au BufEnter,BufNewFile,BufRead *.tmpl setlocal filetype=html
 
   au Filetype go nmap <c-]> <Plug>(go-def)
+  au Filetype go nmap <leader>goi <Plug>(go-info)
+  au Filetype go nmap <leader>god <Plug>(go-def)
+  au Filetype go nmap <leader>gou <Plug>(go-run)
+  au Filetype go nmap <leader>gor <Plug>(go-rename)
+  au Filetype go nmap <leader>got :GoTest!<CR>
+  au Filetype go nmap <leader>rt :GoTestFunc!<CR>
+  au Filetype go nmap <leader>gom :GoImports<CR>
 augroup END
 
 " GNU Assembler
