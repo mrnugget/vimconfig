@@ -113,6 +113,12 @@ vnoremap <C-k> :m '<-2<CR>gv=gv
 nnoremap k gk
 nnoremap j gj
 
+" Paste and reformat with = to the last part of the previous
+" paste. Let's see how this works.
+"nnoremap p p=`]
+
+" Select the last pasted text, line/block/characterwise
+nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " Toggle paste mode
 nmap <silent> <leader>p :set invpaste<CR>:set paste?<CR>
@@ -158,17 +164,6 @@ imap <c-l> =>
 vmap <silent> <leader>pe mz"eyOputs "<ESC>"epa=#{<ESC>"epa}"<ESC>`z
 " pipes the selected region to `jq` for formatting
 vmap <silent> <leader>jq :!cat\|jq . <CR>
-
-" Brittle function to convert instance variables in rspec tests
-" to let statements
-function! InstanceToLet()
-  normal "zdt=w
-  normal "xd$
-  normal ?doOlet(:"zpF@xEa) doend
-  normal O"xp==``dd
-endfunction
-
-nmap <leader>itol :call InstanceToLet()<CR>
 
 " node.js
 nmap <leader>no :!node %<CR>
@@ -409,7 +404,7 @@ if has("gui_running")
   set background=light
   colorscheme hemisu
   if has("mac")
-    set guifont=Source\ Code\ Pro:h11
+    set guifont=Hack:h12
   else
     set guifont=Monospace\ 9
   endif
