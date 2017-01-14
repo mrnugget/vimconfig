@@ -1,9 +1,9 @@
 [submodule "bundle/tabular"]
 	path = bundle/tabular
-	url = git://github.com/godlygeek/tabular.git
+	url = https://github.com/godlygeek/tabular.git
 [submodule "bundle/javascript"]
 	path = bundle/javascript
-	url = git://github.com/pangloss/vim-javascript.git
+	url = https://github.com/pangloss/vim-javascript.git
 [submodule "bundle/surround"]
 	path = bundle/surround
 	url = https://github.com/tpope/vim-surround
@@ -27,10 +27,10 @@
 	url = https://github.com/christoomey/vim-tmux-navigator.git
 [submodule "bundle/vim-rails"]
 	path = bundle/vim-rails
-	url = git://github.com/tpope/vim-rails.git
+	url = https://github.com/tpope/vim-rails.git
 [submodule "bundle/vim-fugitive"]
 	path = bundle/vim-fugitive
-	url = git://github.com/tpope/vim-fugitive.git
+	url = https://github.com/tpope/vim-fugitive.git
 [submodule "bundle/vim-hemisu"]
 	path = bundle/vim-hemisu
 	url = https://github.com/noahfrederick/vim-hemisu.git
@@ -54,10 +54,13 @@
 	url = https://github.com/sjl/tslime.vim
 [submodule "bundle/vim-vinegar"]
 	path = bundle/vim-vinegar
-	url = git@github.com:tpope/vim-vinegar.git
+	url = https://github.com:tpope/vim-vinegar.git
 [submodule "bundle/fzf.vim"]
 	path = bundle/fzf.vim
-	url = git@github.com:junegunn/fzf.vim.git
+	url = https://github.com:junegunn/fzf.vim.git
 [submodule "bundle/vim-elixir"]
 	path = bundle/vim-elixir
 	url = https://github.com/elixir-lang/vim-elixir
+[submodule "bundle/rust.vim"]
+	path = bundle/rust.vim
+	url = https://github.com/rust-lang/rust.vim.git
