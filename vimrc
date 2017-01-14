@@ -1,11 +1,36 @@
-call pathogen#infect()
-call pathogen#helptags()
+call plug#begin()
+
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'bronson/vim-visual-star-search'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'elixir-lang/vim-elixir'
+Plug 'fatih/vim-go'
+Plug 'godlygeek/tabular'
+Plug 'guns/vim-clojure-static'
+Plug 'junegunn/fzf.vim'
+Plug 'nanotech/jellybeans.vim'
+Plug 'noahfrederick/vim-hemisu'
+Plug 'pangloss/vim-javascript'
+Plug 'rust-lang/rust.vim'
+Plug 'sjl/tslime.vim'
+Plug 'tomtom/tcomment_vim'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-fireplace'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-leiningen'
+Plug 'tpope/vim-markdown'
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-vinegar'
+
+call plug#end()
 
 " Syntax and filetype specific indentation and plugins on
 syntax enable
 filetype on
 filetype plugin on
 filetype indent on
+
 
 " Make syntax highlighting faster
 syntax sync minlines=256
