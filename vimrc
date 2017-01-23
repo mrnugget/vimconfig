@@ -8,8 +8,8 @@ Plug 'fatih/vim-go'
 Plug 'godlygeek/tabular'
 Plug 'guns/vim-clojure-static'
 Plug 'junegunn/fzf.vim'
-Plug 'nanotech/jellybeans.vim'
-Plug 'noahfrederick/vim-hemisu'
+" Plug 'nanotech/jellybeans.vim'
+" Plug 'noahfrederick/vim-hemisu'
 Plug 'pangloss/vim-javascript'
 Plug 'rust-lang/rust.vim'
 Plug 'sjl/tslime.vim'
@@ -434,6 +434,6 @@ if has("gui_running")
     set guifont=Monospace\ 9
   endif
 else
-  set background=dark
-  colorscheme jellybeans
+  set background=light
+  colorscheme default
 endif
