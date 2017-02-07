@@ -206,9 +206,6 @@ nmap <silent> <leader>rt :call RunNearestTest()<CR>
 nmap <silent> <leader>rf :call RunTestFile()<CR>
 nmap <silent> <leader>ra :call RunTests('')<CR>
 
-nmap <silent> <leader>nl :FZF ~/Dropbox/notes<CR>
-
-
 """"""""""""""""""""""""
 "
 " Setting test file/single test and running it
@@ -358,6 +355,45 @@ nnoremap <silent> <leader>fl :call fzf#run({
 nnoremap <silent> <leader>fi :FZF<CR>
 nnoremap <silent> <C-p> :FZF<CR>
 
+" Notes
+let s:notes_folder = "~/tmp/notes"
+let s:notes_fileending = ".md"
+
+" This is either called with
+" 0 lines, which means there's no result and no query
+" 1 line, which means there's no result, but a user query
+"         in this case: create a new file, based on user query
+" 2 lines, which means there are results, so open them
+"
+function! s:note_handler(lines)
+  if len(a:lines) < 1 | return | endif
+
+  if len(a:lines) == 1
+    let query = a:lines[0]
+    let new_filename = fnameescape(query . s:notes_fileending)
+    let new_title = "# " . query
+
+    execute "edit " . new_filename
+
+    " Append the new title and an empty line
+    let failed = append(0, [new_title, ''])
+    if (failed)
+      echo "Unable to insert title file!"
+    else
+      let &modified = 1
+    endif
+  else
+    execute "edit " fnameescape(a:lines[1])
+  endif
+endfunction
+
+command! -nargs=* Notes call fzf#run({
+\ 'sink*':   function('<sid>note_handler'),
+\ 'options': '--print-query ',
+\ 'dir':     s:notes_folder
+\ })
+
+nmap <silent> <leader>nl :Notes<CR>
 
 """""""""""""""""""
 " Filetypes
