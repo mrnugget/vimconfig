@@ -462,14 +462,12 @@ autocmd FileType asm setlocal formatoptions+=ro
 if has("gui_running")
   set guioptions=gc
   set lines=60 columns=90
-  set background=light
-  colorscheme hemisu
   if has("mac")
     set guifont=Hack:h12
   else
     set guifont=Monospace\ 9
   endif
-else
-  set background=light
-  colorscheme default
 endif
+
+set background=light
+colorscheme default
