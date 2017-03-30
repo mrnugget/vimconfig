@@ -356,7 +356,7 @@ nnoremap <silent> <leader>fi :FZF<CR>
 nnoremap <silent> <C-p> :FZF<CR>
 
 " Notes
-let s:notes_folder = "~/tmp/notes"
+let s:notes_folder = "~/Dropbox/notes"
 let s:notes_fileending = ".md"
 
 " This is either called with
@@ -394,6 +394,7 @@ command! -nargs=* Notes call fzf#run({
 \ })
 
 nmap <silent> <leader>nl :Notes<CR>
+nmap <silent> <leader>nn :Notes<CR>
 
 """""""""""""""""""
 " Filetypes
