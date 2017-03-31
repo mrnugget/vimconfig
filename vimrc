@@ -469,6 +469,13 @@ augroup END
 " normal mode
 autocmd FileType asm setlocal formatoptions+=ro
 
+" Quickfix List
+" Autowrap long lines in the quickfix window
+augroup ft_quickfix
+    autocmd!
+    autocmd FileType qf setlocal wrap
+augroup END
+
 " GVim
 if has("gui_running")
   set guioptions=gc
