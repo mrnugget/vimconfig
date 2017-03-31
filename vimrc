@@ -300,6 +300,11 @@ let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_rails = 1
 let g:rubycomplete_load_gemfile = 1
 
+" Dispatch.vim
+" Skip `bundle exec` when trying to determine the compiler for the given
+" command
+let g:dispatch_compilers = {'bundle exec': ''}
+
 " Markdown
 let g:markdown_fenced_languages = ['ruby', 'html', 'javascript', 'bash=sh', 'sql']
 
