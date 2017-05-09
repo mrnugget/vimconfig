@@ -20,11 +20,6 @@ Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
-" Typescript
-Plug 'Shougo/vimproc.vim'
-Plug 'Quramy/tsuquyomi'
-Plug 'leafgarland/typescript-vim'
-
 
 call plug#end()
 
@@ -115,9 +110,9 @@ set tags=./tags;
 
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/vendor/bundle/*,*/node_modules/*
 
-" Use The Silver Searcher with fzz as :grep
-if executable('ag')
-  set grepprg=fzz\ ag\ --nogroup\ --nocolor\ \{\{\$*}\}
+" Use ripgrep with fzz as :grep
+if executable('rg')
+  set grepprg=fzz\ rg\ --vimgrep\ \{\{'\$*'}\}
 endif
 
 """""""""""""""""""
@@ -301,6 +296,7 @@ let g:rubycomplete_load_gemfile = 1
 " Dispatch.vim
 " Skip `bundle exec` when trying to determine the compiler for the given
 " command
+" let g:dispatch_compilers = {'bundle exec': '', 'zeus': ''}
 let g:dispatch_compilers = {'bundle exec': ''}
 
 " Markdown
@@ -406,7 +402,12 @@ nmap <silent> <leader>nn :Notes<CR>
 
 """""""""""""""""""
 " Filetypes
-"
+
+" Ruby
+augroup ft_ruby
+  au!
+augroup END
+
 " Rspec Files
 augroup ft_rspec
   au!
@@ -414,10 +415,11 @@ augroup ft_rspec
   au BufNewFile,BufRead *_spec.rb highlight def link rubyRspec Function
 augroup END
 
-" eruby, html
+" eruby, slim, html
 augroup ft_html
   au!
   au BufNewFile,BufRead *.html.erb setlocal filetype=eruby.html
+  au BufNewFile,BufRead *.html.slim setlocal filetype=haml.html
 augroup END
 
 " Markdown
