@@ -20,6 +20,8 @@ Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
+Plug 'wlangstroth/vim-racket'
+Plug 'bhurlow/vim-parinfer'
 
 call plug#end()
 
@@ -121,6 +123,7 @@ endif
 " <leader> is ,
 let mapleader = ","
 noremap \ ,
+map <space> <leader>
 
 " Move around splits with <C-[hjkl]> in normal mode
 nnoremap <C-j> <C-w>j
@@ -296,8 +299,8 @@ let g:rubycomplete_load_gemfile = 1
 " Dispatch.vim
 " Skip `bundle exec` when trying to determine the compiler for the given
 " command
-" let g:dispatch_compilers = {'bundle exec': '', 'zeus': ''}
-let g:dispatch_compilers = {'bundle exec': ''}
+let g:dispatch_compilers = {'bundle exec': '', 'zeus': ''}
+" let g:dispatch_compilers = {'bundle exec': ''}
 
 " Markdown
 let g:markdown_fenced_languages = ['ruby', 'html', 'javascript', 'bash=sh', 'sql']
@@ -399,6 +402,12 @@ command! -nargs=* Notes call fzf#run({
 
 nmap <silent> <leader>nl :Notes<CR>
 nmap <silent> <leader>nn :Notes<CR>
+
+" Add a newline after each occurrence of the last search term.
+" Splitting array literals, etc. into multiple lines...
+" Taken from here:
+" https://stackoverflow.com/questions/17667032/how-to-split-text-into-multiple-lines-based-on-a-pattern-using-vim
+vnoremap SS :s//&\r/g<CR>
 
 """""""""""""""""""
 " Filetypes
