@@ -115,7 +115,7 @@ set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/vendor/bundle/*,*/node_modules/*
 
 " Use ripgrep with fzz as :grep
 if executable('rg')
-  set grepprg=fzz\ rg\ --vimgrep\ \{\{'\$*'}\}
+  set grepprg=rg\ --vimgrep
 endif
 
 """""""""""""""""""
@@ -499,5 +499,3 @@ endif
 
 set background=light
 colorscheme default
-
-autocmd FileType typescript nmap <buffer> <Leader>t : <C-u>echo tsuquyomi#hint()<CR>
