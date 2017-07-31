@@ -20,6 +20,7 @@ Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-rhubarb'
 Plug 'wlangstroth/vim-racket'
 Plug 'bhurlow/vim-parinfer'
 
