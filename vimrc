@@ -503,3 +503,10 @@ endif
 
 set background=light
 colorscheme default
+" Give the active window a blue background and white foreground
+hi StatusLine ctermfg=15 ctermbg=32 cterm=bold
+if $TERM_PROGRAM =~ "iTerm.app"
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+endif
