@@ -304,7 +304,7 @@ let g:dispatch_compilers = {'bundle exec': '', 'zeus': ''}
 " let g:dispatch_compilers = {'bundle exec': ''}
 
 " Markdown
-let g:markdown_fenced_languages = ['ruby', 'html', 'javascript', 'bash=sh', 'sql']
+let g:markdown_fenced_languages = ['go', 'ruby', 'html', 'javascript', 'bash=sh', 'sql']
 
 " Surround.vim
 let g:surround_45 = "<% \r %>"
@@ -472,6 +472,10 @@ augroup ft_golang
   au Filetype go nmap <leader>got :GoTest!<CR>
   au Filetype go nmap <leader>rt :GoTestFunc!<CR>
   au Filetype go nmap <leader>gom :GoImports<CR>
+
+  autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+  autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+  autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
 augroup END
 
 " GNU Assembler
