@@ -21,6 +21,7 @@ Plug 'tpope/vim-rails'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-rhubarb'
+Plug 'tpope/vim-eunuch'
 Plug 'wlangstroth/vim-racket'
 Plug 'bhurlow/vim-parinfer'
 
@@ -254,18 +255,6 @@ function! RunTests(filename)
     exec ":Dispatch rspec --color " . a:filename
   end
 endfunction
-
-" Renaming a file
-function! RenameFile()
-    let old_name = expand('%')
-    let new_name = input('New file name: ', expand('%'), 'file')
-    if new_name != '' && new_name != old_name
-        exec ':saveas ' . new_name
-        exec ':silent !rm ' . old_name
-        redraw!
-    endif
-endfunction
-map <leader>rn :call RenameFile()<cr>
 
 """""""""""""""""""
 " Plugin Configuration
