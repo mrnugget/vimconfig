@@ -333,21 +333,7 @@ function! s:buffer_lines()
 endfunction
 
 " map <leader>fb to fuzzy find open buffers
-nnoremap <silent> <leader>fb :call fzf#run({
-\   'source':  reverse(<sid>buflist()),
-\   'sink':    function('<sid>bufopen'),
-\   'options': '+m',
-\   'down':    len(<sid>buflist()) + 2
-\ })<CR>
-
-" map <leader>fl to fuzzy find a line in all open buffers
-nnoremap <silent> <leader>fl :call fzf#run({
-\   'source':  <sid>buffer_lines(),
-\   'sink':    function('<sid>line_handler'),
-\   'options': '--extended --nth=3..',
-\   'down':    '60%'
-\})<CR>
-
+nnoremap <silent> <leader>fb :Buffers<CR>
 " map <leader>fi to fuzzy find files
 nnoremap <silent> <leader>fi :FZF<CR>
 nnoremap <silent> <C-p> :FZF<CR>
