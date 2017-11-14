@@ -24,6 +24,7 @@ Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-eunuch'
 Plug 'wlangstroth/vim-racket'
 Plug 'bhurlow/vim-parinfer'
+Plug 'junegunn/goyo.vim'
 
 call plug#end()
 
