@@ -486,3 +486,5 @@ if $TERM_PROGRAM =~ "iTerm.app"
   let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
   let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
 endif
+
+" nmap <leader>r :!tmux send-keys -t 0:0.1 C-p C-j <CR><CR>
