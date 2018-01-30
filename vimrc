@@ -25,6 +25,8 @@ Plug 'tpope/vim-eunuch'
 Plug 'wlangstroth/vim-racket'
 Plug 'saltstack/salt-vim'
 Plug 'chr4/vim-gnupg'
+Plug 'neomake/neomake'
+Plug 'janko-m/vim-test'
 
 call plug#end()
 
@@ -76,7 +78,9 @@ set ttimeoutlen=10
 
 " Some tuning for macvim
 set ttyfast
-set lazyredraw
+if !has('nvim')
+  set lazyredraw
+end
 
 " Backup
 set undofile
@@ -103,6 +107,7 @@ set expandtab
 
 set statusline=%<\ %{mode()}\ \|\ %f%m\ \|\ %{fugitive#head()\ }
 set statusline+=%{&paste?'\ \ \|\ PASTE\ ':'\ '}
+set statusline+=%{NeomakeStatus()}
 set statusline+=%=\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %l/%L\(%c\)\ 
 
 set list
@@ -202,61 +207,6 @@ nmap <leader>gos :e /usr/local/go/src/<CR>
 let g:go_fmt_command = "goimports"
 let g:go_highlight_structs = 0
 
-" Running tests
-" ,rt runs rspec on current (or previously set ) single spec ('run this')
-" ,rf runs rspec on current (or previously set) spec file ('run file')
-" ,ra runs all specs ('run all')
-nmap <silent> <leader>rt :call RunNearestTest()<CR>
-nmap <silent> <leader>rf :call RunTestFile()<CR>
-nmap <silent> <leader>ra :call RunTests('')<CR>
-
-""""""""""""""""""""""""
-"
-" Setting test file/single test and running it
-"
-function! RunTestFile(...)
-  if a:0
-    let command_suffix = a:1
-  else
-    let command_suffix = ""
-  endif
-
-  let in_test_file = match(expand("%"), '_spec.rb$') != -1
-  if in_test_file
-    call SetTestFile()
-  elseif !exists("t:grb_test_file")
-    return
-  end
-  call RunTests(t:grb_test_file . command_suffix)
-endfunction
-
-function! RunNearestTest()
-  let in_test_file = match(expand("%"), '_spec.rb$') != -1
-  if in_test_file
-    let t:grb_test_file_line=line(".")
-  elseif !exists("t:grb_test_file_line")
-    return
-  end
-  call RunTestFile(":" . t:grb_test_file_line)
-endfunction
-
-function! SetTestFile()
-  let t:grb_test_file=@%
-endfunction
-
-function! RunTests(filename)
-  :silent !echo;echo;echo;echo;echo;echo;echo;echo;echo;echo
-  :silent !echo;echo;echo;echo;echo;echo;echo;echo;echo;echo
-
-  if glob(".zeus.sock") != ""
-    exec ":Dispatch zeus rspec --color " . a:filename
-  elseif filereadable("Gemfile")
-    exec ":Dispatch bundle exec rspec --color " . a:filename
-  else
-    exec ":Dispatch rspec --color " . a:filename
-  end
-endfunction
-
 """""""""""""""""""
 " Plugin Configuration
 "
@@ -290,8 +240,55 @@ let g:rubycomplete_load_gemfile = 1
 " Dispatch.vim
 " Skip `bundle exec` when trying to determine the compiler for the given
 " command
-let g:dispatch_compilers = {'bundle exec': '', 'zeus': ''}
+" let g:dispatch_compilers = {'bundle exec': '', 'zeus': ''}
 " let g:dispatch_compilers = {'bundle exec': ''}
+
+" vim-test
+let test#strategy = "neomake"
+let g:neomake_open_list = 2
+
+function! NeomakeStarted()
+    let g:show_neomake_running = 1
+endfunction
+
+function! MyOnNeomakeJobFinished() abort
+  let g:show_neomake_running = 0
+  let context = g:neomake_hook_context
+  if context.jobinfo.exit_code != 0
+    echom printf('The job for maker %s exited non-zero: %s',
+    \ context.jobinfo.maker.name, context.jobinfo.exit_code)
+  endif
+endfunction
+function! NeomakeStatus()
+    if get(g:, 'show_neomake_running', 0) == 0
+        return " "
+    endif
+
+    return " | RUNNING"
+endfunction
+
+augroup neomake_hooks
+    au!
+    autocmd User NeomakeJobInit nested call NeomakeStarted()
+    autocmd User NeomakeJobInit :echom "Build started"
+    autocmd User NeomakeFinished :echom "Build complete"
+    autocmd User NeomakeJobFinished nested call MyOnNeomakeJobFinished()
+augroup END
+
+" Running tests
+" ,rt runs rspec on current (or previously set ) single spec ('run this')
+" ,rf runs rspec on current (or previously set) spec file ('run file')
+" ,ra runs all specs ('run all')
+nmap <silent> <leader>rt :TestNearest<CR>
+nmap <silent> <leader>rf :TestFile<CR>
+nmap <silent> <leader>ra :TestSuite<CR>
+
+" Special bindings to use the neovim strategy, because the neomake strategy
+" does not work with synchronous commands, i.e. when I have a breakpoint/repl
+" in a test
+nmap <silent> <leader>et :TestNearest -strategy=neovim<CR>
+nmap <silent> <leader>ef :TestFile -strategy=neovim<CR>
+
 
 " Markdown
 let g:markdown_fenced_languages = ['go', 'ruby', 'html', 'javascript', 'bash=sh', 'sql']
@@ -492,6 +489,7 @@ set background=light
 colorscheme default
 " Give the active window a blue background and white foreground
 hi StatusLine ctermfg=15 ctermbg=32 cterm=bold
+hi SignColumn ctermfg=255 ctermbg=15
 if $TERM_PROGRAM =~ "iTerm.app"
   let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
   let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
