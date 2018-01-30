@@ -7,6 +7,7 @@ Plug 'elixir-lang/vim-elixir'
 Plug 'fatih/vim-go'
 Plug 'godlygeek/tabular'
 Plug 'guns/vim-clojure-static'
+Plug 'plasticboy/vim-markdown'
 Plug 'junegunn/fzf.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'rust-lang/rust.vim'
@@ -16,7 +17,6 @@ Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-leiningen'
-Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
@@ -295,6 +295,13 @@ let g:dispatch_compilers = {'bundle exec': '', 'zeus': ''}
 
 " Markdown
 let g:markdown_fenced_languages = ['go', 'ruby', 'html', 'javascript', 'bash=sh', 'sql']
+let g:vim_markdown_fenced_languages = ['go', 'ruby', 'html', 'javascript', 'bash=sh', 'sql']
+let g:vim_markdown_folding_level = 6
+let g:vim_markdown_new_list_item_indent = 2
+" Taken from here: https://github.com/plasticboy/vim-markdown/issues/232
+autocmd FileType markdown
+    \ set formatoptions-=q |
+    \ set formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*\[-*+]\\s\\+
 
 " Surround.vim
 let g:surround_45 = "<% \r %>"
