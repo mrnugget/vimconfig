@@ -408,8 +408,8 @@ augroup END
 " Rspec Files
 augroup ft_rspec
   au!
-  au BufNewFile,BufRead *_spec.rb syn keyword rubyRspec describe context it specify it_should_behave_like before after setup subject its shared_examples_for shared_context let
-  au BufNewFile,BufRead *_spec.rb highlight def link rubyRspec Function
+  au! BufNewFile,BufRead *_spec.rb syn keyword rubyRspec describe context it specify it_should_behave_like before after setup subject its shared_examples_for shared_context let
+  au! BufNewFile,BufRead *_spec.rb highlight def link rubyRspec Function
 augroup END
 
 " eruby, slim, html
