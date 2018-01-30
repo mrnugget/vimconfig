@@ -393,6 +393,10 @@ nmap <silent> <leader>nn :Notes<CR>
 " https://stackoverflow.com/questions/17667032/how-to-split-text-into-multiple-lines-based-on-a-pattern-using-vim
 vnoremap SS :s//&\r/g<CR>
 
+
+" Repeat last command in tmux window below (if two-pane setup)
+nmap <leader>rep :!tmux send-keys -t 2 C-p C-j <CR><CR>
+
 """""""""""""""""""
 " Filetypes
 
@@ -493,5 +497,3 @@ if $TERM_PROGRAM =~ "iTerm.app"
   let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
   let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
 endif
-
-" nmap <leader>r :!tmux send-keys -t 0:0.1 C-p C-j <CR><CR>
