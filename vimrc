@@ -23,8 +23,8 @@ Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-eunuch'
 Plug 'wlangstroth/vim-racket'
-Plug 'bhurlow/vim-parinfer'
-Plug 'junegunn/goyo.vim'
+Plug 'saltstack/salt-vim'
+Plug 'chr4/vim-gnupg'
 
 call plug#end()
 
