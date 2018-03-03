@@ -320,32 +320,6 @@ let g:tslime_visual_mapping = '<leader>sl'
 let g:tslime_vars_mapping = '<leader>csl' " Connect SLime
 
 " FZF mappings and custom functions
-function! s:buflist()
-  redir => ls
-  silent ls
-  redir END
-  return split(ls, '\n')
-endfunction
-
-function! s:bufopen(e)
-  execute 'buffer' matchstr(a:e, '^[ 0-9]*')
-endfunction
-
-function! s:line_handler(l)
-  let keys = split(a:l, ':\t')
-  exec 'buf' keys[0]
-  exec keys[1]
-  normal! ^zz
-endfunction
-
-function! s:buffer_lines()
-  let res = []
-  for b in filter(range(1, bufnr('$')), 'buflisted(v:val)')
-    call extend(res, map(getbufline(b,0,"$"), 'b . ":\t" . (v:key + 1) . ":\t" . v:val '))
-  endfor
-  return res
-endfunction
-
 " map <leader>fb to fuzzy find open buffers
 nnoremap <silent> <leader>fb :Buffers<CR>
 " map <leader>fi to fuzzy find files
@@ -392,6 +366,44 @@ command! -nargs=* Notes call fzf#run({
 
 nmap <silent> <leader>nl :Notes<CR>
 nmap <silent> <leader>nn :Notes<CR>
+
+function! s:ripgrep_to_qf(line)
+  let parts = split(a:line, ':')
+  return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
+        \ 'text': join(parts[3:], ':')}
+endfunction
+
+function! s:ripgrep_handler(lines)
+  if len(a:lines) < 2 | return | endif
+
+  let cmd = get({'ctrl-x': 'split',
+               \ 'ctrl-v': 'vertical split',
+               \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
+  let list = map(a:lines[1:], 's:ripgrep_to_qf(v:val)')
+
+  let first = list[0]
+  execute cmd escape(first.filename, ' %#\')
+  execute first.lnum
+  execute 'normal!' first.col.'|zz'
+
+  if len(list) > 1
+    call setqflist(list)
+    copen
+    wincmd p
+  endif
+endfunction
+
+command! -nargs=* FindNotes call fzf#run({
+\ 'source':  printf('rg --column --line-number --no-heading --color=always "%s" %s',
+\                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\'), s:notes_folder),
+\ 'sink*':    function('<sid>ripgrep_handler'),
+\ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
+\            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
+\            '--color hl:68,hl+:110',
+\ 'down':    '50%'
+\ })
+
+nmap <silent> <leader>fn :FindNotes<CR>
 
 " Add a newline after each occurrence of the last search term.
 " Splitting array literals, etc. into multiple lines...
