@@ -27,6 +27,9 @@ Plug 'saltstack/salt-vim'
 Plug 'chr4/vim-gnupg'
 Plug 'neomake/neomake'
 Plug 'janko-m/vim-test'
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue'] }
 
 call plug#end()
 
@@ -210,6 +213,10 @@ let g:go_highlight_structs = 0
 """""""""""""""""""
 " Plugin Configuration
 "
+
+" prettier
+" let g:prettier#autoformat = 0
+" autocmd BufWritePre *.js,*.jsx PrettierAsync
 
 " Enable matchit.vim, which ships with Vim but isn't enabled by default
 " somehow
