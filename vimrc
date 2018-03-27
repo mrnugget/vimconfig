@@ -39,7 +39,6 @@ filetype on
 filetype plugin on
 filetype indent on
 
-
 " Make syntax highlighting faster
 syntax sync minlines=256
 
@@ -73,6 +72,8 @@ set showmatch
 set backspace=2
 " Make J not insert whitespace
 set nojoinspaces
+" Allow project-specific vimrc files
+set exrc
 
 " Time out on key codes, not mappings.
 set notimeout
@@ -215,8 +216,8 @@ let g:go_highlight_structs = 0
 "
 
 " prettier
-" let g:prettier#autoformat = 0
-" autocmd BufWritePre *.js,*.jsx PrettierAsync
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx PrettierAsync
 
 " Enable matchit.vim, which ships with Vim but isn't enabled by default
 " somehow
@@ -516,3 +517,7 @@ if $TERM_PROGRAM =~ "iTerm.app"
   let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
   let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
 endif
+
+" Only allow secure commands from this point on. Necessary because further up
+" project-specific vimrc files were allowed with `set exrc`
+set secure
