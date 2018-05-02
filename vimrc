@@ -1,10 +1,10 @@
-call plug#begin()
+call plug#begin('~/.vim/plugged')
 
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'bronson/vim-visual-star-search'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'elixir-lang/vim-elixir'
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go', { 'tag': 'v1.17', 'do': ':GoInstallBinaries' }
 Plug 'godlygeek/tabular'
 Plug 'guns/vim-clojure-static'
 Plug 'plasticboy/vim-markdown'
@@ -109,7 +109,7 @@ set softtabstop=2
 set shiftround
 set expandtab
 
-set statusline=%<\ %{mode()}\ \|\ %f%m\ \|\ %{fugitive#head()\ }
+set statusline=%<\ %{mode()}\ \|\ %f%m\ \|\ %{fugitive#statusline()\ }
 set statusline+=%{&paste?'\ \ \|\ PASTE\ ':'\ '}
 set statusline+=%{NeomakeStatus()}
 set statusline+=%=\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %l/%L\(%c\)\ 
