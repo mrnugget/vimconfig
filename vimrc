@@ -217,7 +217,7 @@ let g:go_highlight_structs = 0
 
 " prettier
 let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx PrettierAsync
+autocmd BufWritePre *.js,*.jsx,*.ts PrettierAsync
 
 " Enable matchit.vim, which ships with Vim but isn't enabled by default
 " somehow
