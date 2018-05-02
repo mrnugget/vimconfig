@@ -248,7 +248,7 @@ let g:rubycomplete_load_gemfile = 1
 " Dispatch.vim
 " Skip `bundle exec` when trying to determine the compiler for the given
 " command
-" let g:dispatch_compilers = {'bundle exec': '', 'zeus': ''}
+let g:dispatch_compilers = {'bundle exec': '', 'zeus': ''}
 " let g:dispatch_compilers = {'bundle exec': ''}
 
 " vim-test
@@ -495,6 +495,11 @@ augroup ft_quickfix
     autocmd!
     autocmd FileType qf setlocal wrap
 augroup END
+" Adjust height of quickfix window
+au FileType qf call AdjustWindowHeight(3, 10)
+function! AdjustWindowHeight(minheight, maxheight)
+  exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
+endfunction
 
 " GVim
 if has("gui_running")
