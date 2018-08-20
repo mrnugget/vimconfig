@@ -3,14 +3,10 @@ call plug#begin('~/.vim/plugged')
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'bronson/vim-visual-star-search'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'elixir-lang/vim-elixir'
-Plug 'fatih/vim-go', { 'tag': 'v1.17', 'do': ':GoInstallBinaries' }
+Plug 'fatih/vim-go', { 'tag': 'v1.18', 'do': ':GoInstallBinaries' }
+Plug 'sheerun/vim-polyglot'
 Plug 'godlygeek/tabular'
-Plug 'guns/vim-clojure-static'
-Plug 'plasticboy/vim-markdown'
 Plug 'junegunn/fzf.vim'
-Plug 'pangloss/vim-javascript'
-Plug 'rust-lang/rust.vim'
 Plug 'sjl/tslime.vim'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-dispatch'
@@ -22,12 +18,12 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-eunuch'
-Plug 'wlangstroth/vim-racket'
 Plug 'saltstack/salt-vim'
 Plug 'chr4/vim-gnupg'
 Plug 'neomake/neomake'
 Plug 'janko-m/vim-test'
 Plug 'prettier/vim-prettier', {
+  \ 'tag': '0.2.7',
   \ 'do': 'yarn install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue'] }
 
@@ -213,7 +209,10 @@ let g:go_highlight_structs = 0
 
 """""""""""""""""""
 " Plugin Configuration
-"
+
+" vim-polyglot
+" I manually upgrade vim-go
+let g:polyglot_disabled = ['go']
 
 " prettier
 let g:prettier#autoformat = 0
