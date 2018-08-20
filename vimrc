@@ -147,6 +147,9 @@ vnoremap <C-k> :m '<-2<CR>gv=gv
 nnoremap k gk
 nnoremap j gj
 
+" Use Ctrl-[ as Esc in neovim terminal mode
+tnoremap <C-[> <C-\><C-n>
+
 " Paste and reformat with = to the last part of the previous
 " paste. Let's see how this works.
 "nnoremap p p=`]
@@ -182,6 +185,9 @@ nmap <leader>sw :set hlsearch<CR>mm*N`m
 
 " Greps the current word under the cursor
 nmap <leader>gr :gr! <C-r><C-w><CR>
+
+" Find duplicate words
+nnoremap <silent> <leader>du /\(\<\w\+\>\)\_s*\<\1\><CR>
 
 " Ruby
 let b:ruby_no_expensive = 1
