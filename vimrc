@@ -314,6 +314,8 @@ let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_folding_level = 6
 let g:vim_markdown_new_list_item_indent = 2
 let g:vim_markdown_no_default_key_mappings = 1
+
+autocmd FileType markdown set nolist
 " Taken from here: https://github.com/plasticboy/vim-markdown/issues/232
 autocmd FileType markdown
     \ set formatoptions-=q |
@@ -491,6 +493,15 @@ augroup ft_golang
   autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
   autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
   autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+augroup END
+
+" Rust
+let g:rustfmt_autosave = 1
+let g:rustfmt_fail_silently = 0
+
+augroup ft_rust
+  au!
+  au BufEnter,BufNewFile,BufRead *.rs setlocal compiler=cargo
 augroup END
 
 " GNU Assembler
