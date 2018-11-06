@@ -21,12 +21,12 @@ Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-eunuch'
 Plug 'saltstack/salt-vim'
 Plug 'chr4/vim-gnupg'
-Plug 'neomake/neomake'
 Plug 'janko-m/vim-test'
 Plug 'prettier/vim-prettier', {
   \ 'tag': '0.2.7',
   \ 'do': 'yarn install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue'] }
+Plug 'w0rp/ale'
 
 call plug#end()
 
@@ -303,6 +303,9 @@ nmap <silent> <leader>ra :TestSuite<CR>
 nmap <silent> <leader>et :TestNearest -strategy=neovim<CR>
 nmap <silent> <leader>ef :TestFile -strategy=neovim<CR>
 
+" Ale
+let g:ale_linters = {'go': ['go build', 'gofmt']}
+let g:ale_lint_on_text_changed = 'never'
 
 " Markdown
 let g:markdown_fenced_languages = ['go', 'ruby', 'html', 'javascript', 'bash=sh', 'sql']
