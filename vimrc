@@ -108,7 +108,6 @@ set expandtab
 
 set statusline=%<\ %{mode()}\ \|\ %f%m\ \|\ %{fugitive#statusline()\ }
 set statusline+=%{&paste?'\ \ \|\ PASTE\ ':'\ '}
-set statusline+=%{NeomakeStatus()}
 set statusline+=%=\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %l/%L\(%c\)\ 
 
 set list
@@ -222,8 +221,8 @@ let g:go_highlight_structs = 0
 let g:polyglot_disabled = ['go']
 
 " prettier
-let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.ts PrettierAsync
+" let g:prettier#autoformat = 0
+" autocmd BufWritePre *.js,*.jsx,*.ts PrettierAsync
 
 " Enable matchit.vim, which ships with Vim but isn't enabled by default
 " somehow
@@ -258,36 +257,7 @@ let g:dispatch_compilers = {'bundle exec': '', 'zeus': ''}
 " let g:dispatch_compilers = {'bundle exec': ''}
 
 " vim-test
-let test#strategy = "neomake"
-let g:neomake_open_list = 2
-
-function! NeomakeStarted()
-    let g:show_neomake_running = 1
-endfunction
-
-function! MyOnNeomakeJobFinished() abort
-  let g:show_neomake_running = 0
-  let context = g:neomake_hook_context
-  if context.jobinfo.exit_code != 0
-    echom printf('The job for maker %s exited non-zero: %s',
-    \ context.jobinfo.maker.name, context.jobinfo.exit_code)
-  endif
-endfunction
-function! NeomakeStatus()
-    if get(g:, 'show_neomake_running', 0) == 0
-        return " "
-    endif
-
-    return " | RUNNING"
-endfunction
-
-augroup neomake_hooks
-    au!
-    autocmd User NeomakeJobInit nested call NeomakeStarted()
-    autocmd User NeomakeJobInit :echom "Build started"
-    autocmd User NeomakeFinished :echom "Build complete"
-    autocmd User NeomakeJobFinished nested call MyOnNeomakeJobFinished()
-augroup END
+let test#strategy = "neovim"
 
 " Running tests
 " ,rt runs rspec on current (or previously set ) single spec ('run this')
@@ -296,12 +266,6 @@ augroup END
 nmap <silent> <leader>rt :TestNearest<CR>
 nmap <silent> <leader>rf :TestFile<CR>
 nmap <silent> <leader>ra :TestSuite<CR>
-
-" Special bindings to use the neovim strategy, because the neomake strategy
-" does not work with synchronous commands, i.e. when I have a breakpoint/repl
-" in a test
-nmap <silent> <leader>et :TestNearest -strategy=neovim<CR>
-nmap <silent> <leader>ef :TestFile -strategy=neovim<CR>
 
 " Ale
 let g:ale_linters = {'go': ['go build', 'gofmt']}
@@ -377,6 +341,7 @@ command! -nargs=* Notes call fzf#run({
 \ })
 
 nmap <silent> <leader>nl :Notes<CR>
+nmap <silent> <leader>nn :Notes<CR>
 nmap <silent> <leader>nn :Notes<CR>
 
 function! s:ripgrep_to_qf(line)
@@ -501,7 +466,7 @@ let g:rustfmt_fail_silently = 0
 
 augroup ft_rust
   au!
-  au BufEnter,BufNewFile,BufRead *.rs setlocal compiler=cargo
+  au BufEnter,BufNewFile,BufRead *.rs :compiler cargo
 augroup END
 
 " GNU Assembler
