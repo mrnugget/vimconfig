@@ -497,8 +497,8 @@ if has("gui_running")
   endif
 endif
 
-set background=light
 colorscheme default
+set background=light
 " Give the active window a blue background and white foreground
 hi StatusLine ctermfg=15 ctermbg=32 cterm=bold
 hi SignColumn ctermfg=255 ctermbg=15
