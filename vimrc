@@ -27,6 +27,7 @@ Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue'] }
 Plug 'w0rp/ale'
+Plug 'racer-rust/vim-racer'
 
 call plug#end()
 
@@ -467,6 +468,9 @@ let g:rustfmt_fail_silently = 0
 augroup ft_rust
   au!
   au BufEnter,BufNewFile,BufRead *.rs :compiler cargo
+
+  au Filetype rust nmap <c-]> <Plug>(rust-def)
+  au Filetype rust nmap <leader>rod <Plug>(rust-doc)
 augroup END
 
 " GNU Assembler
