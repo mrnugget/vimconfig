@@ -3,7 +3,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'bronson/vim-visual-star-search'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'fatih/vim-go', { 'tag': 'v1.19', 'do': ':GoInstallBinaries' }
+Plug 'fatih/vim-go', { 'tag': 'v1.20', 'do': ':GoInstallBinaries' }
 Plug 'sheerun/vim-polyglot'
 Plug 'plasticboy/vim-markdown'
 Plug 'godlygeek/tabular'
@@ -269,7 +269,7 @@ nmap <silent> <leader>rf :TestFile<CR>
 nmap <silent> <leader>ra :TestSuite<CR>
 
 " Ale
-let g:ale_linters = {'go': ['go build', 'gofmt']}
+let g:ale_linters = {'go': ['go build', 'gofmt'], 'rust': ['cargo', 'rls']}
 let g:ale_lint_on_text_changed = 'never'
 
 " Markdown
@@ -439,6 +439,14 @@ augroup END
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 " Go
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
+let g:go_test_show_name = 1
+
+" let g:go_term_mode = "split"
+" let g:go_term_height = 10
+" let g:go_term_enabled = 1
+
 augroup ft_golang
   au!
   au BufEnter,BufNewFile,BufRead *.go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
@@ -455,6 +463,7 @@ augroup ft_golang
   au Filetype go nmap <leader>got :GoTest!<CR>
   au Filetype go nmap <leader>rt :GoTestFunc!<CR>
   au Filetype go nmap <leader>gom :GoImports<CR>
+  au Filetype go nmap <leader>gie <Plug>(go-iferr)
 
   autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
   autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
@@ -464,6 +473,7 @@ augroup END
 " Rust
 let g:rustfmt_autosave = 1
 let g:rustfmt_fail_silently = 0
+let g:racer_cmd = "/Users/thorstenball/.cargo/bin/racer"
 
 augroup ft_rust
   au!
@@ -506,6 +516,7 @@ set background=light
 " Give the active window a blue background and white foreground
 hi StatusLine ctermfg=15 ctermbg=32 cterm=bold
 hi SignColumn ctermfg=255 ctermbg=15
+
 if $TERM_PROGRAM =~ "iTerm.app"
   let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
   let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
