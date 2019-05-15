@@ -443,8 +443,8 @@ let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
 let g:go_test_show_name = 1
 
-" let g:go_term_mode = "split"
-" let g:go_term_height = 10
+let g:go_term_mode = "split"
+let g:go_term_height = 10
 " let g:go_term_enabled = 1
 
 augroup ft_golang
