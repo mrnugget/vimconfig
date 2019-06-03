@@ -11,9 +11,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'sjl/tslime.vim'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-leiningen'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
@@ -23,9 +21,8 @@ Plug 'saltstack/salt-vim'
 Plug 'chr4/vim-gnupg'
 Plug 'janko-m/vim-test'
 Plug 'prettier/vim-prettier', {
-  \ 'tag': '0.2.7',
   \ 'do': 'yarn install',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue'] }
+  \ 'for': ['javascript', 'typescript', 'typescript.jsx', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'html'] }
 Plug 'w0rp/ale'
 Plug 'racer-rust/vim-racer'
 
@@ -222,8 +219,8 @@ let g:go_highlight_structs = 0
 let g:polyglot_disabled = ['go']
 
 " prettier
-" let g:prettier#autoformat = 0
-" autocmd BufWritePre *.js,*.jsx,*.ts PrettierAsync
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.ts,*.tsx PrettierAsync
 
 " Enable matchit.vim, which ships with Vim but isn't enabled by default
 " somehow
@@ -297,11 +294,31 @@ let g:tslime_visual_mapping = '<leader>sl'
 let g:tslime_vars_mapping = '<leader>csl' " Connect SLime
 
 " FZF mappings and custom functions
-" map <leader>fb to fuzzy find open buffers
+nnoremap <silent> <leader>fc :BCommits<CR>
 nnoremap <silent> <leader>fb :Buffers<CR>
-" map <leader>fi to fuzzy find files
+nnoremap <silent> <leader>fr :History<CR>
 nnoremap <silent> <leader>fi :FZF<CR>
 nnoremap <silent> <C-p> :FZF<CR>
+
+" Hide statusline
+autocmd! FileType fzf
+autocmd  FileType fzf set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+"
+let g:fzf_colors =
+\ { "fg":      ["fg", "Normal"],
+  \ "bg":      ["bg", "Normal"],
+  \ "hl":      ["fg", "IncSearch"],
+  \ "fg+":     ["fg", "CursorLine", "CursorColumn", "Normal"],
+  \ "bg+":     ["bg", "CursorLine", "CursorColumn"],
+  \ "hl+":     ["fg", "IncSearch"],
+  \ "info":    ["fg", "IncSearch"],
+  \ "border":  ["fg", "Ignore"],
+  \ "prompt":  ["fg", "Comment"],
+  \ "pointer": ["fg", "IncSearch"],
+  \ "marker":  ["fg", "IncSearch"],
+  \ "spinner": ["fg", "IncSearch"],
+  \ "header":  ["fg", "WildMenu"] }
 
 " Notes
 let s:notes_folder = "~/Dropbox/notes"
@@ -481,6 +498,14 @@ augroup ft_rust
 
   au Filetype rust nmap <c-]> <Plug>(rust-def)
   au Filetype rust nmap <leader>rod <Plug>(rust-doc)
+augroup END
+
+" Typescript
+augroup ft_typescript
+  au!
+
+  au Filetype typescript,typescript.jsx nmap <c-]> <Plug>(ale_go_to_definition)
+  au Filetype typescript,typescript.jsx setlocal shiftwidth=4
 augroup END
 
 " GNU Assembler
