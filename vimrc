@@ -3,7 +3,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'bronson/vim-visual-star-search'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'fatih/vim-go', { 'tag': 'v1.20', 'do': ':GoInstallBinaries' }
+" Plug 'fatih/vim-go', { 'tag': 'v1.20', 'do': ':GoInstallBinaries' }
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'sheerun/vim-polyglot'
 Plug 'plasticboy/vim-markdown'
 Plug 'godlygeek/tabular'
@@ -22,9 +23,10 @@ Plug 'chr4/vim-gnupg'
 Plug 'janko-m/vim-test'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
-  \ 'for': ['javascript', 'typescript', 'typescript.jsx', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'html'] }
+  \ 'for': ['javascript', 'typescript', 'typescript.jsx', 'typescript.tsx', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'html'] }
 Plug 'w0rp/ale'
 Plug 'racer-rust/vim-racer'
+Plug 'machakann/vim-swap'
 
 call plug#end()
 
@@ -130,6 +132,7 @@ endif
 let mapleader = ","
 noremap \ ,
 map <space> <leader>
+let maplocalleader = ","
 
 " Move around splits with <C-[hjkl]> in normal mode
 nnoremap <C-j> <C-w>j
@@ -206,11 +209,6 @@ vmap <silent> <leader>jq :!cat\|jq . <CR>
 " node.js
 nmap <leader>no :!node %<CR>
 
-" Golang
-nmap <leader>gos :e /usr/local/go/src/<CR>
-let g:go_fmt_command = "goimports"
-let g:go_highlight_structs = 0
-
 """""""""""""""""""
 " Plugin Configuration
 
@@ -268,6 +266,8 @@ nmap <silent> <leader>ra :TestSuite<CR>
 " Ale
 let g:ale_linters = {'go': ['go build', 'gofmt'], 'rust': ['cargo', 'rls']}
 let g:ale_lint_on_text_changed = 'never'
+let g:ale_ocaml_ocamlformat_options = '--enable-outside-detected-project'
+let g:ale_fixers = {'ocaml': ['ocp-indent']}
 
 " Markdown
 let g:markdown_fenced_languages = ['go', 'ruby', 'html', 'javascript', 'bash=sh', 'sql']
@@ -458,6 +458,10 @@ augroup END
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 " Go
+nmap <leader>gos :e /usr/local/go/src/<CR>
+let g:go_fmt_command = "goimports"
+let g:go_highlight_structs = 0
+
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
 let g:go_test_show_name = 1
@@ -476,7 +480,7 @@ augroup ft_golang
 
   au Filetype go nmap <c-]> <Plug>(go-def)
   au Filetype go nmap <leader>goi <Plug>(go-info)
-  au Filetype go nmap <leader>god <Plug>(go-def)
+  au Filetype go nmap <leader>god :GoDeclsDir<CR>
   au Filetype go nmap <leader>gou <Plug>(go-run)
   au Filetype go nmap <leader>gor <Plug>(go-rename)
   au Filetype go nmap <leader>got :GoTest!<CR>
@@ -502,18 +506,45 @@ augroup ft_rust
   au Filetype rust nmap <leader>rod <Plug>(rust-doc)
 augroup END
 
+" Racket
+augroup ft_rust
+  au!
+  au BufEnter,BufNewFile,BufRead *.rkt set filetype=racket
+augroup END
+
 " Typescript
 augroup ft_typescript
   au!
 
-  au Filetype typescript,typescript.jsx nmap <c-]> <Plug>(ale_go_to_definition)
-  au Filetype typescript,typescript.jsx setlocal shiftwidth=4
+  autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript
+
+  au Filetype typescript nmap <c-]> <Plug>(ale_go_to_definition)
+  au Filetype typescript setlocal shiftwidth=4 softtabstop=4 expandtab
 augroup END
 
 " GNU Assembler
 " Insert comments automatically on return in insert and when using O/o in
 " normal mode
 autocmd FileType asm setlocal formatoptions+=ro
+
+" Merlin setup for Ocaml
+let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+execute "set rtp+=" . g:opamshare . "/merlin/vim"
+
+let g:merlin_split_method = "never"
+let g:merlin_textobject_grow   = 'm'
+let g:merlin_textobject_shrink = 'M'
+
+" OCaml
+augroup ft_ocaml
+  au!
+
+  au Filetype ocaml nmap <c-]> gd
+
+  au Filetype ocaml nmap <leader>ot :MerlinTypeOf<CR>
+  au Filetype ocaml nmap <leader>og :MerlinGrowEnclosing<CR>
+  au Filetype ocaml nmap <leader>os :MerlinShrinkEnclosing<CR>
+augroup END
 
 " Quickfix List
 " Autowrap long lines in the quickfix window
