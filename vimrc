@@ -320,7 +320,9 @@ let g:fzf_colors =
   \ "spinner": ["fg", "IncSearch"],
   \ "header":  ["fg", "WildMenu"] }
 
+""""""""""""""""
 " Notes
+""""""""""""""""
 let s:notes_folder = "~/Dropbox/notes"
 let s:notes_fileending = ".md"
 
@@ -358,23 +360,19 @@ command! -nargs=* Notes call fzf#run({
 \ 'dir':     s:notes_folder
 \ })
 
-nmap <silent> <leader>nl :Notes<CR>
-nmap <silent> <leader>nn :Notes<CR>
-nmap <silent> <leader>nn :Notes<CR>
-
-function! s:ripgrep_to_qf(line)
+function! s:rg_to_quickfix(line)
   let parts = split(a:line, ':')
   return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
         \ 'text': join(parts[3:], ':')}
 endfunction
 
-function! s:ripgrep_handler(lines)
+function! s:find_notes_handler(lines)
   if len(a:lines) < 2 | return | endif
 
   let cmd = get({'ctrl-x': 'split',
                \ 'ctrl-v': 'vertical split',
                \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
-  let list = map(a:lines[1:], 's:ripgrep_to_qf(v:val)')
+  let list = map(a:lines[1:], 's:rg_to_quickfix(v:val)')
 
   let first = list[0]
   execute cmd escape(first.filename, ' %#\')
@@ -389,15 +387,19 @@ function! s:ripgrep_handler(lines)
 endfunction
 
 command! -nargs=* FindNotes call fzf#run({
-\ 'source':  printf('rg --column --line-number --no-heading --color=always "%s" %s',
-\                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\'), s:notes_folder),
-\ 'sink*':    function('<sid>ripgrep_handler'),
+\ 'source':  printf('rg --column --color=always "%s"',
+\                   escape(empty(<q-args>) ? '' : <q-args>, '"\')),
+\ 'sink*':    function('<sid>find_notes_handler'),
 \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
 \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
 \            '--color hl:68,hl+:110',
-\ 'down':    '50%'
+\ 'down':    '50%',
+\ 'dir':     s:notes_folder
 \ })
 
+nmap <silent> <leader>nl :Notes<CR>
+nmap <silent> <leader>nn :Notes<CR>
+nmap <silent> <leader>nn :Notes<CR>
 nmap <silent> <leader>fn :FindNotes<CR>
 
 " Add a newline after each occurrence of the last search term.
