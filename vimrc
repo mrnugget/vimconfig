@@ -18,8 +18,6 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-eunuch'
-Plug 'saltstack/salt-vim'
-Plug 'chr4/vim-gnupg'
 Plug 'janko-m/vim-test'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
@@ -304,6 +302,7 @@ nnoremap <silent> <C-p> :FZF<CR>
 autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+
 "
 let g:fzf_colors =
 \ { "fg":      ["fg", "Normal"],
@@ -397,10 +396,16 @@ command! -nargs=* FindNotes call fzf#run({
 \ 'dir':     s:notes_folder
 \ })
 
-nmap <silent> <leader>nl :Notes<CR>
-nmap <silent> <leader>nn :Notes<CR>
+command! -bang -nargs=* FindNotesWithPreview
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview({'dir': s:notes_folder}, 'right:50%'),
+  \   0,
+  \ )
+
 nmap <silent> <leader>nn :Notes<CR>
 nmap <silent> <leader>fn :FindNotes<CR>
+nmap <silent> <leader>nw :FindNotesWithPreview<CR>
 
 " Add a newline after each occurrence of the last search term.
 " Splitting array literals, etc. into multiple lines...
