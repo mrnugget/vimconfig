@@ -271,6 +271,8 @@ let g:ale_linters = {'go': ['go build', 'gofmt'], 'rust': ['cargo', 'rls']}
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_ocaml_ocamlformat_options = '--enable-outside-detected-project'
 let g:ale_fixers = {'ocaml': ['ocp-indent']}
+nmap <silent> <leader>aj :ALENext<cr>
+nmap <silent> <leader>ak :ALEPrevious<cr>
 
 " Markdown
 let g:markdown_fenced_languages = ['go', 'ruby', 'html', 'javascript', 'bash=sh', 'sql']
