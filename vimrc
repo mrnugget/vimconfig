@@ -81,6 +81,11 @@ if !has('nvim')
   set lazyredraw
 end
 
+" Show incremental search/replace
+if has('nvim')
+  set inccommand=nosplit
+end
+
 " Backup
 set undofile
 set undodir=~/.vim/tmp/undo//
