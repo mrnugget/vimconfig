@@ -25,6 +25,7 @@ Plug 'prettier/vim-prettier', {
 Plug 'w0rp/ale'
 Plug 'racer-rust/vim-racer'
 Plug 'machakann/vim-swap'
+Plug 'AlessandroYorba/Sierra'
 
 call plug#end()
 
@@ -217,7 +218,7 @@ nmap <leader>no :!node %<CR>
 
 " vim-polyglot
 " I manually upgrade vim-go
-let g:polyglot_disabled = ['go']
+let g:polyglot_disabled = ['go', 'markdown']
 
 " prettier
 let g:prettier#autoformat = 0
@@ -473,6 +474,8 @@ autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 nmap <leader>gos :e /usr/local/go/src/<CR>
 let g:go_fmt_command = "goimports"
 let g:go_highlight_structs = 0
+let g:go_gorename_command = "gopls"
+let g:go_echo_command_info = 1
 
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
@@ -586,12 +589,19 @@ set background=light
 " Give the active window a blue background and white foreground
 hi StatusLine ctermfg=15 ctermbg=32 cterm=bold
 hi SignColumn ctermfg=255 ctermbg=15
+" Highlight search
+hi Search     ctermbg=yellow
+
+" set background=dark
+" let g:sierra_Midnight = 1
+" colorscheme sierra
 
 if $TERM_PROGRAM =~ "iTerm.app"
   let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
   let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
   let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
 endif
+
 
 " Only allow secure commands from this point on. Necessary because further up
 " project-specific vimrc files were allowed with `set exrc`
