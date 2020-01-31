@@ -3,7 +3,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'bronson/vim-visual-star-search'
 Plug 'christoomey/vim-tmux-navigator'
-" Plug 'fatih/vim-go', { 'tag': 'v1.20', 'do': ':GoInstallBinaries' }
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'sheerun/vim-polyglot'
 Plug 'plasticboy/vim-markdown'
@@ -13,7 +12,6 @@ Plug 'sjl/tslime.vim'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rails'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-rhubarb'
@@ -461,6 +459,7 @@ augroup END
 " C
 augroup ft_c
   au!
+  au BufNewFile,BufRead *.h setlocal filetype=c
   au Filetype c setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
   " Kernel Settings
   " au FileType c setlocal tabstop=8 shiftwidth=8 textwidth=80 noexpandtab
@@ -474,7 +473,7 @@ autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 nmap <leader>gos :e /usr/local/go/src/<CR>
 let g:go_fmt_command = "goimports"
 let g:go_highlight_structs = 0
-let g:go_gorename_command = "gopls"
+let g:go_rename_command = "gopls"
 let g:go_echo_command_info = 1
 
 let g:go_def_mode='gopls'
