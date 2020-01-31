@@ -6,7 +6,6 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'sheerun/vim-polyglot'
 Plug 'plasticboy/vim-markdown'
-Plug 'godlygeek/tabular'
 Plug 'junegunn/fzf.vim'
 Plug 'sjl/tslime.vim'
 Plug 'tomtom/tcomment_vim'
@@ -21,7 +20,6 @@ Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'for': ['javascript', 'typescript', 'typescript.jsx', 'typescript.tsx', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'html'] }
 Plug 'w0rp/ale'
-Plug 'racer-rust/vim-racer'
 Plug 'machakann/vim-swap'
 Plug 'AlessandroYorba/Sierra'
 
