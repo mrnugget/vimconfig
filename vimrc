@@ -540,12 +540,14 @@ augroup END
 autocmd FileType asm setlocal formatoptions+=ro
 
 " Merlin setup for Ocaml
-let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
-execute "set rtp+=" . g:opamshare . "/merlin/vim"
+if executable('opam')
+  let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+  execute "set rtp+=" . g:opamshare . "/merlin/vim"
 
-let g:merlin_split_method = "never"
-let g:merlin_textobject_grow   = 'm'
-let g:merlin_textobject_shrink = 'M'
+  let g:merlin_split_method = "never"
+  let g:merlin_textobject_grow   = 'm'
+  let g:merlin_textobject_shrink = 'M'
+endif
 
 " OCaml
 augroup ft_ocaml
