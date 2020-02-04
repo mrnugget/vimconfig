@@ -22,6 +22,7 @@ Plug 'prettier/vim-prettier', {
 Plug 'w0rp/ale'
 Plug 'machakann/vim-swap'
 Plug 'AlessandroYorba/Sierra'
+Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
 call plug#end()
 
@@ -307,7 +308,6 @@ autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
-"
 let g:fzf_colors =
 \ { "fg":      ["fg", "Normal"],
   \ "bg":      ["bg", "Normal"],
@@ -601,6 +601,16 @@ if $TERM_PROGRAM =~ "iTerm.app"
   let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
 endif
 
+if exists('g:started_by_firenvim') && g:started_by_firenvim
+    " general options
+    set laststatus=0 nonumber noruler noshowcmd
+    let fc['.*'] = { 'selector': 'textarea' }
+
+    augroup firenvim
+        autocmd!
+        autocmd BufEnter *.txt setlocal filetype=markdown.pandoc
+    augroup END
+endif
 
 " Only allow secure commands from this point on. Necessary because further up
 " project-specific vimrc files were allowed with `set exrc`
