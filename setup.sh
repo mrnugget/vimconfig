@@ -2,8 +2,6 @@
 
 set -ex
 
-git clone git://github.com/mrnugget/vimconfig.git ~/.vim
-
 ln -s ~/.vim/vimrc ~/.vimrc
 
 mkdir -p ~/.config/nvim

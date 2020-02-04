@@ -1,7 +1,8 @@
 # Thorsten Ball's Vim Configuration
 
 ```bash
-./setup.sh
+git clone git://github.com/mrnugget/vimconfig.git ~/.vim
+cd ~/.vim && ./setup.sh
 ```
 
 This uses [vim-plug](https://github.com/junegunn/vim-plug).
