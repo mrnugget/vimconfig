@@ -268,7 +268,8 @@ nmap <silent> <leader>ra :TestSuite<CR>
 let g:ale_linters = {'go': ['go build', 'gofmt'], 'rust': ['cargo', 'rls']}
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_ocaml_ocamlformat_options = '--enable-outside-detected-project'
-let g:ale_fixers = {'ocaml': ['ocp-indent']}
+let g:ale_fixers = {'ocaml': ['ocp-indent'], 'c': ['clang-format']}
+let g:ale_fix_on_save = 1
 nmap <silent> <leader>aj :ALENext<cr>
 nmap <silent> <leader>ak :ALEPrevious<cr>
 
@@ -300,6 +301,7 @@ let g:tslime_vars_mapping = '<leader>csl' " Connect SLime
 nnoremap <silent> <leader>fc :BCommits<CR>
 nnoremap <silent> <leader>fb :Buffers<CR>
 nnoremap <silent> <leader>fr :History<CR>
+nnoremap <silent> <leader>ft :Tags<CR>
 nnoremap <silent> <leader>fi :FZF<CR>
 nnoremap <silent> <C-p> :FZF<CR>
 
@@ -459,6 +461,7 @@ augroup ft_c
   au!
   au BufNewFile,BufRead *.h setlocal filetype=c
   au Filetype c setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
+  au Filetype c setlocal cinoptions=l1,t0,g0 " This fixes weird indentation of switch/case
   " Kernel Settings
   " au FileType c setlocal tabstop=8 shiftwidth=8 textwidth=80 noexpandtab
   " au FileType c setlocal cindent formatoptions=tcqlron cinoptions=:0,l1,t0,g0
@@ -588,7 +591,7 @@ set background=light
 " Give the active window a blue background and white foreground
 hi StatusLine ctermfg=15 ctermbg=32 cterm=bold
 hi SignColumn ctermfg=255 ctermbg=15
-" Highlight search
+" Highlight search (or, better: #ffe079)
 hi Search     ctermbg=yellow
 
 " set background=dark
