@@ -21,8 +21,6 @@ Plug 'prettier/vim-prettier', {
   \ 'for': ['javascript', 'typescript', 'typescript.jsx', 'typescript.tsx', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'html'] }
 Plug 'w0rp/ale'
 Plug 'machakann/vim-swap'
-Plug 'AlessandroYorba/Sierra'
-Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
 call plug#end()
 
@@ -543,14 +541,14 @@ augroup END
 autocmd FileType asm setlocal formatoptions+=ro
 
 " Merlin setup for Ocaml
-if executable('opam')
-  let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
-  execute "set rtp+=" . g:opamshare . "/merlin/vim"
-
-  let g:merlin_split_method = "never"
-  let g:merlin_textobject_grow   = 'm'
-  let g:merlin_textobject_shrink = 'M'
-endif
+" if executable('opam')
+"   let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+"   execute "set rtp+=" . g:opamshare . "/merlin/vim"
+"
+"   let g:merlin_split_method = "never"
+"   let g:merlin_textobject_grow   = 'm'
+"   let g:merlin_textobject_shrink = 'M'
+" endif
 
 " OCaml
 augroup ft_ocaml
