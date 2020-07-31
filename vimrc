@@ -15,12 +15,15 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-rsi'
+Plug 'tpope/vim-unimpaired'
 Plug 'janko-m/vim-test'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'for': ['javascript', 'typescript', 'typescript.jsx', 'typescript.tsx', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'html'] }
-Plug 'w0rp/ale'
 Plug 'machakann/vim-swap'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
 
@@ -106,6 +109,7 @@ set shiftround
 set expandtab
 
 set statusline=%<\ %{mode()}\ \|\ %f%m\ \|\ %{fugitive#statusline()\ }
+set statusline+=\|\ %{coc#status()}
 set statusline+=%{&paste?'\ \ \|\ PASTE\ ':'\ '}
 set statusline+=%=\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %l/%L\(%c\)\ 
 
@@ -205,11 +209,19 @@ vmap <silent> <leader>pe mz"eyOputs "<ESC>"epa=#{<ESC>"epa}"<ESC>`z
 " pipes the selected region to `jq` for formatting
 vmap <silent> <leader>jq :!cat\|jq . <CR>
 
+"pipes the selection region to `pandoc` to convert it to HTML, opens the temp
+"file
+vmap <silent> <leader>pan :w !cat\|pandoc -s -f markdown --metadata title="foo" -o ~/tmp/pandoc_out.html && open ~/tmp/pandoc_out.html <CR>
+vmap <silent> <leader>word :w !cat\|pandoc -s -f markdown --metadata title="foo" -o ~/tmp/pandoc_out.docx && open ~/tmp/pandoc_out.docx <CR>
+
 " node.js
 nmap <leader>no :!node %<CR>
 
 """""""""""""""""""
 " Plugin Configuration
+
+" Enable the cfilter plugin that ships with Vim/NeoVim
+packadd cfilter
 
 " vim-polyglot
 " I manually upgrade vim-go
@@ -263,13 +275,17 @@ nmap <silent> <leader>rf :TestFile<CR>
 nmap <silent> <leader>ra :TestSuite<CR>
 
 " Ale
-let g:ale_linters = {'go': ['go build', 'gofmt'], 'rust': ['cargo', 'rls']}
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_ocaml_ocamlformat_options = '--enable-outside-detected-project'
-let g:ale_fixers = {'ocaml': ['ocp-indent'], 'c': ['clang-format']}
-let g:ale_fix_on_save = 1
-nmap <silent> <leader>aj :ALENext<cr>
-nmap <silent> <leader>ak :ALEPrevious<cr>
+" let g:ale_linters = {'go': ['go build', 'gofmt'], 'rust': ['cargo', 'rls']}
+" let g:ale_lint_on_text_changed = 'never'
+" let g:ale_lint_on_insert_leave = 'never'
+" let g:ale_ocaml_ocamlformat_options = '--enable-outside-detected-project'
+" let g:ale_fixers = {'ocaml': ['ocp-indent'], 'c': ['clang-format']}
+" let g:ale_fix_on_save = 1
+" let g:ale_set_loclist = 1
+" let g:ale_set_quickfix = 0
+" let g:ale_open_list = 1
+" nmap <silent> <leader>aj :ALENextWrap<cr>
+" nmap <silent> <leader>ak :ALEPreviousWrap<cr>
 
 " Markdown
 let g:markdown_fenced_languages = ['go', 'ruby', 'html', 'javascript', 'bash=sh', 'sql']
@@ -417,7 +433,6 @@ nmap <silent> <leader>nw :FindNotesWithPreview<CR>
 " https://stackoverflow.com/questions/17667032/how-to-split-text-into-multiple-lines-based-on-a-pattern-using-vim
 vnoremap SS :s//&\r/g<CR>
 
-
 " Repeat last command in tmux window below (if two-pane setup)
 nmap <leader>rep :!tmux send-keys -t 2 C-p C-j <CR><CR>
 
@@ -470,19 +485,69 @@ autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 " Go
 nmap <leader>gos :e /usr/local/go/src/<CR>
-let g:go_fmt_command = "goimports"
+" let g:go_fmt_command = "goimports"
 let g:go_highlight_structs = 0
 let g:go_rename_command = "gopls"
-let g:go_echo_command_info = 1
 
-let g:go_def_mode='gopls'
+" let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
 let g:go_test_show_name = 1
 
 let g:go_term_mode = "split"
 let g:go_term_height = 10
 " let g:go_term_enabled = 1
+"
+" Disabling everything for coc.vim
+let g:go_fmt_command = "gopls"
+let g:go_fmt_autosave = 1
+let g:go_echo_command_info = 0
+let g:go_auto_type_info = 0
+let g:go_diagnostics_enabled = 0
+let g:go_highlight_diagnostic_errors = 0
+let g:go_highlight_diagnostic_warnings = 0
+let g:go_def_mapping_enabled = 0
 
+" coc.vim config
+" Smaller updatetime for CursorHold & CursorHoldI
+set updatetime=300
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>cf <Plug>(coc-fix-current)
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+nnoremap <silent> <leader>cd :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <leader>ce :<C-u>CocList extensions<cr>
+nnoremap <silent> <leader>cc :<C-u>CocList commands<cr>
+nnoremap <silent> <leader>co :<C-u>CocList outline<cr>
+nnoremap <silent> <leader>cs :<C-u>CocList -I symbols<cr>
+nnoremap <silent> <leader>cj :<C-u>CocNext<CR>
+nnoremap <silent> <leader>ck :<C-u>CocPrev<CR>
+nnoremap <silent> <leader>cp :<C-u>CocListResume<CR>
+autocmd CursorHold * silent call CocActionAsync('doHover')
+"
+" call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
+"
 augroup ft_golang
   au!
   au BufEnter,BufNewFile,BufRead *.go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
@@ -492,14 +557,15 @@ augroup ft_golang
   au BufEnter,BufNewFile,BufRead *.tmpl setlocal filetype=html
 
   au Filetype go nmap <c-]> <Plug>(go-def)
+  au Filetype go nmap <leader>gdt :GoDefType<CR>
+  au Filetype go nmap <leader>gre :GoReferrers<CR>
   au Filetype go nmap <leader>goi <Plug>(go-info)
   au Filetype go nmap <leader>god :GoDeclsDir<CR>
   au Filetype go nmap <leader>gou <Plug>(go-run)
   au Filetype go nmap <leader>gor <Plug>(go-rename)
   au Filetype go nmap <leader>got :GoTest!<CR>
-  au Filetype go nmap <leader>rt :GoTestFunc!<CR>
-  au Filetype go nmap <leader>gom :GoImports<CR>
   au Filetype go nmap <leader>gie <Plug>(go-iferr)
+  au Filetype go nmap <leader>gdi :GoDiagnostics<CR>
 
   autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
   autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
@@ -600,17 +666,6 @@ if $TERM_PROGRAM =~ "iTerm.app"
   let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
   let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
   let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-endif
-
-if exists('g:started_by_firenvim') && g:started_by_firenvim
-    " general options
-    set laststatus=0 nonumber noruler noshowcmd
-    let fc['.*'] = { 'selector': 'textarea' }
-
-    augroup firenvim
-        autocmd!
-        autocmd BufEnter *.txt setlocal filetype=markdown.pandoc
-    augroup END
 endif
 
 " Only allow secure commands from this point on. Necessary because further up
