@@ -544,7 +544,7 @@ nnoremap <silent> <leader>cs :<C-u>CocList -I symbols<cr>
 nnoremap <silent> <leader>cj :<C-u>CocNext<CR>
 nnoremap <silent> <leader>ck :<C-u>CocPrev<CR>
 nnoremap <silent> <leader>cp :<C-u>CocListResume<CR>
-autocmd CursorHold * silent call CocActionAsync('doHover')
+" autocmd CursorHold * silent call CocActionAsync('doHover')
 "
 " call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
 "
@@ -555,6 +555,8 @@ augroup ft_golang
   " Enable automatic continuation of comment inserting
   au BufEnter,BufNewFile,BufRead *.go setlocal formatoptions+=ro
   au BufEnter,BufNewFile,BufRead *.tmpl setlocal filetype=html
+
+  autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 
   au Filetype go nmap <c-]> <Plug>(go-def)
   au Filetype go nmap <leader>gdt :GoDefType<CR>
