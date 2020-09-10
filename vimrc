@@ -9,7 +9,6 @@ Plug 'plasticboy/vim-markdown'
 Plug 'junegunn/fzf.vim'
 Plug 'sjl/tslime.vim'
 Plug 'tomtom/tcomment_vim'
-Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
@@ -22,8 +21,8 @@ Plug 'janko-m/vim-test'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'for': ['javascript', 'typescript', 'typescript.jsx', 'typescript.tsx', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'html'] }
-Plug 'machakann/vim-swap'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'jonathanfilip/vim-lucius'
 
 call plug#end()
 
@@ -173,8 +172,8 @@ nmap <silent> <leader>h :set invhlsearch<CR>
 nmap <silent> <leader>c :set invignorecase<CR>
 
 " Open and source vimrc file
-nmap <silent> <leader>ev :e $MYVIMRC<CR>
-nmap <silent> <leader>sv :so $MYVIMRC<CR>
+nmap <silent> <leader>ev :e ~/.vimrc<CR>
+nmap <silent> <leader>sv :so ~/.vimrc<CR>
 " Wipe out ALL the buffers
 nmap <silent> <leader>bw :%bwipeout<CR>
 " Delete all trailing whitespaces
@@ -183,39 +182,32 @@ nmap <silent> <leader>tw :%s/\s\+$//<CR>:let @/=''<CR>``
 imap <C-f> <esc>gUiwgi
 " Yank the whole file
 nmap <leader>yf ggyG
-
 " Highlight the current word under the cursor
 nmap <leader>sw :set hlsearch<CR>mm*N`m
-
 " Greps the current word under the cursor
 nmap <leader>gr :gr! <C-r><C-w><CR>
-
 " Find duplicate words
 nnoremap <silent> <leader>du /\(\<\w\+\>\)\_s*\<\1\><CR>
-
-" Ruby
-let b:ruby_no_expensive = 1
-let ruby_no_special_methods = 1
-nmap <leader>ru :!ruby %<CR>
 " Converting symbols from ruby 1.8 syntax to 1.9
 nmap <silent> <leader>19 hf:xepld3l
 " Converting ruby symbols to strings
 nmap <silent> <leader>tst f:xviwS"
-" Insert hashrocket
-imap <c-l> =>
-" puts the selected expression in the line above
+" Repeat last command in tmux window below (if two-pane setup)
+nmap <leader>rep :!tmux send-keys -t 2 C-p C-j <CR><CR>
+" `puts` the selected expression in the line above
 " like this: `puts "<myexpression>=#{<myexpression>}"`
 vmap <silent> <leader>pe mz"eyOputs "<ESC>"epa=#{<ESC>"epa}"<ESC>`z
-" pipes the selected region to `jq` for formatting
+" Pipes the selected region to `jq` for formatting
 vmap <silent> <leader>jq :!cat\|jq . <CR>
-
-"pipes the selection region to `pandoc` to convert it to HTML, opens the temp
-"file
+" Pipes the selection region to `pandoc` to convert it to HTML, opens the temp
+" file.
 vmap <silent> <leader>pan :w !cat\|pandoc -s -f markdown --metadata title="foo" -o ~/tmp/pandoc_out.html && open ~/tmp/pandoc_out.html <CR>
 vmap <silent> <leader>word :w !cat\|pandoc -s -f markdown --metadata title="foo" -o ~/tmp/pandoc_out.docx && open ~/tmp/pandoc_out.docx <CR>
 
-" node.js
+" Node.js
 nmap <leader>no :!node %<CR>
+" Ruby
+nmap <leader>ru :!ruby %<CR>
 
 """""""""""""""""""
 " Plugin Configuration
@@ -248,25 +240,8 @@ vmap <leader>a= :Tabularize /=<CR>
 nmap <leader>ah :Tabularize /=>\?<CR>
 vmap <leader>ah :Tabularize /=>\?<CR>
 
-" Rails.vim
-let g:rails_no_abbreviations = 0
-
-" autocmd FileType ruby set omnifunc=rubycomplete#Complete
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
-let g:rubycomplete_rails = 1
-let g:rubycomplete_load_gemfile = 1
-
-" Dispatch.vim
-" Skip `bundle exec` when trying to determine the compiler for the given
-" command
-let g:dispatch_compilers = {'bundle exec': '', 'zeus': ''}
-" let g:dispatch_compilers = {'bundle exec': ''}
-
 " vim-test
 let test#strategy = "neovim"
-
-" Running tests
 " ,rt runs rspec on current (or previously set ) single spec ('run this')
 " ,rf runs rspec on current (or previously set) spec file ('run file')
 " ,ra runs all specs ('run all')
@@ -300,10 +275,6 @@ autocmd FileType markdown set nolist
 autocmd FileType markdown
     \ set formatoptions-=q |
     \ set formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*\[-*+]\\s\\+
-
-" Surround.vim
-let g:surround_45 = "<% \r %>"
-let g:surround_61 = "<%= \r %>"
 
 " tslime.vim
 let g:tslime_ensure_trailing_newlines = 1 " Always send newline
@@ -427,36 +398,8 @@ nmap <silent> <leader>nn :Notes<CR>
 nmap <silent> <leader>fn :FindNotes<CR>
 nmap <silent> <leader>nw :FindNotesWithPreview<CR>
 
-" Add a newline after each occurrence of the last search term.
-" Splitting array literals, etc. into multiple lines...
-" Taken from here:
-" https://stackoverflow.com/questions/17667032/how-to-split-text-into-multiple-lines-based-on-a-pattern-using-vim
-vnoremap SS :s//&\r/g<CR>
-
-" Repeat last command in tmux window below (if two-pane setup)
-nmap <leader>rep :!tmux send-keys -t 2 C-p C-j <CR><CR>
-
 """""""""""""""""""
 " Filetypes
-
-" Ruby
-augroup ft_ruby
-  au!
-augroup END
-
-" Rspec Files
-augroup ft_rspec
-  au!
-  au! BufNewFile,BufRead *_spec.rb syn keyword rubyRspec describe context it specify it_should_behave_like before after setup subject its shared_examples_for shared_context let
-  au! BufNewFile,BufRead *_spec.rb highlight def link rubyRspec Function
-augroup END
-
-" eruby, slim, html
-augroup ft_html
-  au!
-  au BufNewFile,BufRead *.html.erb setlocal filetype=eruby.html
-  au BufNewFile,BufRead *.html.slim setlocal filetype=haml.html
-augroup END
 
 " Markdown
 augroup ft_markdown
@@ -512,7 +455,6 @@ let g:go_def_mapping_enabled = 0
 set updatetime=300
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
-
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
@@ -529,6 +471,7 @@ endfunction
 nmap <silent> [c <Plug>(coc-diagnostic-prev)
 nmap <silent> ]c <Plug>(coc-diagnostic-next)
 nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gt :CocAction('jumpTypeDefinition')<CR>
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
@@ -545,8 +488,6 @@ nnoremap <silent> <leader>cj :<C-u>CocNext<CR>
 nnoremap <silent> <leader>ck :<C-u>CocPrev<CR>
 nnoremap <silent> <leader>cp :<C-u>CocListResume<CR>
 " autocmd CursorHold * silent call CocActionAsync('doHover')
-"
-" call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
 "
 augroup ft_golang
   au!
@@ -583,12 +524,11 @@ augroup ft_rust
   au!
   au BufEnter,BufNewFile,BufRead *.rs :compiler cargo
 
-  au Filetype rust nmap <c-]> <Plug>(rust-def)
-  au Filetype rust nmap <leader>rod <Plug>(rust-doc)
+  au Filetype rust nmap <c-]> :call CocAction('jumpDefinition', 'drop')<CR>
 augroup END
 
 " Racket
-augroup ft_rust
+augroup ft_racket
   au!
   au BufEnter,BufNewFile,BufRead *.rkt set filetype=racket
 augroup END
@@ -599,7 +539,7 @@ augroup ft_typescript
 
   autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript
 
-  au Filetype typescript nmap <c-]> <Plug>(ale_go_to_definition)
+  au Filetype typescript nmap <c-]> :call CocAction('jumpDefinition', 'drop')<CR>
   au Filetype typescript setlocal shiftwidth=4 softtabstop=4 expandtab
 augroup END
 
@@ -652,23 +592,15 @@ if has("gui_running")
   endif
 endif
 
-colorscheme default
 set background=light
+let g:lucius_style  = 'light'
+let g:lucius_contrast  = 'high'
+let g:lucius_contrast_bg  = 'normal'
+" let g:lucius_no_term_bg  = true
+colorscheme lucius
 " Give the active window a blue background and white foreground
 hi StatusLine ctermfg=15 ctermbg=32 cterm=bold
 hi SignColumn ctermfg=255 ctermbg=15
-" Highlight search (or, better: #ffe079)
-hi Search     ctermbg=yellow
-
-" set background=dark
-" let g:sierra_Midnight = 1
-" colorscheme sierra
-
-if $TERM_PROGRAM =~ "iTerm.app"
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-  let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-endif
 
 " Only allow secure commands from this point on. Necessary because further up
 " project-specific vimrc files were allowed with `set exrc`
