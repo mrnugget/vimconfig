@@ -153,6 +153,10 @@ nnoremap j gj
 " Use Ctrl-[ as Esc in neovim terminal mode
 tnoremap <C-[> <C-\><C-n>
 
+" In visual mode don't include the newline-character when jumping to
+" end-of-line with $
+vnoremap $ $h
+
 " Paste and reformat with = to the last part of the previous
 " paste. Let's see how this works.
 "nnoremap p p=`]
@@ -269,12 +273,6 @@ let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_folding_level = 6
 let g:vim_markdown_new_list_item_indent = 2
 let g:vim_markdown_no_default_key_mappings = 1
-
-autocmd FileType markdown set nolist
-" Taken from here: https://github.com/plasticboy/vim-markdown/issues/232
-autocmd FileType markdown
-    \ set formatoptions-=q |
-    \ set formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*\[-*+]\\s\\+
 
 " tslime.vim
 let g:tslime_ensure_trailing_newlines = 1 " Always send newline
@@ -405,11 +403,17 @@ nmap <silent> <leader>nw :FindNotesWithPreview<CR>
 augroup ft_markdown
   au!
   au BufNewFile,BufRead *.md setlocal filetype=markdown
-  au BufNewFile,BufRead *.md setlocal textwidth=80
-  au BufNewFile,BufRead *.md setlocal smartindent " Indent lists correctly
 
   " au BufNewFile,BufRead *.md setlocal wrap
   " au BufNewFile,BufRead *.md setlocal linebreak
+
+  au Filetype markdown setlocal textwidth=80
+  au Filetype markdown setlocal smartindent " Indent lists correctly
+  au FileType markdown setlocal nolist
+  " Taken from here: https://github.com/plasticboy/vim-markdown/issues/232
+  au FileType markdown
+      \ set formatoptions-=q |
+      \ set formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*\[-*+]\\s\\+
 augroup END
 
 " C
@@ -491,13 +495,14 @@ nnoremap <silent> <leader>cp :<C-u>CocListResume<CR>
 "
 augroup ft_golang
   au!
+
   au BufEnter,BufNewFile,BufRead *.go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
   au BufEnter,BufNewFile,BufRead *.go setlocal completeopt-=preview
   " Enable automatic continuation of comment inserting
   au BufEnter,BufNewFile,BufRead *.go setlocal formatoptions+=ro
   au BufEnter,BufNewFile,BufRead *.tmpl setlocal filetype=html
 
-  autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+  au BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 
   au Filetype go nmap <c-]> <Plug>(go-def)
   au Filetype go nmap <leader>gdt :GoDefType<CR>
@@ -510,9 +515,9 @@ augroup ft_golang
   au Filetype go nmap <leader>gie <Plug>(go-iferr)
   au Filetype go nmap <leader>gdi :GoDiagnostics<CR>
 
-  autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
-  autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
-  autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+  au Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+  au Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+  au Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
 augroup END
 
 " Rust
@@ -524,6 +529,7 @@ augroup ft_rust
   au!
   au BufEnter,BufNewFile,BufRead *.rs :compiler cargo
 
+  au FileType rust set nolist
   au Filetype rust nmap <c-]> :call CocAction('jumpDefinition', 'drop')<CR>
 augroup END
 
@@ -546,7 +552,10 @@ augroup END
 " GNU Assembler
 " Insert comments automatically on return in insert and when using O/o in
 " normal mode
-autocmd FileType asm setlocal formatoptions+=ro
+augroup ft_asm
+  au!
+  autocmd FileType asm setlocal formatoptions+=ro
+augroup END
 
 " Merlin setup for Ocaml
 " if executable('opam')
@@ -567,6 +576,14 @@ augroup ft_ocaml
   au Filetype ocaml nmap <leader>ot :MerlinTypeOf<CR>
   au Filetype ocaml nmap <leader>og :MerlinGrowEnclosing<CR>
   au Filetype ocaml nmap <leader>os :MerlinShrinkEnclosing<CR>
+augroup END
+
+
+augroup ft_yaml
+  au!
+  au FileType yaml setlocal nolist
+  au FileType yaml setlocal nonumber
+  au FileType yaml setlocal colorcolumn=0
 augroup END
 
 " Quickfix List
@@ -596,7 +613,7 @@ set background=light
 let g:lucius_style  = 'light'
 let g:lucius_contrast  = 'high'
 let g:lucius_contrast_bg  = 'normal'
-" let g:lucius_no_term_bg  = true
+let g:lucius_no_term_bg  = 1
 colorscheme lucius
 " Give the active window a blue background and white foreground
 hi StatusLine ctermfg=15 ctermbg=32 cterm=bold
