@@ -234,6 +234,16 @@ runtime macros/matchit.vim
 " netrw
 let g:netrw_liststyle = 3
 let g:netrw_keepj="keepj"
+" See https://github.com/christoomey/vim-tmux-navigator/issues/189
+" for context on the following
+augroup netrw_mapping
+  autocmd!
+  autocmd filetype netrw call NetrwMapping()
+augroup END
+
+function! NetrwMapping()
+  nnoremap <silent> <buffer> <c-l> :TmuxNavigateRight<CR>
+endfunction
 
 " fugitive.vim
 nmap <leader>gb :Gblame<CR>
