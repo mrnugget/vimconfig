@@ -1,5 +1,7 @@
 call plug#begin('~/.vim/plugged')
 
+let g:polyglot_disabled = ['go', 'markdown']
+
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'bronson/vim-visual-star-search'
 Plug 'christoomey/vim-tmux-navigator'
@@ -218,10 +220,6 @@ nmap <leader>ru :!ruby %<CR>
 
 " Enable the cfilter plugin that ships with Vim/NeoVim
 packadd cfilter
-
-" vim-polyglot
-" I manually upgrade vim-go
-let g:polyglot_disabled = ['go', 'markdown']
 
 " prettier
 let g:prettier#autoformat = 0
@@ -491,9 +489,8 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <leader>rn <Plug>(coc-rename)
 nmap <leader>cf <Plug>(coc-fix-current)
-vmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
-nnoremap <silent> <leader>cd :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <leader>cd :CocDiagnostics<cr>
 nnoremap <silent> <leader>ce :<C-u>CocList extensions<cr>
 nnoremap <silent> <leader>cc :<C-u>CocList commands<cr>
 nnoremap <silent> <leader>co :<C-u>CocList outline<cr>
@@ -507,7 +504,7 @@ augroup ft_golang
   au!
 
   au BufEnter,BufNewFile,BufRead *.go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
-  au BufEnter,BufNewFile,BufRead *.go setlocal completeopt-=preview
+  " au BufEnter,BufNewFile,BufRead *.go setlocal completeopt-=preview
   " Enable automatic continuation of comment inserting
   au BufEnter,BufNewFile,BufRead *.go setlocal formatoptions+=ro
   au BufEnter,BufNewFile,BufRead *.tmpl setlocal filetype=html

@@ -1,0 +1,25 @@
+{
+  "coc.preferences.useQuickfixForLocations": true,
+  "coc.preferences.hoverTarget": "echo",
+  "diagnostic.checkCurrentLine": true,
+  "diagnostic.level": "error",
+  "languageserver": {
+    "go": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod"],
+      "trace.server": "verbose",
+      "filetypes": ["go"]
+    }
+  },
+  "rust-analyzer.inlayHints.refreshOnInsertMode": true,
+  "list.insertMappings": {
+    "<C-n>": "normal:j",
+    "<C-p>": "normal:k",
+    "<C-c>": "do:exit"
+  },
+  "list.normalMappings": {
+    "<C-n>": "normal:j",
+    "<C-p>": "normal:k",
+    "<C-c>": "do:exit"
+  }
+}
