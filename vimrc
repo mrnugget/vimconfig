@@ -25,6 +25,7 @@ Plug 'prettier/vim-prettier', {
   \ 'for': ['javascript', 'typescript', 'typescript.jsx', 'typescript.tsx', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'html'] }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'jonathanfilip/vim-lucius'
+Plug 'tomasiser/vim-code-dark'
 
 call plug#end()
 
@@ -616,15 +617,21 @@ if has("gui_running")
   endif
 endif
 
-set background=light
-let g:lucius_style  = 'light'
-let g:lucius_contrast  = 'high'
-let g:lucius_contrast_bg  = 'normal'
-let g:lucius_no_term_bg  = 1
-colorscheme lucius
+set termguicolors
+
+" set background=light
+" let g:lucius_style  = 'light'
+" let g:lucius_contrast  = 'high'
+" let g:lucius_contrast_bg  = 'high'
+" let g:lucius_no_term_bg  = 1
+" colorscheme lucius
+
 " Give the active window a blue background and white foreground
-hi StatusLine ctermfg=15 ctermbg=32 cterm=bold
-hi SignColumn ctermfg=255 ctermbg=15
+" hi StatusLine ctermfg=15 ctermbg=32 cterm=bold
+" hi SignColumn ctermfg=255 ctermbg=15
+" set t_Co=256
+" set t_ut=
+colorscheme codedark
 
 " Only allow secure commands from this point on. Necessary because further up
 " project-specific vimrc files were allowed with `set exrc`
