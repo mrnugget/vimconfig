@@ -26,6 +26,10 @@ Plug 'prettier/vim-prettier', {
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'jonathanfilip/vim-lucius'
 Plug 'tomasiser/vim-code-dark'
+" Telescope.vim
+" Plug 'nvim-lua/popup.nvim'
+" Plug 'nvim-lua/plenary.nvim'
+" Plug 'nvim-telescope/telescope.nvim'
 
 call plug#end()
 
@@ -209,7 +213,7 @@ vmap <silent> <leader>jq :!cat\|jq . <CR>
 " Pipes the selection region to `pandoc` to convert it to HTML, opens the temp
 " file.
 vmap <silent> <leader>pan :w !cat\|pandoc -s -f markdown --metadata title="foo" -o ~/tmp/pandoc_out.html && open ~/tmp/pandoc_out.html <CR>
-vmap <silent> <leader>word :w !cat\|pandoc -s -f markdown --metadata title="foo" -o ~/tmp/pandoc_out.docx && open ~/tmp/pandoc_out.docx <CR>
+vmap <silent> <leader>word :w !cat\|pandoc -s -f markdown --toc --metadata title="foo" -o ~/tmp/pandoc_out.docx && open ~/tmp/pandoc_out.docx <CR>
 
 " Node.js
 nmap <leader>no :!node %<CR>
@@ -619,19 +623,19 @@ endif
 
 set termguicolors
 
-" set background=light
-" let g:lucius_style  = 'light'
-" let g:lucius_contrast  = 'high'
-" let g:lucius_contrast_bg  = 'high'
-" let g:lucius_no_term_bg  = 1
-" colorscheme lucius
+set background=light
+let g:lucius_style  = 'light'
+let g:lucius_contrast  = 'high'
+let g:lucius_contrast_bg  = 'high'
+let g:lucius_no_term_bg  = 1
+colorscheme lucius
 
 " Give the active window a blue background and white foreground
-" hi StatusLine ctermfg=15 ctermbg=32 cterm=bold
-" hi SignColumn ctermfg=255 ctermbg=15
+hi StatusLine ctermfg=15 ctermbg=32 cterm=bold
+hi SignColumn ctermfg=255 ctermbg=15
 " set t_Co=256
 " set t_ut=
-colorscheme codedark
+" colorscheme codedark
 
 " Only allow secure commands from this point on. Necessary because further up
 " project-specific vimrc files were allowed with `set exrc`
