@@ -460,11 +460,11 @@ let g:go_term_height = 10
 " Disabling everything for coc.vim
 let g:go_fmt_command = "gopls"
 let g:go_fmt_autosave = 1
-let g:go_echo_command_info = 0
-let g:go_auto_type_info = 0
-let g:go_diagnostics_enabled = 0
-let g:go_highlight_diagnostic_errors = 0
-let g:go_highlight_diagnostic_warnings = 0
+let g:go_echo_command_info = 1
+let g:go_auto_type_info = 1
+let g:go_diagnostics_enabled = 1
+let g:go_highlight_diagnostic_errors = 1
+let g:go_highlight_diagnostic_warnings = 1
 let g:go_def_mapping_enabled = 0
 
 " coc.vim config
@@ -487,22 +487,20 @@ endfunction
 
 nmap <silent> [c <Plug>(coc-diagnostic-prev)
 nmap <silent> ]c <Plug>(coc-diagnostic-next)
+" GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gt :CocAction('jumpTypeDefinition')<CR>
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+
 nmap <leader>rn <Plug>(coc-rename)
 nmap <leader>cf <Plug>(coc-fix-current)
 nmap <leader>f  <Plug>(coc-format-selected)
-nnoremap <silent> <leader>cd :CocDiagnostics<cr>
+nnoremap <silent> <leader>cd :CocList diagnostics<cr>
 nnoremap <silent> <leader>ce :<C-u>CocList extensions<cr>
 nnoremap <silent> <leader>cc :<C-u>CocList commands<cr>
 nnoremap <silent> <leader>co :<C-u>CocList outline<cr>
 nnoremap <silent> <leader>cs :<C-u>CocList -I symbols<cr>
-nnoremap <silent> <leader>cj :<C-u>CocNext<CR>
-nnoremap <silent> <leader>ck :<C-u>CocPrev<CR>
-nnoremap <silent> <leader>cp :<C-u>CocListResume<CR>
 " autocmd CursorHold * silent call CocActionAsync('doHover')
 "
 augroup ft_golang

@@ -1,6 +1,7 @@
 {
   "coc.preferences.useQuickfixForLocations": true,
   "coc.preferences.hoverTarget": "echo",
+  "coc.preferences.diagnostic.locationlist": true,
   "diagnostic.checkCurrentLine": true,
   "diagnostic.level": "error",
   "languageserver": {
@@ -11,6 +12,7 @@
       "filetypes": ["go"]
     }
   },
+  "rust-analyzer.inlayHints.enable": true,
   "rust-analyzer.inlayHints.refreshOnInsertMode": true,
   "list.insertMappings": {
     "<C-n>": "normal:j",
