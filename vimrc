@@ -130,7 +130,6 @@ function! LspStatus() abort
 endfunction
 
 set statusline=%<\ %{mode()}\ \|\ %f%m\ \|\ %{fugitive#statusline()\ }
-" set statusline+=\|\ %{coc#status()}
 set statusline+=\|\ %{LspStatus()}
 set statusline+=%{&paste?'\ \ \|\ PASTE\ ':'\ '}
 set statusline+=%=\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %l/%L\(%c\)\ 
@@ -499,35 +498,17 @@ set signcolumn=yes
 autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
 \ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment", enabled = {"ChainingHint", "TypeHint", "ParameterHint"} }
 
-" Auto-format *.rs files prior to saving them
-autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)
-
 augroup ft_golang
   au!
 
   autocmd BufWritePre *.go lua goimports(1000)
   autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync(nil, 1000)
-  " autocmd FileType go setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
   au BufEnter,BufNewFile,BufRead *.go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
-  " au BufEnter,BufNewFile,BufRead *.go setlocal completeopt-=preview
   " Enable automatic continuation of comment inserting
   au BufEnter,BufNewFile,BufRead *.go setlocal formatoptions+=ro
   au BufEnter,BufNewFile,BufRead *.tmpl setlocal filetype=html
 
-  " au BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
-
-  " au Filetype go nmap <c-]> <Plug>(go-def)
-  " au Filetype go nmap <leader>gdt :GoDefType<CR>
-  " au Filetype go nmap <leader>gre :GoReferrers<CR>
-  " au Filetype go nmap <leader>goi <Plug>(go-info)
-  " au Filetype go nmap <leader>god :GoDeclsDir<CR>
-  " au Filetype go nmap <leader>gou <Plug>(go-run)
-  " au Filetype go nmap <leader>gor <Plug>(go-rename)
-  " au Filetype go nmap <leader>got :GoTest!<CR>
-  " au Filetype go nmap <leader>gie <Plug>(go-iferr)
-  " au Filetype go nmap <leader>gdi :GoDiagnostics<CR>
-  "
   au Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
   au Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
   au Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
@@ -541,9 +522,8 @@ let g:racer_cmd = "/Users/thorstenball/.cargo/bin/racer"
 augroup ft_rust
   au!
   au BufEnter,BufNewFile,BufRead *.rs :compiler cargo
-
+  au BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)
   au FileType rust set nolist
-  " au Filetype rust nmap <c-]> :call CocAction('jumpDefinition', 'drop')<CR>
 augroup END
 
 " Racket
@@ -558,7 +538,6 @@ augroup ft_typescript
 
   autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript
 
-  au Filetype typescript nmap <c-]> :call CocAction('jumpDefinition', 'drop')<CR>
   au Filetype typescript setlocal shiftwidth=4 softtabstop=4 expandtab
 augroup END
 
