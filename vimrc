@@ -5,7 +5,7 @@ let g:polyglot_disabled = ['go', 'markdown']
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'bronson/vim-visual-star-search'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+" Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'sheerun/vim-polyglot'
 Plug 'plasticboy/vim-markdown'
 Plug 'junegunn/fzf.vim'
@@ -23,14 +23,20 @@ Plug 'janko-m/vim-test'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'for': ['javascript', 'typescript', 'typescript.jsx', 'typescript.tsx', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'html'] }
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 Plug 'jonathanfilip/vim-lucius'
 Plug 'tomasiser/vim-code-dark'
-" Telescope.vim
-" Plug 'nvim-lua/popup.nvim'
-" Plug 'nvim-lua/plenary.nvim'
-" Plug 'nvim-telescope/telescope.nvim'
+"
+" Collection of common configurations for the Nvim LSP client
+Plug 'neovim/nvim-lspconfig'
+" Extensions to built-in LSP, for example, providing type inlay hints
+Plug 'nvim-lua/lsp_extensions.nvim'
+" Autocompletion framework for built-in LSP
+Plug 'nvim-lua/completion-nvim'
+" Status in statusline
+Plug 'nvim-lua/lsp-status.nvim'
 
+Plug 'arcticicestudio/nord-vim'
 call plug#end()
 
 " Syntax and filetype specific indentation and plugins on
@@ -114,8 +120,18 @@ set softtabstop=2
 set shiftround
 set expandtab
 
+" Statusline
+function! LspStatus() abort
+  if luaeval('#vim.lsp.buf_get_clients() > 0')
+    return luaeval("require('lsp-status').status()")
+  endif
+
+  return ''
+endfunction
+
 set statusline=%<\ %{mode()}\ \|\ %f%m\ \|\ %{fugitive#statusline()\ }
-set statusline+=\|\ %{coc#status()}
+" set statusline+=\|\ %{coc#status()}
+set statusline+=\|\ %{LspStatus()}
 set statusline+=%{&paste?'\ \ \|\ PASTE\ ':'\ '}
 set statusline+=%=\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %l/%L\(%c\)\ 
 
@@ -265,19 +281,6 @@ let test#strategy = "neovim"
 nmap <silent> <leader>rt :TestNearest<CR>
 nmap <silent> <leader>rf :TestFile<CR>
 nmap <silent> <leader>ra :TestSuite<CR>
-
-" Ale
-" let g:ale_linters = {'go': ['go build', 'gofmt'], 'rust': ['cargo', 'rls']}
-" let g:ale_lint_on_text_changed = 'never'
-" let g:ale_lint_on_insert_leave = 'never'
-" let g:ale_ocaml_ocamlformat_options = '--enable-outside-detected-project'
-" let g:ale_fixers = {'ocaml': ['ocp-indent'], 'c': ['clang-format']}
-" let g:ale_fix_on_save = 1
-" let g:ale_set_loclist = 1
-" let g:ale_set_quickfix = 0
-" let g:ale_open_list = 1
-" nmap <silent> <leader>aj :ALENextWrap<cr>
-" nmap <silent> <leader>ak :ALEPreviousWrap<cr>
 
 " Markdown
 let g:markdown_fenced_languages = ['go', 'ruby', 'html', 'javascript', 'bash=sh', 'sql']
@@ -445,66 +448,66 @@ autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 " Go
 nmap <leader>gos :e /usr/local/go/src/<CR>
-" let g:go_fmt_command = "goimports"
-let g:go_highlight_structs = 0
-let g:go_rename_command = "gopls"
 
-" let g:go_def_mode='gopls'
-let g:go_info_mode='gopls'
-let g:go_test_show_name = 1
 
-let g:go_term_mode = "split"
-let g:go_term_height = 10
-" let g:go_term_enabled = 1
+" LSP configuration
 "
-" Disabling everything for coc.vim
-let g:go_fmt_command = "gopls"
-let g:go_fmt_autosave = 1
-let g:go_echo_command_info = 1
-let g:go_auto_type_info = 1
-let g:go_diagnostics_enabled = 1
-let g:go_highlight_diagnostic_errors = 1
-let g:go_highlight_diagnostic_warnings = 1
-let g:go_def_mapping_enabled = 0
+" Set completeopt to have a better completion experience
+" :help completeopt
+" menuone: popup even when there's only one match
+" noinsert: Do not insert text until a selection is made
+" noselect: Do not select, force user to select one from the menu
+set completeopt=menuone,noinsert,noselect
 
-" coc.vim config
-" Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=300
-" don't give |ins-completion-menu| messages.
+" Avoid showing extra messages when using completion
 set shortmess+=c
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+" Configure LSP
+lua require("lsp")
 
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+" Use <Tab> and <S-Tab> to navigate through popup menu
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-nmap <leader>rn <Plug>(coc-rename)
-nmap <leader>cf <Plug>(coc-fix-current)
-nmap <leader>f  <Plug>(coc-format-selected)
-nnoremap <silent> <leader>cd :CocList diagnostics<cr>
-nnoremap <silent> <leader>ce :<C-u>CocList extensions<cr>
-nnoremap <silent> <leader>cc :<C-u>CocList commands<cr>
-nnoremap <silent> <leader>co :<C-u>CocList outline<cr>
-nnoremap <silent> <leader>cs :<C-u>CocList -I symbols<cr>
-" autocmd CursorHold * silent call CocActionAsync('doHover')
-"
+" use <Tab> as trigger keys
+imap <Tab> <Plug>(completion_smart_tab)
+imap <S-Tab> <Plug>(completion_smart_s_tab)
+" Code navigation shortcuts
+nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
+nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
+nnoremap <silent> gr    <cmd>lua vim.lsp.buf.rename()<CR>
+" Set updatetime for CursorHold
+" 300ms of no cursor movement to trigger CursorHold
+set updatetime=300
+" Show diagnostic popup on cursor hold
+autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
+" Goto previous/next diagnostic warning/error
+nnoremap <silent> g[ <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+nnoremap <silent> g] <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+" have a fixed column for the diagnostics to appear in
+" this removes the jitter when warnings/errors flow in
+set signcolumn=yes
+" Enable type inlay hints
+autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
+\ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment", enabled = {"ChainingHint", "TypeHint", "ParameterHint"} }
+
+" Auto-format *.rs files prior to saving them
+autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)
+
 augroup ft_golang
   au!
+
+  autocmd BufWritePre *.go lua goimports(1000)
+  autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync(nil, 1000)
+  " autocmd FileType go setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
   au BufEnter,BufNewFile,BufRead *.go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
   " au BufEnter,BufNewFile,BufRead *.go setlocal completeopt-=preview
@@ -512,19 +515,19 @@ augroup ft_golang
   au BufEnter,BufNewFile,BufRead *.go setlocal formatoptions+=ro
   au BufEnter,BufNewFile,BufRead *.tmpl setlocal filetype=html
 
-  au BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+  " au BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 
-  au Filetype go nmap <c-]> <Plug>(go-def)
-  au Filetype go nmap <leader>gdt :GoDefType<CR>
-  au Filetype go nmap <leader>gre :GoReferrers<CR>
-  au Filetype go nmap <leader>goi <Plug>(go-info)
-  au Filetype go nmap <leader>god :GoDeclsDir<CR>
-  au Filetype go nmap <leader>gou <Plug>(go-run)
-  au Filetype go nmap <leader>gor <Plug>(go-rename)
-  au Filetype go nmap <leader>got :GoTest!<CR>
-  au Filetype go nmap <leader>gie <Plug>(go-iferr)
-  au Filetype go nmap <leader>gdi :GoDiagnostics<CR>
-
+  " au Filetype go nmap <c-]> <Plug>(go-def)
+  " au Filetype go nmap <leader>gdt :GoDefType<CR>
+  " au Filetype go nmap <leader>gre :GoReferrers<CR>
+  " au Filetype go nmap <leader>goi <Plug>(go-info)
+  " au Filetype go nmap <leader>god :GoDeclsDir<CR>
+  " au Filetype go nmap <leader>gou <Plug>(go-run)
+  " au Filetype go nmap <leader>gor <Plug>(go-rename)
+  " au Filetype go nmap <leader>got :GoTest!<CR>
+  " au Filetype go nmap <leader>gie <Plug>(go-iferr)
+  " au Filetype go nmap <leader>gdi :GoDiagnostics<CR>
+  "
   au Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
   au Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
   au Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
@@ -540,7 +543,7 @@ augroup ft_rust
   au BufEnter,BufNewFile,BufRead *.rs :compiler cargo
 
   au FileType rust set nolist
-  au Filetype rust nmap <c-]> :call CocAction('jumpDefinition', 'drop')<CR>
+  " au Filetype rust nmap <c-]> :call CocAction('jumpDefinition', 'drop')<CR>
 augroup END
 
 " Racket
@@ -641,6 +644,22 @@ endif
 hi StatusLine ctermfg=15 ctermbg=32 cterm=bold
 hi SignColumn ctermfg=255 ctermbg=15
 
+highlight link LspDiagnosticsDefaultError ErrorMsg
+highlight link LspDiagnosticsDefaultWarning WarningMsg
+highlight link LspDiagnosticsDefaultHint Directory
+
+highlight link LspDiagnosticsUnderlineError ErrorMsg
+highlight link LspDiagnosticsUnderlineWarning WarningMsg
+highlight link LspDiagnosticsUnderlineInformation Directory
+highlight link LspDiagnosticsUnderlineHint Directory
+
+highlight LspDiagnosticsUnderlineError gui=underline cterm=underline
+highlight LspDiagnosticsUnderlineWarning gui=underline cterm=underline
+highlight LspDiagnosticsUnderlineInformation gui=underline cterm=underline
+highlight LspDiagnosticsUnderlineHint gui=underline cterm=underline
+
+
 " Only allow secure commands from this point on. Necessary because further up
 " project-specific vimrc files were allowed with `set exrc`
+"
 set secure
