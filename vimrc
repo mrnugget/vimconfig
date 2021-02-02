@@ -637,6 +637,10 @@ highlight LspDiagnosticsUnderlineWarning gui=underline cterm=underline
 highlight LspDiagnosticsUnderlineInformation gui=underline cterm=underline
 highlight LspDiagnosticsUnderlineHint gui=underline cterm=underline
 
+highlight LspDiagnosticsFloatingError guifg=#bf616a guibg=NONE gui=bold
+highlight LspDiagnosticsFloatingHint guifg=#a3be8c guibg=NONE
+highlight LspDiagnosticsFloatingInformation guifg=#5e81ac guibg=NONE
+highlight LspDiagnosticsFloatingWarning guifg=#ebcb8b guibg=NONE
 
 " Only allow secure commands from this point on. Necessary because further up
 " project-specific vimrc files were allowed with `set exrc`

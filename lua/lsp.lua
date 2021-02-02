@@ -76,7 +76,7 @@ vim.lsp.callbacks[method] = function(err, method, result, client_id)
     local item_list = {}
 
     for _, v in ipairs(result.diagnostics) do
-      local fname = result.uri
+      local fname = vim.uri_to_fname(result.uri)
       table.insert(item_list, {
         filename = fname,
         lnum = v.range.start.line + 1,
