@@ -1,40 +1,51 @@
--- lsp_status
+-- Setup local vars for easier access
+local nvim_lsp = require('lspconfig')
+local configs = require('lspconfig/configs')
+
 local lsp_status = require('lsp-status')
+local completion = require('completion')
+
+-- Setup lsp-status
 lsp_status.register_progress()
 lsp_status.config({
-  indicator_errors = 'E',
-  indicator_warnings = 'W',
-  indicator_info = 'i',
-  indicator_hint = '?',
-  indicator_ok = 'Ok',
+  indicator_errors = "×",
+  indicator_warnings = "!",
+  indicator_info = "i",
+  indicator_hint = "›",
+  -- the default is a wide codepoint which breaks absolute and relative
+  -- line counts if placed before airline's Z section
+  status_symbol = "",
 })
 
--- nvim_lsp object
-local nvim_lsp = require'lspconfig'
 
--- function to attach completion/lsp-satus when setting up lsp
 local on_attach = function(client)
-    require'completion'.on_attach(client)
-    lsp_status.on_attach(client)
+  completion.on_attach(client)
+  lsp_status.on_attach(client)
 end
 
--- Enable rust_analyzer
-nvim_lsp.rust_analyzer.setup({
-  on_attach=on_attach,
-})
-
--- Enable gopls
-nvim_lsp.gopls.setup({
-  on_attach=on_attach,
-  cmd = {"gopls", "serve"},
-  settings = {
+local servers = {
+  rust_analyzer = {
+    ["rust-analyzer"] = {
+      checkOnSave = {
+        command = "clippy",
+      },
+    },
+  },
+  gopls = {
     gopls = {
       analyses = {
         unusedparams = true,
       },
-    },
+    }
   },
-})
+}
+for ls, settings in pairs(servers) do
+  nvim_lsp[ls].setup {
+    on_attach = on_attach,
+    settings = settings,
+    capabilities = vim.tbl_extend("keep", configs[ls].capabilities or {}, lsp_status.capabilities),
+  }
+end
 
 function goimports(timeoutms)
   local context = { source = { organizeImports = true } }
@@ -61,11 +72,12 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
     virtual_text = true,
     signs = true,
-    update_in_insert = true,
+    update_in_insert = false,
   }
 )
 
--- populate quickfix list with diagnostics
+-- This is taken from https://www.reddit.com/r/neovim/comments/iil3jt/nvimlsp_how_to_display_all_diagnostics_for_entire/
+-- and *always* shows all the diagnostics for the current workspace.
 local method = "textDocument/publishDiagnostics"
 local default_callback = vim.lsp.callbacks[method]
 
@@ -92,6 +104,7 @@ vim.lsp.callbacks[method] = function(err, method, result, client_id)
         table.insert(item_list, old_item)
       end
     end
-    vim.fn.setqflist({}, ' ', { title = 'LSP'; items = item_list; })
+
+    vim.fn.setqflist({}, ' ', { title = 'LSP Diagnostics'; items = item_list; })
   end
 end
