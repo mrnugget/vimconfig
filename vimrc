@@ -5,12 +5,15 @@ let g:polyglot_disabled = ['go', 'markdown']
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'bronson/vim-visual-star-search'
 Plug 'christoomey/vim-tmux-navigator'
+
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'sheerun/vim-polyglot'
 Plug 'plasticboy/vim-markdown'
+
 Plug 'junegunn/fzf.vim'
 Plug 'sjl/tslime.vim'
 Plug 'tomtom/tcomment_vim'
+
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
@@ -19,14 +22,13 @@ Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-unimpaired'
+
 Plug 'janko-m/vim-test'
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install',
-  \ 'for': ['javascript', 'typescript', 'typescript.jsx', 'typescript.tsx', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'html'] }
 
 Plug 'jonathanfilip/vim-lucius'
 Plug 'tomasiser/vim-code-dark'
-"
+Plug 'arcticicestudio/nord-vim'
+
 " Collection of common configurations for the Nvim LSP client
 Plug 'neovim/nvim-lspconfig'
 " Extensions to built-in LSP, for example, providing type inlay hints
@@ -36,7 +38,6 @@ Plug 'nvim-lua/completion-nvim'
 " Status in statusline
 Plug 'nvim-lua/lsp-status.nvim'
 
-Plug 'arcticicestudio/nord-vim'
 call plug#end()
 
 " Syntax and filetype specific indentation and plugins on
@@ -120,20 +121,6 @@ set softtabstop=2
 set shiftround
 set expandtab
 
-" Statusline
-function! LspStatus() abort
-  if luaeval('#vim.lsp.buf_get_clients() > 0')
-    return luaeval("require('lsp-status').status()")
-  endif
-
-  return ''
-endfunction
-
-set statusline=%<\ %{mode()}\ \|\ %f%m\ \|\ %{fugitive#statusline()\ }
-set statusline+=\|\ %{LspStatus()}
-set statusline+=%{&paste?'\ \ \|\ PASTE\ ':'\ '}
-set statusline+=%=\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %l/%L\(%c\)\ 
-
 set list
 set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
 set ruler
@@ -149,9 +136,9 @@ if executable('rg')
   set grepprg=rg\ --vimgrep
 endif
 
-"""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Mappings
-"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " <leader> is ,
 let mapleader = ","
 noremap \ ,
@@ -230,20 +217,11 @@ vmap <silent> <leader>jq :!cat\|jq . <CR>
 vmap <silent> <leader>pan :w !cat\|pandoc -s -f markdown --metadata title="foo" -o ~/tmp/pandoc_out.html && open ~/tmp/pandoc_out.html <CR>
 vmap <silent> <leader>word :w !cat\|pandoc -s -f markdown --toc --metadata title="foo" -o ~/tmp/pandoc_out.docx && open ~/tmp/pandoc_out.docx <CR>
 
-" Node.js
-nmap <leader>no :!node %<CR>
-" Ruby
-nmap <leader>ru :!ruby %<CR>
-
-"""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin Configuration
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable the cfilter plugin that ships with Vim/NeoVim
 packadd cfilter
-
-" prettier
-let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.ts,*.tsx PrettierAsync
 
 " Enable matchit.vim, which ships with Vim but isn't enabled by default
 " somehow
@@ -323,9 +301,9 @@ let g:fzf_colors =
   \ "spinner": ["fg", "IncSearch"],
   \ "header":  ["fg", "WildMenu"] }
 
-""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Notes
-""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let s:notes_folder = "~/Dropbox/notes"
 let s:notes_fileending = ".md"
 
@@ -411,46 +389,9 @@ nmap <silent> <leader>nn :Notes<CR>
 nmap <silent> <leader>fn :FindNotes<CR>
 nmap <silent> <leader>nw :FindNotesWithPreview<CR>
 
-"""""""""""""""""""
-" Filetypes
-
-" Markdown
-augroup ft_markdown
-  au!
-  au BufNewFile,BufRead *.md setlocal filetype=markdown
-
-  " au BufNewFile,BufRead *.md setlocal wrap
-  " au BufNewFile,BufRead *.md setlocal linebreak
-
-  au Filetype markdown setlocal textwidth=80
-  au Filetype markdown setlocal smartindent " Indent lists correctly
-  au FileType markdown setlocal nolist
-  " Taken from here: https://github.com/plasticboy/vim-markdown/issues/232
-  au FileType markdown
-      \ set formatoptions-=q |
-      \ set formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*\[-*+]\\s\\+
-augroup END
-
-" C
-augroup ft_c
-  au!
-  au BufNewFile,BufRead *.h setlocal filetype=c
-  au Filetype c setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
-  au Filetype c setlocal cinoptions=l1,t0,g0 " This fixes weird indentation of switch/case
-  " Kernel Settings
-  " au FileType c setlocal tabstop=8 shiftwidth=8 textwidth=80 noexpandtab
-  " au FileType c setlocal cindent formatoptions=tcqlron cinoptions=:0,l1,t0,g0
-augroup END
-
-" Python
-autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
-
-" Go
-nmap <leader>gos :e /usr/local/go/src/<CR>
-
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " LSP configuration
-"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set completeopt to have a better completion experience
 " :help completeopt
 " menuone: popup even when there's only one match
@@ -498,6 +439,36 @@ set signcolumn=yes
 autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
 \ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment", enabled = {"ChainingHint", "TypeHint", "ParameterHint"} }
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Filetypes
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Markdown
+augroup ft_markdown
+  au!
+  au BufNewFile,BufRead *.md setlocal filetype=markdown
+
+  au Filetype markdown setlocal textwidth=80
+  au Filetype markdown setlocal smartindent " Indent lists correctly
+  au FileType markdown setlocal nolist
+  " Taken from here: https://github.com/plasticboy/vim-markdown/issues/232
+  au FileType markdown
+      \ set formatoptions-=q |
+      \ set formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*\[-*+]\\s\\+
+augroup END
+
+" C
+augroup ft_c
+  au!
+  au BufNewFile,BufRead *.h setlocal filetype=c
+  au Filetype c setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
+  au Filetype c setlocal cinoptions=l1,t0,g0 " This fixes weird indentation of switch/case
+augroup END
+
+" Python
+autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
+
+" Go
 augroup ft_golang
   au!
 
@@ -546,7 +517,7 @@ augroup END
 " normal mode
 augroup ft_asm
   au!
-  autocmd FileType asm setlocal formatoptions+=ro
+  au FileType asm setlocal formatoptions+=ro
 augroup END
 
 " Merlin setup for Ocaml
@@ -570,7 +541,7 @@ augroup ft_ocaml
   au Filetype ocaml nmap <leader>os :MerlinShrinkEnclosing<CR>
 augroup END
 
-
+" YAML
 augroup ft_yaml
   au!
   au FileType yaml setlocal nolist
@@ -579,18 +550,21 @@ augroup ft_yaml
 augroup END
 
 " Quickfix List
-" Autowrap long lines in the quickfix window
-augroup ft_quickfix
-    autocmd!
-    autocmd FileType qf setlocal wrap
-augroup END
+"
 " Adjust height of quickfix window
-au FileType qf call AdjustWindowHeight(3, 10)
 function! AdjustWindowHeight(minheight, maxheight)
   exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
 endfunction
+augroup ft_quickfix
+    autocmd!
+    " Autowrap long lines in the quickfix window
+    autocmd FileType qf setlocal wrap
+    autocmd FileType qf call AdjustWindowHeight(3, 10)
+augroup END
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " GVim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has("gui_running")
   set guioptions=gc
   set lines=60 columns=90
@@ -600,6 +574,26 @@ if has("gui_running")
     set guifont=Monospace\ 9
   endif
 endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Statusline
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! LspStatus() abort
+  if luaeval('#vim.lsp.buf_get_clients() > 0')
+    return luaeval("require('lsp-status').status()")
+  endif
+
+  return ''
+endfunction
+
+set statusline=%<\ %{mode()}\ \|\ %f%m\ \|\ %{fugitive#statusline()\ }
+set statusline+=\|\ %{LspStatus()}
+set statusline+=%{&paste?'\ \ \|\ PASTE\ ':'\ '}
+set statusline+=%=\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %l/%L\(%c\)\ 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Colors/colorscheme/etc.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 set termguicolors
 set t_Co=256
@@ -642,7 +636,9 @@ highlight LspDiagnosticsFloatingHint guifg=#a3be8c guibg=NONE
 highlight LspDiagnosticsFloatingInformation guifg=#5e81ac guibg=NONE
 highlight LspDiagnosticsFloatingWarning guifg=#ebcb8b guibg=NONE
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" THE END
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Only allow secure commands from this point on. Necessary because further up
 " project-specific vimrc files were allowed with `set exrc`
-"
 set secure
