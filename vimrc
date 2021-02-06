@@ -620,20 +620,26 @@ if has("gui_running")
 endif
 
 set termguicolors
+set t_Co=256
+set t_ut=
 
-set background=light
-let g:lucius_style  = 'light'
-let g:lucius_contrast  = 'high'
-let g:lucius_contrast_bg  = 'high'
-let g:lucius_no_term_bg  = 1
-colorscheme lucius
+let kitty_profile = $KITTY_COLORS
 
-" Give the active window a blue background and white foreground
+if kitty_profile == "dark"
+  set background=dark
+  colorscheme codedark
+else
+  set background=light
+  let g:lucius_style  = 'light'
+  let g:lucius_contrast  = 'high'
+  let g:lucius_contrast_bg  = 'high'
+  let g:lucius_no_term_bg  = 1
+  colorscheme lucius
+endif
+
+" Give the active window a blue background and white foreground statusline
 hi StatusLine ctermfg=15 ctermbg=32 cterm=bold
 hi SignColumn ctermfg=255 ctermbg=15
-" set t_Co=256
-" set t_ut=
-" colorscheme codedark
 
 " Only allow secure commands from this point on. Necessary because further up
 " project-specific vimrc files were allowed with `set exrc`
