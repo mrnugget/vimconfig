@@ -86,7 +86,6 @@ vim.lsp.callbacks[method] = function(err, method, result, client_id)
 
   if result and result.diagnostics then
     local item_list = {}
-
     for _, v in ipairs(result.diagnostics) do
       local fname = vim.uri_to_fname(result.uri)
       table.insert(item_list, {
@@ -107,4 +106,34 @@ vim.lsp.callbacks[method] = function(err, method, result, client_id)
 
     vim.fn.setqflist({}, ' ', { title = 'LSP Diagnostics'; items = item_list; })
   end
+end
+
+
+function all_diagnostics()
+  local result = {}
+
+  if vim.lsp.buf_get_clients() == 0 then
+    return result
+  end
+
+  local levels = {
+    errors = 'Error',
+    warnings = 'Warning',
+    info = 'Information',
+    hints = 'Hint'
+  }
+
+  for k, level in pairs(levels) do
+    result[k] = 0
+  end
+
+  for _, bufnr in pairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_loaded(bufnr) then
+      for k, level in pairs(levels) do
+        result[k] = result[k] + vim.lsp.diagnostic.get_count(bufnr, level)
+      end
+    end
+  end
+
+  return result
 end

@@ -25,6 +25,8 @@ Plug 'tpope/vim-unimpaired'
 
 Plug 'janko-m/vim-test'
 
+Plug 'camdencheek/sgbrowse'
+
 Plug 'jonathanfilip/vim-lucius'
 Plug 'tomasiser/vim-code-dark'
 Plug 'arcticicestudio/nord-vim'
@@ -37,6 +39,7 @@ Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'nvim-lua/completion-nvim'
 " Status in statusline
 Plug 'nvim-lua/lsp-status.nvim'
+Plug 'rafcamlet/nvim-luapad'
 
 call plug#end()
 
@@ -418,7 +421,7 @@ nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> gR    <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
 nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
@@ -604,6 +607,11 @@ let kitty_profile = $KITTY_COLORS
 if kitty_profile == "dark"
   set background=dark
   colorscheme codedark
+
+  highlight LspDiagnosticsFloatingError guifg=#940000 guibg=NONE gui=bold
+  highlight LspDiagnosticsFloatingHint guifg=#a3be8c guibg=NONE
+  highlight LspDiagnosticsFloatingInformation guifg=#5e81ac guibg=NONE
+  highlight LspDiagnosticsFloatingWarning guifg=#ebcb8b guibg=NONE
 else
   set background=light
   let g:lucius_style  = 'light'
@@ -611,14 +619,23 @@ else
   let g:lucius_contrast_bg  = 'high'
   let g:lucius_no_term_bg  = 1
   colorscheme lucius
-endif
 
-" Give the active window a blue background and white foreground statusline
-hi StatusLine ctermfg=15 ctermbg=32 cterm=bold
-hi SignColumn ctermfg=255 ctermbg=15
+  " Give the active window a blue background and white foreground statusline
+  hi StatusLine ctermfg=15 ctermbg=32 guifg=#FFFFFF guibg=#005FAF gui=bold cterm=bold
+  hi SignColumn ctermfg=255 ctermbg=15 guifg=#E4E4E4 guibg=#FFFFFF
+
+  " Tweak popup colors
+  highlight Pmenu guibg=#E4E4E4 guifg=#808080
+
+  highlight link LspDiagnosticsFloatingError ErrorMsg
+  highlight link LspDiagnosticsFloatingHint WarningMsg
+  highlight link LspDiagnosticsFloatingInformation Directory
+  highlight link LspDiagnosticsFloatingWarning Directory
+endif
 
 highlight link LspDiagnosticsDefaultError ErrorMsg
 highlight link LspDiagnosticsDefaultWarning WarningMsg
+highlight link LspDiagnosticsDefaultInformation Directory
 highlight link LspDiagnosticsDefaultHint Directory
 
 highlight link LspDiagnosticsUnderlineError ErrorMsg
@@ -630,11 +647,6 @@ highlight LspDiagnosticsUnderlineError gui=underline cterm=underline
 highlight LspDiagnosticsUnderlineWarning gui=underline cterm=underline
 highlight LspDiagnosticsUnderlineInformation gui=underline cterm=underline
 highlight LspDiagnosticsUnderlineHint gui=underline cterm=underline
-
-highlight LspDiagnosticsFloatingError guifg=#bf616a guibg=NONE gui=bold
-highlight LspDiagnosticsFloatingHint guifg=#a3be8c guibg=NONE
-highlight LspDiagnosticsFloatingInformation guifg=#5e81ac guibg=NONE
-highlight LspDiagnosticsFloatingWarning guifg=#ebcb8b guibg=NONE
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " THE END
