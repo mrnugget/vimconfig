@@ -20,7 +20,11 @@ lsp_status.config({
 
 local on_attach = function(client)
   completion.on_attach(client)
-  lsp_status.on_attach(client)
+  -- TODO: This is disabled because it caused some redraw glitches
+  -- lsp_status.on_attach(client)
+
+  -- Let's try this:
+  client.config.flags.allow_incremental_sync = true
 end
 
 local servers = {
@@ -34,7 +38,7 @@ local servers = {
   gopls = {
     gopls = {
       analyses = {
-        unusedparams = true,
+        unusedparams = false,
       },
     }
   },
@@ -43,7 +47,8 @@ for ls, settings in pairs(servers) do
   nvim_lsp[ls].setup {
     on_attach = on_attach,
     settings = settings,
-    capabilities = vim.tbl_extend("keep", configs[ls].capabilities or {}, lsp_status.capabilities),
+  -- TODO: This is disabled because it caused some redraw glitches
+    -- capabilities = vim.tbl_extend("keep", configs[ls].capabilities or {}, lsp_status.capabilities),
   }
 end
 

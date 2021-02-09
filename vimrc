@@ -625,12 +625,12 @@ else
   hi SignColumn ctermfg=255 ctermbg=15 guifg=#E4E4E4 guibg=#FFFFFF
 
   " Tweak popup colors
-  highlight Pmenu guibg=#E4E4E4 guifg=#808080
+  highlight Pmenu guibg=#E4E4E4 guifg=#000000
 
   highlight link LspDiagnosticsFloatingError ErrorMsg
-  highlight link LspDiagnosticsFloatingHint WarningMsg
+  highlight link LspDiagnosticsFloatingWarning WarningMsg
+  highlight link LspDiagnosticsFloatingHint Directory
   highlight link LspDiagnosticsFloatingInformation Directory
-  highlight link LspDiagnosticsFloatingWarning Directory
 endif
 
 highlight link LspDiagnosticsDefaultError ErrorMsg
