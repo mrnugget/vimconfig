@@ -548,7 +548,7 @@ augroup END
 augroup ft_yaml
   au!
   au FileType yaml setlocal nolist
-  au FileType yaml setlocal nonumber
+  au FileType yaml setlocal number
   au FileType yaml setlocal colorcolumn=0
 augroup END
 
