@@ -39,6 +39,7 @@ Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'nvim-lua/completion-nvim'
 " Status in statusline
 Plug 'nvim-lua/lsp-status.nvim'
+Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'rafcamlet/nvim-luapad'
 
 call plug#end()
@@ -427,6 +428,7 @@ nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
 nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
 nnoremap <silent> gr    <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <silent> gld    <cmd>lua require('lsp_extensions.workspace.diagnostic').set_qf_list()<CR>
 " Set updatetime for CursorHold
 " 300ms of no cursor movement to trigger CursorHold
 set updatetime=300
@@ -493,10 +495,25 @@ let g:rustfmt_autosave = 1
 let g:rustfmt_fail_silently = 0
 let g:racer_cmd = "/Users/thorstenball/.cargo/bin/racer"
 
+" See https://github.com/neovim/nvim-lspconfig/issues/465
+" Can hopefully be removed when these are fixed:
+" - https://github.com/neovim/neovim/pull/13692
+" - https://github.com/neovim/neovim/pull/13703
+lua <<EOF
+function format_rust()
+    local lineno = vim.api.nvim_win_get_cursor(0)
+    vim.lsp.buf.formatting_sync(nil, 1000)
+    vim.api.nvim_win_set_cursor(0, lineno)
+end
+EOF
+
+autocmd BufWritePre *.rs lua format_rust()
 augroup ft_rust
   au!
   au BufEnter,BufNewFile,BufRead *.rs :compiler cargo
-  au BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)
+  " au BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)
+  " See comment above
+  au BufWritePre *.rs lua format_rust()
   au FileType rust set nolist
 augroup END
 
