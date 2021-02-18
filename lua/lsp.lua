@@ -52,6 +52,17 @@ for ls, settings in pairs(servers) do
   }
 end
 
+
+-- See https://github.com/neovim/nvim-lspconfig/issues/465
+-- Can hopefully be removed when these are fixed:
+-- - https://github.com/neovim/neovim/pull/13692
+-- - https://github.com/neovim/neovim/pull/13703
+function format_rust()
+  local lineno = vim.api.nvim_win_get_cursor(0)
+  vim.lsp.buf.formatting_sync(nil, 1000)
+  vim.api.nvim_win_set_cursor(0, lineno)
+end
+
 function goimports(timeoutms)
   local context = { source = { organizeImports = true } }
   vim.validate { context = { context, "t", true } }
@@ -84,3 +95,16 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   }
 )
 
+
+function _G.workspace_diagnostics()
+  if #vim.lsp.buf_get_clients() == 0 then
+    return ''
+  end
+  local ws_diag = require('lsp_extensions.workspace.diagnostic')
+
+  local errors = ws_diag.get_count(0, 'Error')
+  local warnings = ws_diag.get_count(0, 'Warning')
+  local hint = ws_diag.get_count(0, 'Hint')
+
+  return string.format( 'E: %s, W: %s, H: %s', errors, warnings, hint)
+end

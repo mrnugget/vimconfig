@@ -478,7 +478,6 @@ augroup ft_golang
   au!
 
   autocmd BufWritePre *.go lua goimports(1000)
-  " autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync(nil, 1000)
 
   au BufEnter,BufNewFile,BufRead *.go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
   " Enable automatic continuation of comment inserting
@@ -491,29 +490,11 @@ augroup ft_golang
 augroup END
 
 " Rust
-let g:rustfmt_autosave = 1
-let g:rustfmt_fail_silently = 0
-let g:racer_cmd = "/Users/thorstenball/.cargo/bin/racer"
-
-" See https://github.com/neovim/nvim-lspconfig/issues/465
-" Can hopefully be removed when these are fixed:
-" - https://github.com/neovim/neovim/pull/13692
-" - https://github.com/neovim/neovim/pull/13703
-lua <<EOF
-function format_rust()
-    local lineno = vim.api.nvim_win_get_cursor(0)
-    vim.lsp.buf.formatting_sync(nil, 1000)
-    vim.api.nvim_win_set_cursor(0, lineno)
-end
-EOF
-
-autocmd BufWritePre *.rs lua format_rust()
 augroup ft_rust
   au!
-  au BufEnter,BufNewFile,BufRead *.rs :compiler cargo
-  " au BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)
-  " See comment above
   au BufWritePre *.rs lua format_rust()
+
+  au BufEnter,BufNewFile,BufRead *.rs :compiler cargo
   au FileType rust set nolist
 augroup END
 
@@ -606,8 +587,10 @@ function! LspStatus() abort
   return ''
 endfunction
 
+
 set statusline=%<\ %{mode()}\ \|\ %f%m\ \|\ %{fugitive#statusline()\ }
 set statusline+=\|\ %{LspStatus()}
+set statusline+=\|\ %{v:lua.workspace_diagnostics()}
 set statusline+=%{&paste?'\ \ \|\ PASTE\ ':'\ '}
 set statusline+=%=\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %l/%L\(%c\)\ 
 
