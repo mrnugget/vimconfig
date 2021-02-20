@@ -609,7 +609,7 @@ if kitty_profile == "dark"
   colorscheme codedark
 
   highlight LspDiagnosticsFloatingError guifg=#940000 guibg=NONE gui=bold
-  highlight LspDiagnosticsFloatingHint guifg=#a3be8c guibg=NONE
+  highlight LspDiagnosticsFloatingHint guifg=#569CD6 guibg=NONE
   highlight LspDiagnosticsFloatingInformation guifg=#5e81ac guibg=NONE
   highlight LspDiagnosticsFloatingWarning guifg=#ebcb8b guibg=NONE
 else
