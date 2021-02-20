@@ -37,9 +37,6 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/lsp_extensions.nvim'
 " Autocompletion framework for built-in LSP
 Plug 'nvim-lua/completion-nvim'
-" Status in statusline
-Plug 'nvim-lua/lsp-status.nvim'
-Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'rafcamlet/nvim-luapad'
 
 call plug#end()
@@ -579,18 +576,9 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Statusline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! LspStatus() abort
-  if luaeval('#vim.lsp.buf_get_clients() > 0')
-    return luaeval("require('lsp-status').status()")
-  endif
-
-  return ''
-endfunction
-
 
 set statusline=%<\ %{mode()}\ \|\ %f%m\ \|\ %{fugitive#statusline()\ }
-set statusline+=\|\ %{LspStatus()}
-set statusline+=\|\ %{v:lua.workspace_diagnostics()}
+set statusline+=\ \|\ %{v:lua.workspace_diagnostics()}
 set statusline+=%{&paste?'\ \ \|\ PASTE\ ':'\ '}
 set statusline+=%=\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %l/%L\(%c\)\ 
 

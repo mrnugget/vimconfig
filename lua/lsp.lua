@@ -2,27 +2,10 @@
 local nvim_lsp = require('lspconfig')
 local configs = require('lspconfig/configs')
 
-local lsp_status = require('lsp-status')
 local completion = require('completion')
-
--- Setup lsp-status
-lsp_status.register_progress()
-lsp_status.config({
-  indicator_errors = "×",
-  indicator_warnings = "!",
-  indicator_info = "i",
-  indicator_hint = "›",
-  -- the default is a wide codepoint which breaks absolute and relative
-  -- line counts if placed before airline's Z section
-  status_symbol = "",
-})
-
 
 local on_attach = function(client)
   completion.on_attach(client)
-  -- TODO: This is disabled because it caused some redraw glitches
-  -- lsp_status.on_attach(client)
-
   -- Let's try this:
   client.config.flags.allow_incremental_sync = true
 end
@@ -43,15 +26,13 @@ local servers = {
     }
   },
 }
+
 for ls, settings in pairs(servers) do
   nvim_lsp[ls].setup {
     on_attach = on_attach,
     settings = settings,
-    -- TODO: This is disabled because it caused some redraw glitches
-    -- capabilities = vim.tbl_extend("keep", configs[ls].capabilities or {}, lsp_status.capabilities),
   }
 end
-
 
 -- See https://github.com/neovim/nvim-lspconfig/issues/465
 -- Can hopefully be removed when these are fixed:
@@ -100,11 +81,24 @@ function _G.workspace_diagnostics()
   if #vim.lsp.buf_get_clients() == 0 then
     return ''
   end
+
   local ws_diag = require('lsp_extensions.workspace.diagnostic')
 
+  local status = {}
   local errors = ws_diag.get_count(0, 'Error')
-  local warnings = ws_diag.get_count(0, 'Warning')
-  local hint = ws_diag.get_count(0, 'Hint')
+  if errors > 0 then
+    table.insert(status, "E: " .. errors)
+  end
 
-  return string.format( 'E: %s, W: %s, H: %s', errors, warnings, hint)
+  local warnings = ws_diag.get_count(0, 'Warning')
+  if warnings > 0 then
+    table.insert(status, "W: " .. warnings)
+  end
+
+  local hints = ws_diag.get_count(0, 'Hint')
+  if hints > 0 then
+    table.insert(status, "H: " .. hints)
+  end
+
+  return table.concat(status, " | ")
 end
