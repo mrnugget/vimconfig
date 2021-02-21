@@ -5,14 +5,13 @@ let g:polyglot_disabled = ['go', 'markdown']
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'bronson/vim-visual-star-search'
 Plug 'christoomey/vim-tmux-navigator'
-
-" Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-Plug 'sheerun/vim-polyglot'
-Plug 'plasticboy/vim-markdown'
-
 Plug 'junegunn/fzf.vim'
 Plug 'sjl/tslime.vim'
 Plug 'tomtom/tcomment_vim'
+
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+Plug 'sheerun/vim-polyglot'
+Plug 'plasticboy/vim-markdown'
 
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
@@ -29,7 +28,6 @@ Plug 'camdencheek/sgbrowse'
 
 Plug 'jonathanfilip/vim-lucius'
 Plug 'tomasiser/vim-code-dark'
-Plug 'arcticicestudio/nord-vim'
 
 " Collection of common configurations for the Nvim LSP client
 Plug 'neovim/nvim-lspconfig'
@@ -405,6 +403,18 @@ set completeopt=menuone,noinsert,noselect
 set shortmess+=c
 
 if has('nvim')
+  " If we're using Neovim's builtin LSP support, let's disable a lot of the
+  " auto-functionality in vim-go:
+  let g:go_def_mapping_enabled = 0
+  let g:go_term_enabled = 1
+  let g:go_diagnostics_enabled = 0
+  let g:go_code_completion_enabled = 0
+  let g:go_fmt_autosave = 0
+  let g:go_mod_fmt_autosave = 0
+  let g:go_doc_keywordprg_enabled = 0
+  let g:go_gopls_enabled = 0
+  let g:go_diagnostics_enabled = 0
+
   " Configure LSP
   lua require("lsp")
 
