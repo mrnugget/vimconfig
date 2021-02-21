@@ -5,12 +5,14 @@ let g:polyglot_disabled = ['go', 'markdown']
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'bronson/vim-visual-star-search'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-Plug 'sheerun/vim-polyglot'
-Plug 'plasticboy/vim-markdown'
 Plug 'junegunn/fzf.vim'
 Plug 'sjl/tslime.vim'
 Plug 'tomtom/tcomment_vim'
+
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+Plug 'sheerun/vim-polyglot'
+Plug 'plasticboy/vim-markdown'
+
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
@@ -19,17 +21,21 @@ Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-unimpaired'
+
 Plug 'janko-m/vim-test'
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install',
-  \ 'for': ['javascript', 'typescript', 'typescript.jsx', 'typescript.tsx', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'html'] }
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+Plug 'camdencheek/sgbrowse'
+
 Plug 'jonathanfilip/vim-lucius'
 Plug 'tomasiser/vim-code-dark'
-" Telescope.vim
-" Plug 'nvim-lua/popup.nvim'
-" Plug 'nvim-lua/plenary.nvim'
-" Plug 'nvim-telescope/telescope.nvim'
+
+" Collection of common configurations for the Nvim LSP client
+Plug 'neovim/nvim-lspconfig'
+" Extensions to built-in LSP, for example, providing type inlay hints
+Plug 'nvim-lua/lsp_extensions.nvim'
+" Autocompletion framework for built-in LSP
+Plug 'nvim-lua/completion-nvim'
+Plug 'rafcamlet/nvim-luapad'
 
 call plug#end()
 
@@ -114,11 +120,6 @@ set softtabstop=2
 set shiftround
 set expandtab
 
-set statusline=%<\ %{mode()}\ \|\ %f%m\ \|\ %{fugitive#statusline()\ }
-set statusline+=\|\ %{coc#status()}
-set statusline+=%{&paste?'\ \ \|\ PASTE\ ':'\ '}
-set statusline+=%=\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %l/%L\(%c\)\ 
-
 set list
 set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
 set ruler
@@ -134,9 +135,9 @@ if executable('rg')
   set grepprg=rg\ --vimgrep
 endif
 
-"""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Mappings
-"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " <leader> is ,
 let mapleader = ","
 noremap \ ,
@@ -215,20 +216,11 @@ vmap <silent> <leader>jq :!cat\|jq . <CR>
 vmap <silent> <leader>pan :w !cat\|pandoc -s -f markdown --metadata title="foo" -o ~/tmp/pandoc_out.html && open ~/tmp/pandoc_out.html <CR>
 vmap <silent> <leader>word :w !cat\|pandoc -s -f markdown --toc --metadata title="foo" -o ~/tmp/pandoc_out.docx && open ~/tmp/pandoc_out.docx <CR>
 
-" Node.js
-nmap <leader>no :!node %<CR>
-" Ruby
-nmap <leader>ru :!ruby %<CR>
-
-"""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin Configuration
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable the cfilter plugin that ships with Vim/NeoVim
 packadd cfilter
-
-" prettier
-let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.ts,*.tsx PrettierAsync
 
 " Enable matchit.vim, which ships with Vim but isn't enabled by default
 " somehow
@@ -259,25 +251,13 @@ vmap <leader>ah :Tabularize /=>\?<CR>
 
 " vim-test
 let test#strategy = "neovim"
+let test#neovim#term_position = "vert botright 100"
 " ,rt runs rspec on current (or previously set ) single spec ('run this')
 " ,rf runs rspec on current (or previously set) spec file ('run file')
 " ,ra runs all specs ('run all')
 nmap <silent> <leader>rt :TestNearest<CR>
 nmap <silent> <leader>rf :TestFile<CR>
 nmap <silent> <leader>ra :TestSuite<CR>
-
-" Ale
-" let g:ale_linters = {'go': ['go build', 'gofmt'], 'rust': ['cargo', 'rls']}
-" let g:ale_lint_on_text_changed = 'never'
-" let g:ale_lint_on_insert_leave = 'never'
-" let g:ale_ocaml_ocamlformat_options = '--enable-outside-detected-project'
-" let g:ale_fixers = {'ocaml': ['ocp-indent'], 'c': ['clang-format']}
-" let g:ale_fix_on_save = 1
-" let g:ale_set_loclist = 1
-" let g:ale_set_quickfix = 0
-" let g:ale_open_list = 1
-" nmap <silent> <leader>aj :ALENextWrap<cr>
-" nmap <silent> <leader>ak :ALEPreviousWrap<cr>
 
 " Markdown
 let g:markdown_fenced_languages = ['go', 'ruby', 'html', 'javascript', 'bash=sh', 'sql']
@@ -321,9 +301,9 @@ let g:fzf_colors =
   \ "spinner": ["fg", "IncSearch"],
   \ "header":  ["fg", "WildMenu"] }
 
-""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Notes
-""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let s:notes_folder = "~/Dropbox/notes"
 let s:notes_fileending = ".md"
 
@@ -409,16 +389,79 @@ nmap <silent> <leader>nn :Notes<CR>
 nmap <silent> <leader>fn :FindNotes<CR>
 nmap <silent> <leader>nw :FindNotesWithPreview<CR>
 
-"""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" LSP configuration
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Set completeopt to have a better completion experience
+" :help completeopt
+" menuone: popup even when there's only one match
+" noinsert: Do not insert text until a selection is made
+" noselect: Do not select, force user to select one from the menu
+set completeopt=menuone,noinsert,noselect
+
+" Avoid showing extra messages when using completion
+set shortmess+=c
+
+if has('nvim')
+  " If we're using Neovim's builtin LSP support, let's disable a lot of the
+  " auto-functionality in vim-go:
+  let g:go_def_mapping_enabled = 0
+  let g:go_term_enabled = 1
+  let g:go_diagnostics_enabled = 0
+  let g:go_code_completion_enabled = 0
+  let g:go_fmt_autosave = 0
+  let g:go_mod_fmt_autosave = 0
+  let g:go_doc_keywordprg_enabled = 0
+  let g:go_gopls_enabled = 0
+  let g:go_diagnostics_enabled = 0
+
+  " Configure LSP
+  lua require("lsp")
+
+  " Use <Tab> and <S-Tab> to navigate through popup menu
+  inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+  " use <Tab> as trigger keys
+  imap <Tab> <Plug>(completion_smart_tab)
+  imap <S-Tab> <Plug>(completion_smart_s_tab)
+  " Code navigation shortcuts
+  nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+  nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+  nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+  nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+  nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+  nnoremap <silent> gR    <cmd>lua vim.lsp.buf.references()<CR>
+  nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+  nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+  nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
+  nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
+  nnoremap <silent> gr    <cmd>lua vim.lsp.buf.rename()<CR>
+  nnoremap <silent> gld    <cmd>lua require('lsp_extensions.workspace.diagnostic').set_qf_list()<CR>
+  " Set updatetime for CursorHold
+  " 300ms of no cursor movement to trigger CursorHold
+  set updatetime=300
+  " Show diagnostic popup on cursor hold
+  autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
+  " Goto previous/next diagnostic warning/error
+  nnoremap <silent> g[ <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+  nnoremap <silent> g] <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+  " have a fixed column for the diagnostics to appear in
+  " this removes the jitter when warnings/errors flow in
+  set signcolumn=yes
+  " Enable type inlay hints
+  autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
+  \ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Whitespace", enabled = {"ChainingHint", "TypeHint", "ParameterHint"} }
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Filetypes
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Markdown
 augroup ft_markdown
   au!
   au BufNewFile,BufRead *.md setlocal filetype=markdown
-
-  " au BufNewFile,BufRead *.md setlocal wrap
-  " au BufNewFile,BufRead *.md setlocal linebreak
 
   au Filetype markdown setlocal textwidth=80
   au Filetype markdown setlocal smartindent " Indent lists correctly
@@ -435,95 +478,21 @@ augroup ft_c
   au BufNewFile,BufRead *.h setlocal filetype=c
   au Filetype c setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
   au Filetype c setlocal cinoptions=l1,t0,g0 " This fixes weird indentation of switch/case
-  " Kernel Settings
-  " au FileType c setlocal tabstop=8 shiftwidth=8 textwidth=80 noexpandtab
-  " au FileType c setlocal cindent formatoptions=tcqlron cinoptions=:0,l1,t0,g0
 augroup END
 
 " Python
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 " Go
-nmap <leader>gos :e /usr/local/go/src/<CR>
-" let g:go_fmt_command = "goimports"
-let g:go_highlight_structs = 0
-let g:go_rename_command = "gopls"
-
-" let g:go_def_mode='gopls'
-let g:go_info_mode='gopls'
-let g:go_test_show_name = 1
-
-let g:go_term_mode = "split"
-let g:go_term_height = 10
-" let g:go_term_enabled = 1
-"
-" Disabling everything for coc.vim
-let g:go_fmt_command = "gopls"
-let g:go_fmt_autosave = 1
-let g:go_echo_command_info = 1
-let g:go_auto_type_info = 1
-let g:go_diagnostics_enabled = 1
-let g:go_highlight_diagnostic_errors = 1
-let g:go_highlight_diagnostic_warnings = 1
-let g:go_def_mapping_enabled = 0
-
-" coc.vim config
-" Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=300
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-nmap <leader>rn <Plug>(coc-rename)
-nmap <leader>cf <Plug>(coc-fix-current)
-nmap <leader>f  <Plug>(coc-format-selected)
-nnoremap <silent> <leader>cd :CocList diagnostics<cr>
-nnoremap <silent> <leader>ce :<C-u>CocList extensions<cr>
-nnoremap <silent> <leader>cc :<C-u>CocList commands<cr>
-nnoremap <silent> <leader>co :<C-u>CocList outline<cr>
-nnoremap <silent> <leader>cs :<C-u>CocList -I symbols<cr>
-" autocmd CursorHold * silent call CocActionAsync('doHover')
-"
 augroup ft_golang
   au!
 
+  autocmd BufWritePre *.go lua goimports(1000)
+
   au BufEnter,BufNewFile,BufRead *.go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
-  " au BufEnter,BufNewFile,BufRead *.go setlocal completeopt-=preview
   " Enable automatic continuation of comment inserting
   au BufEnter,BufNewFile,BufRead *.go setlocal formatoptions+=ro
   au BufEnter,BufNewFile,BufRead *.tmpl setlocal filetype=html
-
-  au BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
-
-  au Filetype go nmap <c-]> <Plug>(go-def)
-  au Filetype go nmap <leader>gdt :GoDefType<CR>
-  au Filetype go nmap <leader>gre :GoReferrers<CR>
-  au Filetype go nmap <leader>goi <Plug>(go-info)
-  au Filetype go nmap <leader>god :GoDeclsDir<CR>
-  au Filetype go nmap <leader>gou <Plug>(go-run)
-  au Filetype go nmap <leader>gor <Plug>(go-rename)
-  au Filetype go nmap <leader>got :GoTest!<CR>
-  au Filetype go nmap <leader>gie <Plug>(go-iferr)
-  au Filetype go nmap <leader>gdi :GoDiagnostics<CR>
 
   au Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
   au Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
@@ -531,16 +500,12 @@ augroup ft_golang
 augroup END
 
 " Rust
-let g:rustfmt_autosave = 1
-let g:rustfmt_fail_silently = 0
-let g:racer_cmd = "/Users/thorstenball/.cargo/bin/racer"
-
 augroup ft_rust
   au!
-  au BufEnter,BufNewFile,BufRead *.rs :compiler cargo
+  au BufWritePre *.rs lua format_rust()
 
+  au BufEnter,BufNewFile,BufRead *.rs :compiler cargo
   au FileType rust set nolist
-  au Filetype rust nmap <c-]> :call CocAction('jumpDefinition', 'drop')<CR>
 augroup END
 
 " Racket
@@ -555,7 +520,6 @@ augroup ft_typescript
 
   autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript
 
-  au Filetype typescript nmap <c-]> :call CocAction('jumpDefinition', 'drop')<CR>
   au Filetype typescript setlocal shiftwidth=4 softtabstop=4 expandtab
 augroup END
 
@@ -564,7 +528,7 @@ augroup END
 " normal mode
 augroup ft_asm
   au!
-  autocmd FileType asm setlocal formatoptions+=ro
+  au FileType asm setlocal formatoptions+=ro
 augroup END
 
 " Merlin setup for Ocaml
@@ -588,27 +552,30 @@ augroup ft_ocaml
   au Filetype ocaml nmap <leader>os :MerlinShrinkEnclosing<CR>
 augroup END
 
-
+" YAML
 augroup ft_yaml
   au!
   au FileType yaml setlocal nolist
-  au FileType yaml setlocal nonumber
+  au FileType yaml setlocal number
   au FileType yaml setlocal colorcolumn=0
 augroup END
 
 " Quickfix List
-" Autowrap long lines in the quickfix window
-augroup ft_quickfix
-    autocmd!
-    autocmd FileType qf setlocal wrap
-augroup END
+"
 " Adjust height of quickfix window
-au FileType qf call AdjustWindowHeight(3, 10)
 function! AdjustWindowHeight(minheight, maxheight)
   exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
 endfunction
+augroup ft_quickfix
+    autocmd!
+    " Autowrap long lines in the quickfix window
+    autocmd FileType qf setlocal wrap
+    autocmd FileType qf call AdjustWindowHeight(3, 10)
+augroup END
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " GVim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has("gui_running")
   set guioptions=gc
   set lines=60 columns=90
@@ -619,22 +586,74 @@ if has("gui_running")
   endif
 endif
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Statusline
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+set statusline=%<\ %{mode()}\ \|\ %f%m\ \|\ %{fugitive#statusline()\ }
+if has('nvim')
+  set statusline+=\ \|\ %{v:lua.workspace_diagnostics()}
+endif
+set statusline+=%{&paste?'\ \ \|\ PASTE\ ':'\ '}
+set statusline+=%=\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %l/%L\(%c\)\ 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Colors/colorscheme/etc.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 set termguicolors
+set t_Co=256
+set t_ut=
 
-set background=light
-let g:lucius_style  = 'light'
-let g:lucius_contrast  = 'high'
-let g:lucius_contrast_bg  = 'high'
-let g:lucius_no_term_bg  = 1
-colorscheme lucius
+let kitty_profile = $KITTY_COLORS
 
-" Give the active window a blue background and white foreground
-hi StatusLine ctermfg=15 ctermbg=32 cterm=bold
-hi SignColumn ctermfg=255 ctermbg=15
-" set t_Co=256
-" set t_ut=
-" colorscheme codedark
+if kitty_profile == "dark"
+  set background=dark
+  colorscheme codedark
 
+  highlight LspDiagnosticsFloatingError guifg=#940000 guibg=NONE gui=bold
+  highlight LspDiagnosticsFloatingHint guifg=#569CD6 guibg=NONE
+  highlight LspDiagnosticsFloatingInformation guifg=#5e81ac guibg=NONE
+  highlight LspDiagnosticsFloatingWarning guifg=#ebcb8b guibg=NONE
+else
+  set background=light
+  let g:lucius_style  = 'light'
+  let g:lucius_contrast  = 'high'
+  let g:lucius_contrast_bg  = 'high'
+  let g:lucius_no_term_bg  = 1
+  colorscheme lucius
+
+  " Give the active window a blue background and white foreground statusline
+  hi StatusLine ctermfg=15 ctermbg=32 guifg=#FFFFFF guibg=#005FAF gui=bold cterm=bold
+  hi SignColumn ctermfg=255 ctermbg=15 guifg=#E4E4E4 guibg=#FFFFFF
+
+  " Tweak popup colors
+  highlight Pmenu guibg=#E4E4E4 guifg=#000000
+
+  highlight link LspDiagnosticsFloatingError ErrorMsg
+  highlight link LspDiagnosticsFloatingWarning WarningMsg
+  highlight link LspDiagnosticsFloatingHint Directory
+  highlight link LspDiagnosticsFloatingInformation Directory
+endif
+
+highlight link LspDiagnosticsDefaultError ErrorMsg
+highlight link LspDiagnosticsDefaultWarning WarningMsg
+highlight link LspDiagnosticsDefaultInformation Directory
+highlight link LspDiagnosticsDefaultHint Directory
+
+highlight link LspDiagnosticsUnderlineError ErrorMsg
+highlight link LspDiagnosticsUnderlineWarning WarningMsg
+highlight link LspDiagnosticsUnderlineInformation Directory
+highlight link LspDiagnosticsUnderlineHint Directory
+
+highlight LspDiagnosticsUnderlineError gui=underline cterm=underline
+highlight LspDiagnosticsUnderlineWarning gui=underline cterm=underline
+highlight LspDiagnosticsUnderlineInformation gui=underline cterm=underline
+highlight LspDiagnosticsUnderlineHint gui=underline cterm=underline
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" THE END
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Only allow secure commands from this point on. Necessary because further up
 " project-specific vimrc files were allowed with `set exrc`
 set secure
