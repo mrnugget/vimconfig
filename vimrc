@@ -6,7 +6,6 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'bronson/vim-visual-star-search'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'junegunn/fzf.vim'
-Plug 'sjl/tslime.vim'
 Plug 'tomtom/tcomment_vim'
 
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
@@ -23,6 +22,7 @@ Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-unimpaired'
 
 Plug 'janko-m/vim-test'
+Plug 'kassio/neoterm'
 
 Plug 'camdencheek/sgbrowse'
 
@@ -63,6 +63,7 @@ end
 
 " Basic stuff
 set clipboard=unnamed
+set clipboard+=unnamedplus
 set showmode
 set showcmd
 set history=500
@@ -249,15 +250,27 @@ vmap <leader>a= :Tabularize /=<CR>
 nmap <leader>ah :Tabularize /=>\?<CR>
 vmap <leader>ah :Tabularize /=>\?<CR>
 
+" neoterm
+let g:neoterm_default_mod = "vert botright"
+let g:neoterm_autoscroll = 1
+let g:neoterm_keep_term_open = 1
+" ,tg to[g]gle the terminal window
+nmap     <silent> <leader>tg :Ttoggle<CR>
+" ,sl [s]end [line] to REPL in terminal window
+nmap     <silent> <leader>sl :TREPLSendLine<CR>
+vnoremap <silent> <leader>sl :TREPLSendSelection<CR>
+nmap     <silent> <leader>sf :TREPLSendFile<CR>
+
 " vim-test
-let test#strategy = "neovim"
-let test#neovim#term_position = "vert botright 100"
+let g:test#strategy = "neoterm"
 " ,rt runs rspec on current (or previously set ) single spec ('run this')
 " ,rf runs rspec on current (or previously set) spec file ('run file')
 " ,ra runs all specs ('run all')
+" ,rl runs the last spec ('run last')
 nmap <silent> <leader>rt :TestNearest<CR>
 nmap <silent> <leader>rf :TestFile<CR>
 nmap <silent> <leader>ra :TestSuite<CR>
+nmap <silent> <leader>rl :TestLast<CR>
 
 " Markdown
 let g:markdown_fenced_languages = ['go', 'ruby', 'html', 'javascript', 'bash=sh', 'sql']
@@ -266,12 +279,6 @@ let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_folding_level = 6
 let g:vim_markdown_new_list_item_indent = 2
 let g:vim_markdown_no_default_key_mappings = 1
-
-" tslime.vim
-let g:tslime_ensure_trailing_newlines = 1 " Always send newline
-let g:tslime_normal_mapping = '<leader>sl'
-let g:tslime_visual_mapping = '<leader>sl'
-let g:tslime_vars_mapping = '<leader>csl' " Connect SLime
 
 " FZF mappings and custom functions
 nnoremap <silent> <leader>fc :BCommits<CR>
