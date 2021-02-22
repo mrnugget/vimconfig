@@ -313,13 +313,22 @@ let g:fzf_colors =
 
 
 " Telescope.nvim
+lua <<EOF
+require('telescope').setup {
+  defaults = {
+    file_previewer   = require('telescope.previewers').vim_buffer_cat.new,
+    grep_previewer   = require('telescope.previewers').vim_buffer_vimgrep.new,
+    qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new,
+  },
+}
+EOF
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 nnoremap <leader>fR <cmd>Telescope lsp_references<cr>
 nnoremap <leader>fS <cmd>Telescope lsp_document_symbols<cr>
-nnoremap <leader>fs <cmd>Telescope lsp_workspace_symbols<cr>
+nnoremap <leader>fs <cmd>lua require('telescope.builtin').lsp_workspace_symbols { query = vim.fn.input("Query: ") }<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Notes
