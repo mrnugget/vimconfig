@@ -36,6 +36,11 @@ Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'nvim-lua/completion-nvim'
 Plug 'rafcamlet/nvim-luapad'
 
+
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
 call plug#end()
 
 " Syntax and filetype specific indentation and plugins on
@@ -305,6 +310,16 @@ let g:fzf_colors =
   \ "marker":  ["fg", "IncSearch"],
   \ "spinner": ["fg", "IncSearch"],
   \ "header":  ["fg", "WildMenu"] }
+
+
+" Telescope.nvim
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>fR <cmd>Telescope lsp_references<cr>
+nnoremap <leader>fS <cmd>Telescope lsp_document_symbols<cr>
+nnoremap <leader>fs <cmd>Telescope lsp_workspace_symbols<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Notes
