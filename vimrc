@@ -39,6 +39,7 @@ Plug 'rafcamlet/nvim-luapad'
 
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 
 call plug#end()
@@ -259,6 +260,8 @@ let g:neoterm_autoscroll = 1
 let g:neoterm_keep_term_open = 1
 " ,tg to[g]gle the terminal window
 nmap     <silent> <leader>tg :Ttoggle<CR>
+" ,tc [c]lear the terminal window
+nmap     <silent> <leader>tc :Tclear<CR>
 " ,sl [s]end [line] to REPL in terminal window
 nmap     <silent> <leader>sl :TREPLSendLine<CR>
 vnoremap <silent> <leader>sl :TREPLSendSelection<CR>
@@ -284,12 +287,12 @@ let g:vim_markdown_new_list_item_indent = 2
 let g:vim_markdown_no_default_key_mappings = 1
 
 " FZF mappings and custom functions
-nnoremap <silent> <leader>fc :BCommits<CR>
-nnoremap <silent> <leader>fb :Buffers<CR>
-nnoremap <silent> <leader>fr :History<CR>
-nnoremap <silent> <leader>ft :Tags<CR>
-nnoremap <silent> <leader>fi :FZF<CR>
-nnoremap <silent> <C-p> :FZF<CR>
+" nnoremap <silent> <leader>fc :BCommits<CR>
+" nnoremap <silent> <leader>fb :Buffers<CR>
+" nnoremap <silent> <leader>fr :History<CR>
+" nnoremap <silent> <leader>ft :Tags<CR>
+" nnoremap <silent> <leader>fi :FZF<CR>
+" nnoremap <silent> <C-p> :FZF<CR>
 
 " Hide statusline
 autocmd! FileType fzf
@@ -321,14 +324,16 @@ require('telescope').setup {
     qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new,
   },
 }
+require('telescope').load_extension('fzy_native')
 EOF
+nnoremap <leader>fi <cmd>Telescope find_files<cr>
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 nnoremap <leader>fR <cmd>Telescope lsp_references<cr>
 nnoremap <leader>fS <cmd>Telescope lsp_document_symbols<cr>
-nnoremap <leader>fs <cmd>lua require('telescope.builtin').lsp_workspace_symbols { query = vim.fn.input("Query: ") }<cr>
+nnoremap <leader>fs <cmd>Telescope lsp_workspace_symbols<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Notes
@@ -516,11 +521,12 @@ autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 augroup ft_golang
   au!
 
-  autocmd BufWritePre *.go lua goimports(1000)
+  au BufWritePre *.go lua goimports(1000)
+  " gopls requires a require to list workspace arguments.
+  au BufEnter,BufNewFile,BufRead *go map <buffer> <leader>fs <cmd>lua require('telescope.builtin').lsp_workspace_symbols { query = vim.fn.input("Query: ") }<cr>
 
+  au BufEnter,BufNewFile,BufRead *.go setlocal formatoptions+=roq
   au BufEnter,BufNewFile,BufRead *.go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
-  " Enable automatic continuation of comment inserting
-  au BufEnter,BufNewFile,BufRead *.go setlocal formatoptions+=ro
   au BufEnter,BufNewFile,BufRead *.tmpl setlocal filetype=html
 
   au Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
