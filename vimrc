@@ -317,11 +317,20 @@ let g:fzf_colors =
 
 " Telescope.nvim
 lua <<EOF
+local actions = require('telescope.actions')
+
 require('telescope').setup {
   defaults = {
     file_previewer   = require('telescope.previewers').vim_buffer_cat.new,
     grep_previewer   = require('telescope.previewers').vim_buffer_vimgrep.new,
     qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new,
+    mappings = {
+      i = {
+        -- Also close on Esc in insert mode
+        ["<esc>"] = actions.close,
+        ["<C-[>"] = actions.close,
+      },
+    },
   },
 }
 require('telescope').load_extension('fzy_native')
@@ -670,6 +679,8 @@ else
   highlight link LspDiagnosticsFloatingHint Directory
   highlight link LspDiagnosticsFloatingInformation Directory
 endif
+
+highlight TelescopeSelection gui=bold " selected item
 
 highlight link LspDiagnosticsDefaultError ErrorMsg
 highlight link LspDiagnosticsDefaultWarning WarningMsg
