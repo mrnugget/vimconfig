@@ -317,40 +317,10 @@ let g:fzf_colors =
   \ "header":  ["fg", "WildMenu"] }
 
 
-" Telescope.nvim
-lua <<EOF
-local actions = require('telescope.actions')
-
-require('telescope').setup {
-  defaults = {
-    file_sorter = require('telescope.sorters').get_fzy_sorter,
-
-    file_previewer   = require('telescope.previewers').vim_buffer_cat.new,
-    grep_previewer   = require('telescope.previewers').vim_buffer_vimgrep.new,
-    qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new,
-    mappings = {
-      i = {
-        -- Also close on Esc in insert mode
-        ["<esc>"] = actions.close,
-        ["<C-[>"] = actions.close,
-        ["<C-q>"] = actions.send_to_qflist,
-      },
-    },
-  },
-}
-require('telescope').load_extension('fzy_native')
-EOF
-nnoremap <leader>fi <cmd>Telescope find_files<cr>
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-nnoremap <leader>fR <cmd>Telescope lsp_references<cr>
-nnoremap <leader>fS <cmd>Telescope lsp_document_symbols<cr>
-nnoremap <leader>fs <cmd>Telescope lsp_workspace_symbols<cr>
-
-nnoremap <leader>fl <cmd>Telescope live_grep<cr>
-nnoremap <leader>fw <cmd>lua require('telescope.builtin').grep_string({ search = vim.fn.expand("<cword>") })<CR>
-nnoremap <leader>fg <cmd>lua require('telescope.builtin').grep_string({ search = vim.fn.input("grep: ")})<CR>
+" Telescope.nvim, see lua/plugins/telescope.lua
+if has('nvim')
+  lua require('plugins.telescope')
+end
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Notes
