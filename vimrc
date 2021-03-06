@@ -508,11 +508,6 @@ autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 augroup ft_golang
   au!
 
-  " gopls requires a require to list workspace arguments.
-  if has('nvim')
-    au BufEnter,BufNewFile,BufRead *go map <buffer> <leader>fs <cmd>lua require('telescope.builtin').lsp_workspace_symbols { query = vim.fn.input("Query: ") }<cr>
-  end
-
   au BufEnter,BufNewFile,BufRead *.go setlocal formatoptions+=roq
   au BufEnter,BufNewFile,BufRead *.go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
   au BufEnter,BufNewFile,BufRead *.tmpl setlocal filetype=html

@@ -1,4 +1,5 @@
 local helpers = {}
+
 -- See https://github.com/neovim/nvim-lspconfig/issues/465
 -- Can hopefully be removed when these are fixed:
 -- - https://github.com/neovim/neovim/pull/13692
