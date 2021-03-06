@@ -41,6 +41,8 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+" Install this plugin.
+Plug 'tjdevries/nlua.nvim'
 
 call plug#end()
 
@@ -348,7 +350,7 @@ nnoremap <leader>fs <cmd>Telescope lsp_workspace_symbols<cr>
 
 nnoremap <leader>fl <cmd>Telescope live_grep<cr>
 nnoremap <leader>fw <cmd>lua require('telescope.builtin').grep_string({ search = vim.fn.expand("<cword>") })<CR>
-nnoremap <leader>fe <cmd>lua require('telescope.builtin').grep_string({ search = vim.fn.input("grep: ")})<CR>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').grep_string({ search = vim.fn.input("grep: ")})<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Notes
@@ -536,9 +538,10 @@ autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 augroup ft_golang
   au!
 
-  au BufWritePre *.go lua goimports(1000)
   " gopls requires a require to list workspace arguments.
-  au BufEnter,BufNewFile,BufRead *go map <buffer> <leader>fs <cmd>lua require('telescope.builtin').lsp_workspace_symbols { query = vim.fn.input("Query: ") }<cr>
+  if has('nvim')
+    au BufEnter,BufNewFile,BufRead *go map <buffer> <leader>fs <cmd>lua require('telescope.builtin').lsp_workspace_symbols { query = vim.fn.input("Query: ") }<cr>
+  end
 
   au BufEnter,BufNewFile,BufRead *.go setlocal formatoptions+=roq
   au BufEnter,BufNewFile,BufRead *.go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
@@ -552,8 +555,6 @@ augroup END
 " Rust
 augroup ft_rust
   au!
-  au BufWritePre *.rs lua format_rust()
-
   au BufEnter,BufNewFile,BufRead *.rs :compiler cargo
   au FileType rust set nolist
 augroup END
@@ -642,7 +643,7 @@ endif
 
 set statusline=%<\ %{mode()}\ \|\ %f%m\ \|\ %{fugitive#statusline()\ }
 if has('nvim')
-  set statusline+=\ \|\ %{v:lua.workspace_diagnostics()}
+  set statusline+=\ \|\ %{v:lua.workspace_diagnostics_status()}
 endif
 set statusline+=%{&paste?'\ \ \|\ PASTE\ ':'\ '}
 set statusline+=%=\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %l/%L\(%c\)\ 
