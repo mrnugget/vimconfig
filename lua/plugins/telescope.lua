@@ -28,7 +28,7 @@ local map_builtin = function(key, f)
 end
 
 local map_helper = function(key, f)
-  local rhs = string.format("<cmd>lua require('plugins.telescope')['%s']()<CR>", f)
+  local rhs = string.format("<cmd>lua R('plugins.telescope')['%s']()<CR>", f)
   vim.api.nvim_set_keymap("n", key, rhs, map_options)
 end
 
@@ -44,24 +44,24 @@ end
 
 helpers.edit_dotfiles = function()
   require('telescope.builtin').find_files({
-    shorten_path = false,
-    cwd = "~/.dotfiles",
-    prompt = "~ dotfiles ~",
-  })
+      shorten_path = false,
+      cwd = "~/.dotfiles",
+      prompt = "~ dotfiles ~",
+    })
 end
 
 helpers.edit_vimconfig = function()
   require('telescope.builtin').find_files({
-    shorten_path = false,
-    cwd = "~/.vim",
-    prompt = "~ vim ~",
-  })
+      shorten_path = false,
+      cwd = "~/.vim",
+      prompt = "~ vim ~",
+    })
 end
 
 helpers.find_files_in_directory_of_buffer = function()
   require('telescope.builtin').find_files({
-    cwd = vim.fn.expand("%:p:h"),
-  })
+      cwd = vim.fn.expand("%:p:h"),
+    })
 end
 
 map_builtin('<leader>fi', 'find_files')
@@ -81,5 +81,14 @@ map_helper('<leader>fg', 'grep_string')
 
 map_helper('<leader>fd', 'edit_dotfiles')
 map_helper('<leader>fv', 'edit_vimconfig')
+
+helpers.project_finder = function()
+  require("telescope.builtin").find_files({
+      prompt_title = "< ~/work >",
+      cwd = "~/work",
+    })
+end
+
+map_helper('<leader>fP', 'project_finder')
 
 return helpers
