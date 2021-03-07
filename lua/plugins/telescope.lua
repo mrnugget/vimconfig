@@ -42,16 +42,44 @@ helpers.grep_string = function()
   require('telescope.builtin').grep_string({ search = vim.fn.input("grep: ")})
 end
 
+helpers.edit_dotfiles = function()
+  require('telescope.builtin').find_files({
+    shorten_path = false,
+    cwd = "~/.dotfiles",
+    prompt = "~ dotfiles ~",
+  })
+end
+
+helpers.edit_vimconfig = function()
+  require('telescope.builtin').find_files({
+    shorten_path = false,
+    cwd = "~/.vim",
+    prompt = "~ vim ~",
+  })
+end
+
+helpers.find_files_in_directory_of_buffer = function()
+  require('telescope.builtin').find_files({
+    cwd = vim.fn.expand("%:p:h"),
+  })
+end
+
 map_builtin('<leader>fi', 'find_files')
 map_builtin('<leader>ff', 'find_files')
+map_helper('<leader>fp', 'find_files_in_directory_of_buffer')
+
 map_builtin('<leader>fb', 'buffers')
 map_builtin('<leader>fh', 'help_tags')
 map_builtin('<leader>fR', 'lsp_references')
 map_builtin('<leader>fS', 'lsp_document_symbols')
 map_builtin('<leader>fs', 'lsp_workspace_symbols')
 map_builtin('<leader>fl', 'live_grep')
+map_builtin('<leader>fo', 'file_browser')
 
 map_helper('<leader>fw', 'grep_word_under_cursor')
 map_helper('<leader>fg', 'grep_string')
+
+map_helper('<leader>fd', 'edit_dotfiles')
+map_helper('<leader>fv', 'edit_vimconfig')
 
 return helpers
