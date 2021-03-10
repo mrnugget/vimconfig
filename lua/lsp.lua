@@ -13,7 +13,7 @@ local on_attach = function(client)
     vim.cmd [[autocmd BufWritePre <buffer> :lua require('lsp.helpers').format_rust()]]
   end
   if filetype == 'go' then
-    vim.cmd [[autocmd BufWritePre <buffer> :lua require('lsp.helpers').goimports(1000)]]
+    vim.cmd [[autocmd BufWritePre <buffer> :lua require('lsp.helpers').goimports(5000)]]
 
     -- gopls requires a require to list workspace arguments.
     vim.cmd [[autocmd BufEnter,BufNewFile,BufRead <buffer> map <buffer> <leader>fs <cmd>lua require('telescope.builtin').lsp_workspace_symbols { query = vim.fn.input("Query: ") }<cr>]]
