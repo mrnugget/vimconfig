@@ -13,10 +13,8 @@ end
 helpers.goimports = function(timeoutms)
   local context = { source = { organizeImports = true } }
   vim.validate { context = { context, "t", true } }
-
   local params = vim.lsp.util.make_range_params()
   params.context = context
-
   local method = "textDocument/codeAction"
   local resp = vim.lsp.buf_request_sync(0, method, params, timeoutms)
   if resp and resp[1] then
@@ -26,8 +24,7 @@ helpers.goimports = function(timeoutms)
       vim.lsp.util.apply_workspace_edit(edit)
     end
   end
-
-  vim.lsp.buf.formatting_sync(nil, timeoutms)
+  vim.lsp.buf.formatting()
 end
 
 return helpers
