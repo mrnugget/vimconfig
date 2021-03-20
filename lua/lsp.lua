@@ -1,12 +1,11 @@
 -- Setup local vars for easier access
 local lspconfig = require('lspconfig')
-local completion = require('completion')
+-- local completion = require('completion')
 
 local on_attach = function(client)
-  completion.on_attach(client)
-  -- Let's try this:
-  -- client.config.flags.allow_incremental_sync = true
-  -- Disabled because https://github.com/neovim/neovim/commit/e4e51c69d740eb7dc4f3bf0479a92ac6442d979a# broke it
+  -- Disable completion for now. See: https://github.com/neovim/neovim/issues/14161#issuecomment-803405909
+  -- completion.on_attach(client)
+  client.config.flags.allow_incremental_sync = true
 
   local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
 
@@ -14,7 +13,7 @@ local on_attach = function(client)
     vim.cmd [[autocmd BufWritePre <buffer> :lua require('lsp.helpers').format_rust()]]
   end
   if filetype == 'go' then
-    vim.cmd [[autocmd BufWritePre <buffer> :lua require('lsp.helpers').goimports(3000)]]
+    vim.cmd [[autocmd BufWritePre <buffer> :lua require('lsp.helpers').goimports(1000)]]
 
     -- gopls requires a require to list workspace arguments.
     vim.cmd [[autocmd BufEnter,BufNewFile,BufRead <buffer> map <buffer> <leader>fs <cmd>lua require('telescope.builtin').lsp_workspace_symbols { query = vim.fn.input("Query: ") }<cr>]]
@@ -31,6 +30,7 @@ local servers = {
   },
   gopls = {
     gopls = {
+      completeUnimported = true,
       analyses = {
         unusedparams = false,
       },
@@ -57,10 +57,9 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   require('lsp_extensions.workspace.diagnostic').handler, {
     virtual_text = true,
     signs = true,
-    update_in_insert = false,
+    update_in_insert = true,
   }
 )
-
 
 function _G.workspace_diagnostics_status()
   if #vim.lsp.buf_get_clients() == 0 then

@@ -33,16 +33,14 @@ Plug 'neovim/nvim-lspconfig'
 " Extensions to built-in LSP, for example, providing type inlay hints
 Plug 'nvim-lua/lsp_extensions.nvim'
 " Autocompletion framework for built-in LSP
-Plug 'nvim-lua/completion-nvim'
+" Plug 'nvim-lua/completion-nvim'
 Plug 'rafcamlet/nvim-luapad'
-
+Plug 'tjdevries/nlua.nvim'
 
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-" Install this plugin.
-Plug 'tjdevries/nlua.nvim'
 
 call plug#end()
 
@@ -69,7 +67,9 @@ if filereadable("/home/mrnugget/.fzf/bin/fzf")
 end
 
 " Basic stuff
-set clipboard=unnamed
+" set clipboard=unnamed
+set clipboard+=unnamedplus
+
 set showmode
 set showcmd
 set history=500
