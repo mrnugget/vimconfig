@@ -1,6 +1,4 @@
--- Setup local vars for easier access
 local lspconfig = require('lspconfig')
--- local completion = require('completion')
 
 local on_attach = function(client)
   local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
@@ -35,10 +33,14 @@ local servers = {
   },
 }
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
 for ls, settings in pairs(servers) do
   lspconfig[ls].setup {
     on_attach = on_attach,
     settings = settings,
+    capabilities = capabilities,
   }
 end
 
