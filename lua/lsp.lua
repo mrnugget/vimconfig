@@ -3,14 +3,11 @@ local lspconfig = require('lspconfig')
 -- local completion = require('completion')
 
 local on_attach = function(client)
-  -- Disable completion for now. See: https://github.com/neovim/neovim/issues/14161#issuecomment-803405909
-  -- completion.on_attach(client)
-  client.config.flags.allow_incremental_sync = true
-
   local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
 
   if filetype == 'rust' then
     vim.cmd [[autocmd BufWritePre <buffer> :lua require('lsp.helpers').format_rust()]]
+    vim.cmd [[autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost <buffer> :lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Whitespace", enabled = {"ChainingHint", "TypeHint", "ParameterHint"} } ]]
   end
   if filetype == 'go' then
     vim.cmd [[autocmd BufWritePre <buffer> :lua require('lsp.helpers').goimports(1000)]]

@@ -474,9 +474,6 @@ if has('nvim')
   " have a fixed column for the diagnostics to appear in
   " this removes the jitter when warnings/errors flow in
   set signcolumn=yes
-  " Enable type inlay hints
-  autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
-  \ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Whitespace", enabled = {"ChainingHint", "TypeHint", "ParameterHint"} }
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
