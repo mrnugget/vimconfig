@@ -50,55 +50,15 @@
 			"body": "fmt.Printf(\"$1\", ${2:var})",
 			"description": "Snippet for fmt.Printf()"
 		},
-		"log.Println": {
-			"prefix": "lp",
-			"body": "log.Println(\"$1\")",
-			"description": "Snippet for log.Println()"
-		},
-		"log.Printf": {
-			"prefix": "lf",
-			"body": "log.Printf(\"$1\", ${2:var})",
-			"description": "Snippet for log.Printf()"
-		},
-		"log variable content": {
-			"prefix": "lv",
-			"body": "log.Printf(\"${1:var}: %#+v\\\\n\", ${1:var})",
-			"description": "Snippet for log.Printf() with variable content"
-		},
-		"t.Log": {
-			"prefix": "tl",
-			"body": "t.Log(\"$1\")",
-			"description": "Snippet for t.Log()"
-		},
-		"t.Logf": {
-			"prefix": "tlf",
-			"body": "t.Logf(\"$1\", ${2:var})",
-			"description": "Snippet for t.Logf()"
-		},
-		"t.Logf variable content": {
-			"prefix": "tlv",
-			"body": "t.Logf(\"${1:var}: %#+v\\\\n\", ${1:var})",
-			"description": "Snippet for t.Logf() with variable content"
-		},
-		"defer statement": {
-			"prefix": "df",
-			"body": "defer ${1:func}($0)",
-			"description": "Snippet for defer statement"
+		"fmt.Printf variable content": {
+			"prefix": "fv",
+			"body": "fmt.Printf(\"${1:var}: %#+v\\\\n\", ${1:var})",
+			"description": "Snippet for fmt.Printf() with variable content"
 		},
 		"test function": {
 			"prefix": "tf",
 			"body": "func Test$1(t *testing.T) {\n\t$0\n}",
 			"description": "Snippet for Test function"
-		},
-		"benchmark function": {
-			"prefix": "bf",
-			"body": "func Benchmark$1(b *testing.B) {\n\tfor ${2:i} := 0; ${2:i} < b.N; ${2:i}++ {\n\t\t$0\n\t}\n}",
-			"description": "Snippet for Benchmark function"
-		},
-		"example function": {
-			"prefix": "ef",
-			"body": "func Example$1() {\n\t$2\n\t//Output:\n\t$3\n}",
-			"description": "Snippet for Example function"
 		},
 		"table driven test": {
 			"prefix": "tdt",
@@ -109,11 +69,6 @@
 			"prefix": "meth",
 			"body": "func (${1:receiver} ${2:type}) ${3:method}($4) $5 {\n\t$0\n}",
 			"description": "Snippet for method declaration"
-		},
-		"sort implementation": {
-			"prefix": "sort",
-			"body": "type ${1:SortBy} []${2:Type}\n\nfunc (a $1) Len() int           { return len(a) }\nfunc (a $1) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }\nfunc (a $1) Less(i, j int) bool { ${3:return a[i] < a[j]} }",
-			"description": "Snippet for a custom sort.Sort interface implementation, for a given slice type."
 		}
 	}
 }
