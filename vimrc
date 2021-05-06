@@ -47,6 +47,9 @@ Plug 'hrsh7th/nvim-compe'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
 
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'folke/lsp-trouble.nvim', { 'branch': 'main' }
+
 call plug#end()
 
 " Syntax and filetype specific indentation and plugins on
@@ -245,6 +248,18 @@ runtime macros/matchit.vim
 " netrw
 let g:netrw_liststyle = 3
 let g:netrw_keepj="keepj"
+function! OpenURLUnderCursor()
+  let s:uri = expand('<cWORD>')
+  let s:uri = matchstr(s:uri, '[a-z]*:\/\/[^ >,;()]*')
+  let s:uri = substitute(s:uri, '?', '\\?', '')
+  let s:uri = shellescape(s:uri, 1)
+  if s:uri != ''
+    silent exec "!xdg-open '".s:uri."'"
+    :redraw!
+  endif
+endfunction
+nnoremap gx :call OpenURLUnderCursor()<CR>
+
 " See https://github.com/christoomey/vim-tmux-navigator/issues/189
 " for context on the following
 augroup netrw_mapping
