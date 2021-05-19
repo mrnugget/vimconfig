@@ -55,6 +55,21 @@
 			"body": "fmt.Printf(\"${1:var}: %#+v\\\\n\", ${1:var})",
 			"description": "Snippet for fmt.Printf() with variable content"
 		},
+		"log.Println": {
+			"prefix": "lp",
+			"body": "log.Println(\"$1\")",
+			"description": "Snippet for log.Println()"
+		},
+		"log.Printf": {
+			"prefix": "lf",
+			"body": "log.Printf(\"$1\", ${2:var})",
+			"description": "Snippet for log.Printf()"
+		},
+		"log.Printf variable content": {
+			"prefix": "lv",
+			"body": "log.Printf(\"${1:var}: %#+v\\\\n\", ${1:var})",
+			"description": "Snippet for log.Printf() with variable content"
+		},
 		"test function": {
 			"prefix": "tf",
 			"body": "func Test$1(t *testing.T) {\n\t$0\n}",
