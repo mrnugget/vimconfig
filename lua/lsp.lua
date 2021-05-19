@@ -45,6 +45,7 @@ local servers = {
   gopls = {
     gopls = {
       completeUnimported = true,
+      buildFlags = {"-tags=debug"},
       analyses = {
         unusedparams = false,
       },
