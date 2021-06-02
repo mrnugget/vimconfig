@@ -6,7 +6,6 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'bronson/vim-visual-star-search'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'junegunn/fzf.vim'
-Plug 'tomtom/tcomment_vim'
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'sheerun/vim-polyglot'
 Plug 'plasticboy/vim-markdown'
@@ -19,6 +18,7 @@ Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-commentary'
 
 Plug 'janko-m/vim-test'
 Plug 'kassio/neoterm'
@@ -49,6 +49,8 @@ Plug 'hrsh7th/vim-vsnip-integ'
 
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'folke/lsp-trouble.nvim', { 'branch': 'main' }
+
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 call plug#end()
 
@@ -533,6 +535,14 @@ if has('nvim')
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Treesitter
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+if has('nvim')
+  lua require("treesitter")
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Filetypes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -597,11 +607,12 @@ augroup ft_typescript
 augroup END
 
 " GNU Assembler
-" Insert comments automatically on return in insert and when using O/o in
-" normal mode
 augroup ft_asm
   au!
+  " Insert comments automatically on return in insert and when using O/o in
+  " normal mode
   au FileType asm setlocal formatoptions+=ro
+  au FileType asm setlocal commentstring=#\ %s
 augroup END
 
 " Merlin setup for Ocaml
