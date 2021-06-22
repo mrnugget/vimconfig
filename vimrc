@@ -52,6 +52,8 @@ Plug 'folke/lsp-trouble.nvim', { 'branch': 'main' }
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
+Plug 'chriskempson/base16-vim'
+
 call plug#end()
 
 " Syntax and filetype specific indentation and plugins on
@@ -256,17 +258,22 @@ function! OpenURLUnderCursor()
   let s:uri = substitute(s:uri, '?', '\\?', '')
   let s:uri = shellescape(s:uri, 1)
   if s:uri != ''
-    silent exec "!xdg-open '".s:uri."'"
+    if has('mac') || has('macunix')
+      silent exec "!open '".s:uri."'"
+    else
+      silent exec "!xdg-open '".s:uri."'"
+    endif
     :redraw!
   endif
 endfunction
 nnoremap gx :call OpenURLUnderCursor()<CR>
 
+
 " See https://github.com/christoomey/vim-tmux-navigator/issues/189
 " for context on the following
 augroup netrw_mapping
   autocmd!
-  autocmd filetype netrw call NetrwMapping()
+  autocmd filetype netrw silent call NetrwMapping()
 augroup END
 
 function! NetrwMapping()
