@@ -693,6 +693,7 @@ let kitty_profile = $KITTY_COLORS
 
 if kitty_profile == "dark"
   set background=dark
+
   colorscheme codedark
 
   highlight LspDiagnosticsFloatingError guifg=#940000 guibg=NONE gui=bold

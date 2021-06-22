@@ -9,10 +9,16 @@ require'nvim-treesitter.configs'.setup {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = "gnn",
-      node_incremental = "grn",
-      scope_incremental = "grc",
-      node_decremental = "grm",
+      init_selection = "vin",
+      node_incremental = "vni",
+      scope_incremental = "vsi",
+      node_decremental = "vnd",
     },
   },
+
+  textobjects = {
+    move = {
+      enable = true,
+    }
+  }
 }

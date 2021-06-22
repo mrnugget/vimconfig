@@ -68,6 +68,8 @@ map_builtin('<leader>fi', 'find_files')
 map_builtin('<leader>ff', 'find_files')
 map_helper('<leader>fp', 'find_files_in_directory_of_buffer')
 
+map_builtin('<leader>fr', 'oldfiles')
+
 map_builtin('<leader>fb', 'buffers')
 map_builtin('<leader>fh', 'help_tags')
 map_builtin('<leader>fR', 'lsp_references')
