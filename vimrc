@@ -531,14 +531,6 @@ if has('nvim')
 
   " Configure LSP
   lua require("lsp")
-
-  " Set updatetime for CursorHold
-  " 300ms of no cursor movement to trigger CursorHold
-  set updatetime=300
-  autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
-  " have a fixed column for the diagnostics to appear in
-  " this removes the jitter when warnings/errors flow in
-  set signcolumn=yes
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

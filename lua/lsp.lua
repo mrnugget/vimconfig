@@ -32,6 +32,13 @@ local on_attach = function(client, bufnr)
     -- gopls requires a require to list workspace arguments.
     vim.cmd [[autocmd BufEnter,BufNewFile,BufRead <buffer> map <buffer> <leader>fs <cmd>lua require('telescope.builtin').lsp_workspace_symbols { query = vim.fn.input("Query: ") }<cr>]]
   end
+
+  vim.cmd [[autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics({ focusable = false })]]
+  -- 300ms of no cursor movement to trigger CursorHold
+  vim.cmd [[set updatetime=300]]
+  -- have a fixed column for the diagnostics to appear in
+  -- this removes the jitter when warnings/errors flow in
+  vim.cmd [[set signcolumn=yes]]
 end
 
 local servers = {
