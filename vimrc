@@ -52,7 +52,7 @@ Plug 'folke/lsp-trouble.nvim', { 'branch': 'main' }
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
-Plug 'chriskempson/base16-vim'
+Plug 'morhetz/gruvbox'
 
 call plug#end()
 
@@ -693,7 +693,8 @@ let kitty_profile = $KITTY_COLORS
 if kitty_profile == "dark"
   set background=dark
 
-  colorscheme codedark
+  let g:gruvbox_contrast_dark = "hard"
+  colorscheme gruvbox
 
   highlight LspDiagnosticsFloatingError guifg=#940000 guibg=NONE gui=bold
   highlight LspDiagnosticsFloatingHint guifg=#569CD6 guibg=NONE
