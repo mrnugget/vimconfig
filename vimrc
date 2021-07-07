@@ -54,6 +54,8 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 Plug 'morhetz/gruvbox'
 
+Plug 'folke/lsp-colors.nvim', {'branch': 'main' }
+
 call plug#end()
 
 " Syntax and filetype specific indentation and plugins on
@@ -696,10 +698,10 @@ if kitty_profile == "dark"
   let g:gruvbox_contrast_dark = "hard"
   colorscheme gruvbox
 
-  highlight LspDiagnosticsFloatingError guifg=#940000 guibg=NONE gui=bold
-  highlight LspDiagnosticsFloatingHint guifg=#569CD6 guibg=NONE
-  highlight LspDiagnosticsFloatingInformation guifg=#5e81ac guibg=NONE
-  highlight LspDiagnosticsFloatingWarning guifg=#ebcb8b guibg=NONE
+  " highlight LspDiagnosticsFloatingError guifg=#940000 guibg=NONE gui=bold
+  " highlight LspDiagnosticsFloatingHint guifg=#569CD6 guibg=NONE
+  " highlight LspDiagnosticsFloatingInformation guifg=#5e81ac guibg=NONE
+  " highlight LspDiagnosticsFloatingWarning guifg=#ebcb8b guibg=NONE
 else
   set background=light
   let g:lucius_style  = 'light'
@@ -723,20 +725,20 @@ endif
 
 highlight TelescopeSelection gui=bold " selected item
 
-highlight link LspDiagnosticsDefaultError ErrorMsg
-highlight link LspDiagnosticsDefaultWarning WarningMsg
-highlight link LspDiagnosticsDefaultInformation Directory
-highlight link LspDiagnosticsDefaultHint Directory
+" highlight link LspDiagnosticsDefaultError ErrorMsg
+" highlight link LspDiagnosticsDefaultWarning WarningMsg
+" highlight link LspDiagnosticsDefaultInformation Directory
+" highlight link LspDiagnosticsDefaultHint Directory
 
-highlight link LspDiagnosticsUnderlineError ErrorMsg
-highlight link LspDiagnosticsUnderlineWarning WarningMsg
-highlight link LspDiagnosticsUnderlineInformation Directory
-highlight link LspDiagnosticsUnderlineHint Directory
+" highlight link LspDiagnosticsUnderlineError ErrorMsg
+" highlight link LspDiagnosticsUnderlineWarning WarningMsg
+" highlight link LspDiagnosticsUnderlineInformation Directory
+" highlight link LspDiagnosticsUnderlineHint Directory
 
-highlight LspDiagnosticsUnderlineError gui=underline cterm=underline
-highlight LspDiagnosticsUnderlineWarning gui=underline cterm=underline
-highlight LspDiagnosticsUnderlineInformation gui=underline cterm=underline
-highlight LspDiagnosticsUnderlineHint gui=underline cterm=underline
+" highlight LspDiagnosticsUnderlineError gui=underline cterm=underline
+" highlight LspDiagnosticsUnderlineWarning gui=underline cterm=underline
+" highlight LspDiagnosticsUnderlineInformation gui=underline cterm=underline
+" highlight LspDiagnosticsUnderlineHint gui=underline cterm=underline
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " THE END
