@@ -68,6 +68,9 @@ for ls, settings in pairs(servers) do
     on_attach = on_attach,
     settings = settings,
     capabilities = capabilities,
+    flags = {
+      debounce_text_changes = 200,
+    },
   }
 end
 
