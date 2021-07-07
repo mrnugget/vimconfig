@@ -516,22 +516,6 @@ inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 if has('nvim')
-  " If we're using Neovim's builtin LSP support, let's disable a lot of the
-  " auto-functionality in vim-go:
-  let g:go_def_mapping_enabled = 0
-  let g:go_term_enabled = 1
-  let g:go_diagnostics_enabled = 0
-  let g:go_code_completion_enabled = 0
-  let g:go_code_completion_icase = 0
-  let g:go_fmt_autosave = 0
-  let g:go_mod_fmt_autosave = 0
-  let g:go_doc_keywordprg_enabled = 0
-  let g:go_gopls_enabled = 0
-  let g:go_diagnostics_enabled = 0
-  let g:go_echo_go_info = 0
-  let g:go_echo_command_info = 0
-
-  " Configure LSP
   lua require("lsp")
 endif
 
@@ -579,10 +563,6 @@ augroup ft_golang
   au BufEnter,BufNewFile,BufRead *.go setlocal formatoptions+=roq
   au BufEnter,BufNewFile,BufRead *.go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
   au BufEnter,BufNewFile,BufRead *.tmpl setlocal filetype=html
-
-  au Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
-  au Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
-  au Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
 augroup END
 
 " Rust
