@@ -6,7 +6,7 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'bronson/vim-visual-star-search'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'junegunn/fzf.vim'
-" Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+Plug 'benmills/vim-golang-alternate'
 Plug 'sheerun/vim-polyglot'
 Plug 'plasticboy/vim-markdown'
 
@@ -240,6 +240,10 @@ vmap <silent> <leader>jq :!cat\|jq . <CR>
 " file.
 vmap <silent> <leader>pan :w !cat\|pandoc -s -f markdown --metadata title="foo" -o ~/tmp/pandoc_out.html && open ~/tmp/pandoc_out.html <CR>
 vmap <silent> <leader>word :w !cat\|pandoc -s -f markdown --toc --metadata title="foo" -o ~/tmp/pandoc_out.docx && open ~/tmp/pandoc_out.docx <CR>
+
+
+" Replace all occurrences of word under cursor
+" vnoremap <C-r> "hy:%Subvert/<C-r>h//gc<left><left><left>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin Configuration
