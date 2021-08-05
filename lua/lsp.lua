@@ -36,7 +36,7 @@ local on_attach = function(client, bufnr)
   if filetype == 'typescriptreact' then
     -- TypeScript/ESLint/Prettier
     -- Requirements:
-    --   npm install -g prettier eslint_d
+    --   npm install -g typescript-language-server prettier eslint_d
     --   asdf reshim nodejs
     --
     -- disable tsserver formatting because we use prettier/eslint for that
