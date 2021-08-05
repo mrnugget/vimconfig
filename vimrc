@@ -241,6 +241,10 @@ vmap <silent> <leader>jq :!cat\|jq . <CR>
 vmap <silent> <leader>pan :w !cat\|pandoc -s -f markdown --metadata title="foo" -o ~/tmp/pandoc_out.html && open ~/tmp/pandoc_out.html <CR>
 vmap <silent> <leader>word :w !cat\|pandoc -s -f markdown --toc --metadata title="foo" -o ~/tmp/pandoc_out.docx && open ~/tmp/pandoc_out.docx <CR>
 
+" Center cursor
+nnoremap n nzzzv
+nnoremap N Nzzzv
+nnoremap J mzJ`z
 
 " Replace all occurrences of word under cursor
 " vnoremap <C-r> "hy:%Subvert/<C-r>h//gc<left><left><left>
