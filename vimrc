@@ -586,15 +586,6 @@ augroup ft_racket
   au BufEnter,BufNewFile,BufRead *.rkt set filetype=racket
 augroup END
 
-" Typescript
-augroup ft_typescript
-  au!
-
-  autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript
-
-  au Filetype typescript setlocal shiftwidth=4 softtabstop=4 expandtab
-augroup END
-
 " GNU Assembler
 augroup ft_asm
   au!
