@@ -33,6 +33,37 @@ local on_attach = function(client, bufnr)
     vim.cmd [[autocmd BufEnter,BufNewFile,BufRead <buffer> map <buffer> <leader>fs <cmd>lua require('telescope.builtin').lsp_workspace_symbols { query = vim.fn.input("Query: ") }<cr>]]
   end
 
+  if filetype == 'typescriptreact' then
+    -- TypeScript/ESLint/Prettier
+    -- Requirements:
+    --   npm install -g prettier eslint_d
+    --   asdf reshim nodejs
+    --
+    -- disable tsserver formatting because we use prettier/eslint for that
+    client.resolved_capabilities.document_formatting = false
+
+    local opts = {silent = true}
+    buf_set_keymap("n", "gs", ":TSLspOrganize<CR>", opts)
+    buf_set_keymap("n", "gr", ":TSLspRenameFile<CR>", opts)
+    buf_set_keymap("n", "gi", ":TSLspImportAll<CR>", opts)
+
+    vim.cmd("autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting()")
+
+    local ts_utils = require("nvim-lsp-ts-utils")
+    ts_utils.setup {
+        eslint_enable_code_actions = true,
+        eslint_enable_disable_comments = true,
+        eslint_bin = "eslint_d",
+        eslint_enable_diagnostics = true,
+        eslint_show_rule_id = true,
+
+        enable_formatting = true,
+        formatter = "prettier",
+    }
+
+    ts_utils.setup_client(client)
+  end
+
   vim.cmd [[autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics({ focusable = false })]]
   -- 300ms of no cursor movement to trigger CursorHold
   vim.cmd [[set updatetime=300]]
@@ -73,6 +104,20 @@ for ls, settings in pairs(servers) do
     },
   }
 end
+
+
+require("null-ls").config {}
+lspconfig["null-ls"].setup {}
+
+local util = require "lspconfig/util"
+lspconfig.tsserver.setup {
+  capabilities = capabilities,
+  on_attach = on_attach,
+  flags = {
+    debounce_text_changes = 200,
+  },
+  root_dir = util.root_pattern(".git"),
+}
 
 require('nlua.lsp.nvim').setup(lspconfig, {
   on_attach = on_attach

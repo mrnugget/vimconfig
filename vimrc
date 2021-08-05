@@ -56,6 +56,9 @@ Plug 'morhetz/gruvbox'
 
 Plug 'folke/lsp-colors.nvim', {'branch': 'main' }
 
+Plug 'jose-elias-alvarez/null-ls.nvim', {'branch': 'main'}
+Plug 'jose-elias-alvarez/nvim-lsp-ts-utils', {'branch': 'main'}
+
 call plug#end()
 
 " Syntax and filetype specific indentation and plugins on
