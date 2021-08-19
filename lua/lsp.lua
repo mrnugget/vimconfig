@@ -38,13 +38,11 @@ local on_attach = function(client, bufnr)
     -- Requirements:
     --   npm install -g typescript-language-server prettier eslint_d
     --   asdf reshim nodejs
-    --
+
     -- disable tsserver formatting because we use prettier/eslint for that
     client.resolved_capabilities.document_formatting = false
 
-    local opts = {silent = true}
     buf_set_keymap("n", "gs", ":TSLspOrganize<CR>", opts)
-    buf_set_keymap("n", "gr", ":TSLspRenameFile<CR>", opts)
     buf_set_keymap("n", "gi", ":TSLspImportAll<CR>", opts)
 
     vim.cmd("autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting()")
