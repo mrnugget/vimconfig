@@ -27,7 +27,9 @@ Plug 'camdencheek/sgbrowse'
 
 Plug 'jonathanfilip/vim-lucius'
 Plug 'tomasiser/vim-code-dark'
+Plug 'morhetz/gruvbox'
 
+if has('nvim')
 " Collection of common configurations for the Nvim LSP client
 Plug 'neovim/nvim-lspconfig'
 " Extensions to built-in LSP, for example, providing type inlay hints
@@ -52,12 +54,11 @@ Plug 'folke/lsp-trouble.nvim', { 'branch': 'main' }
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
-Plug 'morhetz/gruvbox'
-
 Plug 'folke/lsp-colors.nvim', {'branch': 'main' }
 
 Plug 'jose-elias-alvarez/null-ls.nvim', {'branch': 'main'}
 Plug 'jose-elias-alvarez/nvim-lsp-ts-utils', {'branch': 'main'}
+end
 
 call plug#end()
 
