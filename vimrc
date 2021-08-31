@@ -7,7 +7,7 @@ Plug 'bronson/vim-visual-star-search'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'junegunn/fzf.vim'
 Plug 'benmills/vim-golang-alternate'
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
 Plug 'plasticboy/vim-markdown'
 
 Plug 'tpope/vim-fugitive'

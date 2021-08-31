@@ -82,6 +82,7 @@ local servers = {
     gopls = {
       completeUnimported = true,
       buildFlags = {"-tags=debug"},
+      ["local"] = "github.com/sourcegraph/sourcegraph",
       analyses = {
         unusedparams = false,
       },
