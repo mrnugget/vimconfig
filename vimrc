@@ -216,7 +216,7 @@ nmap <silent> <leader>c :set invignorecase<CR>
 nmap <silent> <leader>ev :e ~/.vimrc<CR>
 nmap <silent> <leader>sv :so ~/.vimrc<CR>
 " Wipe out ALL the buffers
-nmap <silent> <leader>bw :%bwipeout<CR>
+nmap <silent> <leader>bw :%bwipeout \| Tclose!<CR>
 " Delete all trailing whitespaces
 nmap <silent> <leader>tw :%s/\s\+$//<CR>:let @/=''<CR>``
 " Make the just typed word uppercase
@@ -295,7 +295,7 @@ function! NetrwMapping()
 endfunction
 
 " fugitive.vim
-nmap <leader>gb :Gblame<CR>
+nmap <leader>gb :Git blame<CR>
 
 " Tabular
 nmap <leader>a= :Tabularize /=<CR>

@@ -33,7 +33,7 @@ local on_attach = function(client, bufnr)
     vim.cmd [[autocmd BufEnter,BufNewFile,BufRead <buffer> map <buffer> <leader>fs <cmd>lua require('telescope.builtin').lsp_workspace_symbols { query = vim.fn.input("Query: ") }<cr>]]
   end
 
-  if filetype == 'typescriptreact' then
+  if filetype == 'typescriptreact' or filetype == 'typescript' then
     -- TypeScript/ESLint/Prettier
     -- Requirements:
     --   npm install -g typescript-language-server prettier eslint_d
