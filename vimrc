@@ -7,7 +7,6 @@ Plug 'bronson/vim-visual-star-search'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'junegunn/fzf.vim'
 Plug 'benmills/vim-golang-alternate'
-" Plug 'sheerun/vim-polyglot'
 Plug 'plasticboy/vim-markdown'
 
 Plug 'tpope/vim-fugitive'
@@ -26,7 +25,6 @@ Plug 'kassio/neoterm'
 Plug 'camdencheek/sgbrowse'
 
 Plug 'jonathanfilip/vim-lucius'
-Plug 'tomasiser/vim-code-dark'
 Plug 'morhetz/gruvbox'
 
 if has('nvim')
@@ -683,11 +681,6 @@ if kitty_profile == "dark"
 
   let g:gruvbox_contrast_dark = "hard"
   colorscheme gruvbox
-
-  " highlight LspDiagnosticsFloatingError guifg=#940000 guibg=NONE gui=bold
-  " highlight LspDiagnosticsFloatingHint guifg=#569CD6 guibg=NONE
-  " highlight LspDiagnosticsFloatingInformation guifg=#5e81ac guibg=NONE
-  " highlight LspDiagnosticsFloatingWarning guifg=#ebcb8b guibg=NONE
 else
   set background=light
   let g:lucius_style  = 'light'
@@ -710,21 +703,6 @@ else
 endif
 
 highlight TelescopeSelection gui=bold " selected item
-
-" highlight link LspDiagnosticsDefaultError ErrorMsg
-" highlight link LspDiagnosticsDefaultWarning WarningMsg
-" highlight link LspDiagnosticsDefaultInformation Directory
-" highlight link LspDiagnosticsDefaultHint Directory
-
-" highlight link LspDiagnosticsUnderlineError ErrorMsg
-" highlight link LspDiagnosticsUnderlineWarning WarningMsg
-" highlight link LspDiagnosticsUnderlineInformation Directory
-" highlight link LspDiagnosticsUnderlineHint Directory
-
-" highlight LspDiagnosticsUnderlineError gui=underline cterm=underline
-" highlight LspDiagnosticsUnderlineWarning gui=underline cterm=underline
-" highlight LspDiagnosticsUnderlineInformation gui=underline cterm=underline
-" highlight LspDiagnosticsUnderlineHint gui=underline cterm=underline
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " THE END
