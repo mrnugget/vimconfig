@@ -56,7 +56,7 @@ Plug 'folke/lsp-trouble.nvim', { 'branch': 'main' }
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
-Plug 'folke/lsp-colors.nvim', {'branch': 'main' }
+" Plug 'folke/lsp-colors.nvim', {'branch': 'main' }
 
 Plug 'jose-elias-alvarez/null-ls.nvim', {'branch': 'main'}
 Plug 'jose-elias-alvarez/nvim-lsp-ts-utils', {'branch': 'main'}
@@ -681,6 +681,10 @@ if kitty_profile == "dark"
 
   let g:gruvbox_contrast_dark = "hard"
   colorscheme gruvbox
+  highlight DiagnosticUnderlineError cterm=undercurl gui=undercurl
+  highlight DiagnosticUnderlineWarn cterm=undercurl gui=undercurl
+  highlight DiagnosticUnderlineInfo cterm=undercurl gui=undercurl
+  highlight DiagnosticUnderlineHint cterm=undercurl gui=undercurl
 else
   set background=light
   let g:lucius_style  = 'light'
