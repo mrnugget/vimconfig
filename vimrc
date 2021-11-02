@@ -252,8 +252,8 @@ nnoremap n nzzzv
 nnoremap N Nzzzv
 nnoremap J mzJ`z
 
-" Replace all occurrences of word under cursor
-" vnoremap <C-r> "hy:%Subvert/<C-r>h//gc<left><left><left>
+" Switch or create new tmux session
+nnoremap <silent> <C-f> :silent !tmux neww tmux-sessionizer<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin Configuration
