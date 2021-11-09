@@ -255,6 +255,9 @@ nnoremap J mzJ`z
 " Switch or create new tmux session
 nnoremap <silent> <C-f> :silent !tmux neww tmux-sessionizer<CR>
 
+nnoremap <C-n> :silent cnext<CR>
+nnoremap <C-p> :silent cprevious<CR>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin Configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
