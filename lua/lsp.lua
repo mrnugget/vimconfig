@@ -105,7 +105,12 @@ for ls, settings in pairs(servers) do
 end
 
 
-require("null-ls").config {}
+require("null-ls").config({
+  sources = {
+    require("null-ls").builtins.diagnostics.golangci_lint,
+    require("null-ls").builtins.completion.spell,
+  }
+})
 lspconfig["null-ls"].setup {}
 
 local util = require "lspconfig/util"
