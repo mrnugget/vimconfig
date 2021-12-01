@@ -84,8 +84,10 @@ local servers = {
       buildFlags = {"-tags=debug"},
       ["local"] = "github.com/sourcegraph/sourcegraph",
       analyses = {
-        unusedparams = false,
+        unusedparams = true,
       },
+      staticcheck = true,
+      experimentalPostfixCompletions = true,
     }
   },
 }
@@ -104,11 +106,9 @@ for ls, settings in pairs(servers) do
   }
 end
 
-
 require("null-ls").config({
   sources = {
     require("null-ls").builtins.diagnostics.golangci_lint,
-    require("null-ls").builtins.completion.spell,
   }
 })
 lspconfig["null-ls"].setup {}
@@ -164,7 +164,6 @@ function _G.workspace_diagnostics_status()
 
   return table.concat(status, " | ")
 end
-
 -- lsp-trouble.nvim
 vim.api.nvim_set_keymap("n", "<leader>xx", "<cmd>LspTroubleToggle<cr>", {silent = true, noremap = true})
 vim.api.nvim_set_keymap("n", "<leader>xw", "<cmd>LspTroubleToggle lsp_workspace_diagnostics<cr>", {silent = true, noremap = true})
