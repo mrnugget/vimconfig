@@ -25,7 +25,7 @@ Plug 'kassio/neoterm'
 Plug 'camdencheek/sgbrowse'
 
 Plug 'jonathanfilip/vim-lucius'
-Plug 'morhetz/gruvbox'
+Plug 'gruvbox-community/gruvbox'
 
 if has('nvim')
 " Collection of common configurations for the Nvim LSP client
@@ -45,8 +45,11 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'hrsh7th/cmp-nvim-lsp', { 'branch': 'main' }
 Plug 'hrsh7th/cmp-buffer', { 'branch': 'main' }
 Plug 'hrsh7th/cmp-path', { 'branch': 'main' }
-Plug 'hrsh7th/nvim-cmp', { 'branch': 'main' }
 Plug 'hrsh7th/cmp-vsnip', { 'branch': 'main' }
+Plug 'hrsh7th/nvim-cmp', { 'branch': 'main' }
+
+" Fancy icons for completion
+Plug 'onsails/lspkind-nvim'
 
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
@@ -55,8 +58,6 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'folke/lsp-trouble.nvim', { 'branch': 'main' }
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-
-" Plug 'folke/lsp-colors.nvim', {'branch': 'main' }
 
 Plug 'jose-elias-alvarez/null-ls.nvim', {'branch': 'main'}
 Plug 'jose-elias-alvarez/nvim-lsp-ts-utils', {'branch': 'main'}
@@ -501,9 +502,21 @@ let g:vsnip_snippet_dir = "~/.vim/snippets"
 if has('nvim')
 lua <<EOF
   -- Setup nvim-cmp.
-  local cmp = require'cmp'
+  local cmp = require('cmp')
+  local lspkind = require('lspkind')
 
   cmp.setup({
+     formatting = {
+       format = lspkind.cmp_format({
+         with_text = true,
+         menu = ({
+            buffer = "[Buffer]",
+            nvim_lsp = "[LSP]",
+            vsnip = "[vsnip]",
+            nvim_lua = "[Lua]",
+          })
+       }),
+     },
     snippet = {
       expand = function(args)
         vim.fn["vsnip#anonymous"](args.body)
@@ -512,7 +525,7 @@ lua <<EOF
     mapping = {
       ['<C-d>'] = cmp.mapping.scroll_docs(-4),
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<Tab>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.close(),
       ['<CR>'] = cmp.mapping.confirm({ select = true }),
     },
