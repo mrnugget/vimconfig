@@ -35,6 +35,8 @@ Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'rafcamlet/nvim-luapad'
 Plug 'tjdevries/nlua.nvim'
 
+Plug 'simrat39/rust-tools.nvim'
+
 " Telescope
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'

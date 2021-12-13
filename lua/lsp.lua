@@ -25,6 +25,9 @@ local on_attach = function(client, bufnr)
   if filetype == 'rust' then
     vim.cmd [[autocmd BufWritePre <buffer> :lua require('lsp.helpers').format_rust()]]
     vim.cmd [[autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost <buffer> :lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Whitespace", enabled = {"ChainingHint", "TypeHint", "ParameterHint"} } ]]
+
+    vim.cmd [[autocmd BufEnter,BufNewFile,BufRead <buffer> nmap <buffer> gle <cmd>lua vim.lsp.codelens.refresh()<CR>]]
+    vim.cmd [[autocmd BufEnter,BufNewFile,BufRead <buffer> nmap <buffer> glr <cmd>lua vim.lsp.codelens.run()<CR>]]
   end
   if filetype == 'go' then
     vim.cmd [[autocmd BufWritePre <buffer> :lua require('lsp.helpers').goimports(2000)]]
@@ -71,13 +74,19 @@ local on_attach = function(client, bufnr)
 end
 
 local servers = {
-  rust_analyzer = {
-    ["rust-analyzer"] = {
-      checkOnSave = {
-        command = "clippy",
-      },
-    },
-  },
+  -- NOTE: See below. rust-analyzer is initialized by rust-tools
+  -- rust_analyzer = {
+  --   ["rust-analyzer"] = {
+  --     checkOnSave = {
+  --       command = "clippy",
+  --     },
+  --     completion = {
+  --       autoimport = {
+  --         enable = true
+  --       }
+  --     }
+  --   },
+  -- },
   gopls = {
     gopls = {
       completeUnimported = true,
@@ -105,6 +114,44 @@ for ls, settings in pairs(servers) do
     },
   }
 end
+
+local utils = require("rust-tools.utils.utils")
+function rust_execute_command(command, args, cwd)
+  vim.cmd("T " .. utils.make_command_from_args(command, args))
+end
+
+local tools = {
+    autoSetHints = true,
+    runnables = {use_telescope = true},
+    inlay_hints = {show_parameter_hints = true},
+    hover_actions = {auto_focus = true},
+    executor = {
+      execute_command = rust_execute_command
+    },
+}
+
+require('rust-tools').setup({
+  tools = tools,
+  server = {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    flags = {
+      debounce_text_changes = 200,
+    },
+    settings = {
+      ["rust-analyzer"] = {
+        checkOnSave = {
+          command = "clippy",
+        },
+        completion = {
+          autoimport = {
+            enable = true
+          }
+        }
+      },
+    },
+  }
+})
 
 require("null-ls").config({
   sources = {
