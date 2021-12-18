@@ -157,12 +157,11 @@ require('rust-tools').setup({
   }
 })
 
-require("null-ls").config({
+require("null-ls").setup({
   sources = {
     require("null-ls").builtins.diagnostics.golangci_lint,
   }
 })
-lspconfig["null-ls"].setup {}
 
 local util = require "lspconfig/util"
 lspconfig.tsserver.setup {
@@ -215,9 +214,10 @@ function _G.workspace_diagnostics_status()
 
   return table.concat(status, " | ")
 end
+
 -- lsp-trouble.nvim
-vim.api.nvim_set_keymap("n", "<leader>xx", "<cmd>LspTroubleToggle<cr>", {silent = true, noremap = true})
-vim.api.nvim_set_keymap("n", "<leader>xw", "<cmd>LspTroubleToggle lsp_workspace_diagnostics<cr>", {silent = true, noremap = true})
-vim.api.nvim_set_keymap("n", "<leader>xd", "<cmd>LspTroubleToggle lsp_document_diagnostics<cr>", {silent = true, noremap = true})
-vim.api.nvim_set_keymap("n", "<leader>xq", "<cmd>LspTroubleToggle quickfix<cr>", {silent = true, noremap = true})
-vim.api.nvim_set_keymap("n", "<leader>xl", "<cmd>LspTroubleToggle loclist<cr>", {silent = true, noremap = true})
+require("trouble").setup({
+  auto_preview = false,
+  auto_close = true,
+})
+vim.api.nvim_set_keymap("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", {silent = true, noremap = true})
