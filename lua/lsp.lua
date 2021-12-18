@@ -24,7 +24,8 @@ local on_attach = function(client, bufnr)
 
   if filetype == 'rust' then
     vim.cmd [[autocmd BufWritePre <buffer> :lua require('lsp.helpers').format_rust()]]
-    vim.cmd [[autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost <buffer> :lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Whitespace", enabled = {"ChainingHint", "TypeHint", "ParameterHint"} } ]]
+    -- Disable this, since we have rust-tools
+    -- vim.cmd [[autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost <buffer> :lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Whitespace", enabled = {"ChainingHint", "TypeHint", "ParameterHint"} } ]]
 
     vim.cmd [[autocmd BufEnter,BufNewFile,BufRead <buffer> nmap <buffer> gle <cmd>lua vim.lsp.codelens.refresh()<CR>]]
     vim.cmd [[autocmd BufEnter,BufNewFile,BufRead <buffer> nmap <buffer> glr <cmd>lua vim.lsp.codelens.run()<CR>]]
@@ -123,7 +124,10 @@ end
 local tools = {
     autoSetHints = true,
     runnables = {use_telescope = true},
-    inlay_hints = {show_parameter_hints = true},
+    inlay_hints = {
+      show_parameter_hints = true,
+      highlight = 'Whitespace',
+    },
     hover_actions = {auto_focus = true},
     executor = {
       execute_command = rust_execute_command

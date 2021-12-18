@@ -503,6 +503,7 @@ let g:vsnip_snippet_dir = "~/.vim/snippets"
 " cmp configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has('nvim')
+set completeopt=menu,menuone,noselect
 lua <<EOF
   -- Setup nvim-cmp.
   local cmp = require('cmp')
@@ -528,7 +529,7 @@ lua <<EOF
     mapping = {
       ['<C-d>'] = cmp.mapping.scroll_docs(-4),
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<Tab>'] = cmp.mapping.complete(),
+      -- ['<Tab>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.close(),
       ['<CR>'] = cmp.mapping.confirm({ select = true }),
     },
@@ -540,8 +541,8 @@ lua <<EOF
     }
   })
 EOF
+autocmd FileType markdown lua require('cmp').setup.buffer { enabled = false }
 endif
-set completeopt=menu,menuone,noselect
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " LSP configuration
