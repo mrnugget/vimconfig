@@ -1,7 +1,5 @@
 call plug#begin('~/.vim/plugged')
 
-let g:polyglot_disabled = ['go', 'markdown']
-
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'bronson/vim-visual-star-search'
 Plug 'christoomey/vim-tmux-navigator'
