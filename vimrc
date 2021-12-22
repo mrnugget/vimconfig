@@ -249,6 +249,10 @@ vmap <silent> <leader>jq :!cat\|jq . <CR>
 vmap <silent> <leader>pan :w !cat\|pandoc -s -f markdown --metadata title="foo" -o ~/tmp/pandoc_out.html && open ~/tmp/pandoc_out.html <CR>
 vmap <silent> <leader>word :w !cat\|pandoc -s -f markdown --toc --metadata title="foo" -o ~/tmp/pandoc_out.docx && open ~/tmp/pandoc_out.docx <CR>
 
+" Wrap selected text in `backticks` using vim-surround, saving 2 (!)
+" keystrokes
+vmap <silent> ` S`
+
 " Center cursor
 nnoremap n nzzzv
 nnoremap N Nzzzv
