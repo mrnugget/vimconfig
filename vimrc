@@ -3,7 +3,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'bronson/vim-visual-star-search'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'junegunn/fzf.vim'
 Plug 'benmills/vim-golang-alternate'
 Plug 'plasticboy/vim-markdown'
 
@@ -77,15 +76,6 @@ syntax sync minlines=256
 " Shut up.
 set noerrorbells
 set visualbell
-
-" Check if we can load the FZF vim plugin
-if filereadable("/usr/local/opt/fzf/bin/fzf")
-  set rtp+=/usr/local/opt/fzf
-end
-
-if filereadable("/home/mrnugget/.fzf/bin/fzf")
-  set rtp+=/home/mrnugget/.fzf
-end
 
 " Basic stuff
 " set clipboard=unnamed
@@ -345,127 +335,10 @@ let g:vim_markdown_folding_level = 6
 let g:vim_markdown_new_list_item_indent = 2
 let g:vim_markdown_no_default_key_mappings = 1
 
-" FZF mappings and custom functions
-" nnoremap <silent> <leader>fc :BCommits<CR>
-" nnoremap <silent> <leader>fb :Buffers<CR>
-" nnoremap <silent> <leader>fr :History<CR>
-" nnoremap <silent> <leader>ft :Tags<CR>
-" nnoremap <silent> <leader>fi :FZF<CR>
-" nnoremap <silent> <C-p> :FZF<CR>
-
-" Hide statusline
-autocmd! FileType fzf
-autocmd  FileType fzf set laststatus=0 noshowmode noruler
-  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-
-let g:fzf_colors =
-\ { "fg":      ["fg", "Normal"],
-  \ "bg":      ["bg", "Normal"],
-  \ "hl":      ["fg", "IncSearch"],
-  \ "fg+":     ["fg", "CursorLine", "CursorColumn", "Normal"],
-  \ "bg+":     ["bg", "CursorLine", "CursorColumn"],
-  \ "hl+":     ["fg", "IncSearch"],
-  \ "info":    ["fg", "IncSearch"],
-  \ "border":  ["fg", "Ignore"],
-  \ "prompt":  ["fg", "Comment"],
-  \ "pointer": ["fg", "IncSearch"],
-  \ "marker":  ["fg", "IncSearch"],
-  \ "spinner": ["fg", "IncSearch"],
-  \ "header":  ["fg", "WildMenu"] }
-
-
 " Telescope.nvim, see lua/plugins/telescope.lua
 if has('nvim')
   lua require('plugins.telescope')
 end
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Notes
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let s:notes_folder = "~/Dropbox/notes"
-let s:notes_fileending = ".md"
-
-" This is either called with
-" 0 lines, which means there's no result and no query
-" 1 line, which means there's no result, but a user query
-"         in this case: create a new file, based on user query
-" 2 lines, which means there are results, so open them
-"
-function! s:note_handler(lines)
-  if len(a:lines) < 1 | return | endif
-
-  if len(a:lines) == 1
-    let query = a:lines[0]
-    let new_filename = fnameescape(query . s:notes_fileending)
-    let new_title = "# " . query
-
-    execute "edit " . new_filename
-
-    " Append the new title and an empty line
-    let failed = append(0, [new_title, ''])
-    if (failed)
-      echo "Unable to insert title file!"
-    else
-      let &modified = 1
-    endif
-  else
-    execute "edit " fnameescape(a:lines[1])
-  endif
-endfunction
-
-command! -nargs=* Notes call fzf#run({
-\ 'sink*':   function('<sid>note_handler'),
-\ 'options': '--print-query ',
-\ 'dir':     s:notes_folder
-\ })
-
-function! s:rg_to_quickfix(line)
-  let parts = split(a:line, ':')
-  return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
-        \ 'text': join(parts[3:], ':')}
-endfunction
-
-function! s:find_notes_handler(lines)
-  if len(a:lines) < 2 | return | endif
-
-  let cmd = get({'ctrl-x': 'split',
-               \ 'ctrl-v': 'vertical split',
-               \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
-  let list = map(a:lines[1:], 's:rg_to_quickfix(v:val)')
-
-  let first = list[0]
-  execute cmd escape(first.filename, ' %#\')
-  execute first.lnum
-  execute 'normal!' first.col.'|zz'
-
-  if len(list) > 1
-    call setqflist(list)
-    copen
-    wincmd p
-  endif
-endfunction
-
-command! -nargs=* FindNotes call fzf#run({
-\ 'source':  printf('rg --column --color=always "%s"',
-\                   escape(empty(<q-args>) ? '' : <q-args>, '"\')),
-\ 'sink*':    function('<sid>find_notes_handler'),
-\ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
-\            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
-\            '--color hl:68,hl+:110',
-\ 'down':    '50%',
-\ 'dir':     s:notes_folder
-\ })
-
-command! -bang -nargs=* FindNotesWithPreview
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-  \   fzf#vim#with_preview({'dir': s:notes_folder}, 'right:50%'),
-  \   0,
-  \ )
-
-nmap <silent> <leader>nn :Notes<CR>
-nmap <silent> <leader>fn :FindNotes<CR>
-nmap <silent> <leader>nw :FindNotesWithPreview<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vsnip configuration

@@ -101,4 +101,62 @@ end
 
 map_helper('<leader>fP', 'project_finder')
 
+local action_state = require "telescope.actions.state"
+local Path = require "plenary.path"
+local os_sep = Path.path.sep
+
+local notes_folder = "~/Dropbox/notes"
+local notes_file_ext = ".md"
+
+local find_notes = function(category)
+  local prompt_title = "< NOTES: " .. category .. " >"
+  local default_text = category .. " - "
+  if category == "" then
+    prompt_title = "< NOTES >"
+    default_text = ""
+  end
+
+  require("telescope.builtin").file_browser({
+    prompt_title = prompt_title,
+    cwd = notes_folder,
+    default_text = default_text,
+    attach_mappings = function(prompt_bufnr, map)
+      local is_dir = function(value)
+        return value:sub(-1, -1) == os_sep
+      end
+
+      local create_new_markdown = function()
+        local file = action_state.get_current_line()
+        if file == "" then
+          return
+        end
+
+        local current_picker = action_state.get_current_picker(prompt_bufnr)
+        local fpath = current_picker.cwd .. os_sep .. file
+
+        if not is_dir(fpath) then
+          actions.close(prompt_bufnr)
+          Path:new(fpath):touch { parents = true }
+          vim.cmd(string.format(":e %s" .. notes_file_ext, fpath))
+        else
+          print("is directory!")
+        end
+      end
+
+      map("i", "<C-e>", create_new_markdown)
+      map("n", "<C-e>", create_new_markdown)
+      return true
+    end,
+  })
+end
+
+helpers.tucan_notes_finder = function() find_notes("Tucan") end
+map_helper('<leader>tnn', 'tucan_notes_finder')
+
+helpers.sourcegraph_notes_finder = function() find_notes("Sourcegraph") end
+map_helper('<leader>snn', 'sourcegraph_notes_finder')
+
+helpers.notes_finder = function() find_notes("") end
+map_helper('<leader>nn', 'notes_finder')
+
 return helpers
