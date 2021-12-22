@@ -220,4 +220,4 @@ require("trouble").setup({
   auto_preview = false,
   auto_close = true,
 })
-vim.api.nvim_set_keymap("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", {silent = true, noremap = true})
+vim.api.nvim_set_keymap("n", "<leader>xx", "<cmd>TroubleToggle workspace_diagnostics<cr>", {silent = true, noremap = true})
