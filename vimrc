@@ -31,7 +31,6 @@ Plug 'neovim/nvim-lspconfig'
 " Extensions to built-in LSP, for example, providing type inlay hints
 Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'rafcamlet/nvim-luapad'
-Plug 'tjdevries/nlua.nvim'
 
 Plug 'simrat39/rust-tools.nvim'
 
