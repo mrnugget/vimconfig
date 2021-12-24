@@ -327,6 +327,12 @@ nmap <silent> <leader>rf :TestFile<CR>
 nmap <silent> <leader>ra :TestSuite<CR>
 nmap <silent> <leader>rl :TestLast<CR>
 
+let test#rust#cargotest#options = {
+  \ 'nearest': '--lib',
+  \ 'file':    '-q --lib',
+  \ 'suite':   '-q --lib',
+\}
+
 " Markdown
 let g:markdown_fenced_languages = ['go', 'ruby', 'html', 'javascript', 'bash=sh', 'sql']
 let g:vim_markdown_fenced_languages = ['go', 'ruby', 'html', 'javascript', 'bash=sh', 'sql']

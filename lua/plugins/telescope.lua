@@ -116,7 +116,7 @@ local find_notes = function(category)
     default_text = ""
   end
 
-  require("telescope.builtin").file_browser({
+  require("telescope.builtin").find_files({
     prompt_title = prompt_title,
     cwd = notes_folder,
     default_text = default_text,
