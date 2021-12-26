@@ -74,6 +74,8 @@ local on_attach = function(client, bufnr)
   vim.cmd [[set signcolumn=yes]]
 end
 
+vim.diagnostic.config({ float = { source = 'always', } })
+
 local servers = {
   -- NOTE: See below. rust-analyzer is initialized by rust-tools
   -- rust_analyzer = {
