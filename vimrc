@@ -60,6 +60,9 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 Plug 'jose-elias-alvarez/null-ls.nvim', {'branch': 'main'}
 Plug 'jose-elias-alvarez/nvim-lsp-ts-utils', {'branch': 'main'}
+
+Plug 'mrnugget/vim-interestingwords', {'branch': 'mrn/simplify-slots'}
+
 end
 
 call plug#end()
