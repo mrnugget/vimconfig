@@ -16,7 +16,6 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', 'gd',    '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   buf_set_keymap('n', 'ga',    '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   buf_set_keymap('n', 'gr',    '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', 'gld',  [[<cmd>lua require('lsp_extensions.workspace.diagnostic').set_qf_list()<CR>]], opts)
   buf_set_keymap('n', 'g[', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', 'g]', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
 
@@ -24,9 +23,6 @@ local on_attach = function(client, bufnr)
 
   if filetype == 'rust' then
     vim.cmd [[autocmd BufWritePre <buffer> :lua require('lsp.helpers').format_rust()]]
-    -- Disable this, since we have rust-tools
-    -- vim.cmd [[autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost <buffer> :lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Whitespace", enabled = {"ChainingHint", "TypeHint", "ParameterHint"} } ]]
-
     vim.cmd [[autocmd BufEnter,BufNewFile,BufRead <buffer> nmap <buffer> gle <cmd>lua vim.lsp.codelens.refresh()<CR>]]
     vim.cmd [[autocmd BufEnter,BufNewFile,BufRead <buffer> nmap <buffer> glr <cmd>lua vim.lsp.codelens.run()<CR>]]
   end
@@ -66,7 +62,7 @@ local on_attach = function(client, bufnr)
     ts_utils.setup_client(client)
   end
 
-  vim.cmd [[autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics({ focusable = false })]]
+  vim.cmd [[autocmd CursorHold <buffer> lua vim.diagnostic.open_float({ focusable = false })]]
   -- 300ms of no cursor movement to trigger CursorHold
   vim.cmd [[set updatetime=300]]
   -- have a fixed column for the diagnostics to appear in
@@ -119,7 +115,7 @@ for ls, settings in pairs(servers) do
 end
 
 local utils = require("rust-tools.utils.utils")
-local  rust_execute_command = function(command, args, cwd)
+local rust_execute_command = function(command, args, cwd)
   vim.cmd("T " .. utils.make_command_from_args(command, args))
 end
 
@@ -211,39 +207,30 @@ lspconfig.sumneko_lua.setup {
     },
 }
 
--- Enable diagnostics with the workspace diagnostics handler
--- See the "gld" ("load diagnostics')binding:
---    nnoremap <silent> gld <cmd>lua require('lsp_extensions.workspace.diagnostic').set_qf_list()<CR>
--- to load all diagnostics in the workspace into the quickfix list
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  require('lsp_extensions.workspace.diagnostic').handler, {
-    virtual_text = true,
-    signs = true,
-    update_in_insert = true,
-  }
-)
-
 function _G.workspace_diagnostics_status()
   if #vim.lsp.buf_get_clients() == 0 then
     return ''
   end
 
-  local ws_diag = require('lsp_extensions.workspace.diagnostic')
-
   local status = {}
-  local errors = ws_diag.get_count(0, 'Error')
+  local errors = #vim.diagnostic.get(0, {severity = {min=vim.diagnostic.severity.ERROR,max=vim.diagnostic.severity.ERROR}})
   if errors > 0 then
     table.insert(status, "E: " .. errors)
   end
 
-  local warnings = ws_diag.get_count(0, 'Warning')
+  local warnings = #vim.diagnostic.get(0, {severity = {min=vim.diagnostic.severity.WARNING,max=vim.diagnostic.severity.WARNING}})
   if warnings > 0 then
     table.insert(status, "W: " .. warnings)
   end
 
-  local hints = ws_diag.get_count(0, 'Hint')
+  local hints = #vim.diagnostic.get(0, {severity = {min=vim.diagnostic.severity.HINT,max=vim.diagnostic.severity.HINT}})
   if hints > 0 then
     table.insert(status, "H: " .. hints)
+  end
+
+  local infos = #vim.diagnostic.get(0, {severity = {min=vim.diagnostic.severity.INFO,max=vim.diagnostic.severity.INFO}})
+  if infos > 0 then
+    table.insert(status, "I: " .. infos)
   end
 
   return table.concat(status, " | ")

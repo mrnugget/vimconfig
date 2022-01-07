@@ -27,8 +27,6 @@ Plug 'gruvbox-community/gruvbox'
 if has('nvim')
 " Collection of common configurations for the Nvim LSP client
 Plug 'neovim/nvim-lspconfig'
-" Extensions to built-in LSP, for example, providing type inlay hints
-Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'rafcamlet/nvim-luapad'
 
 Plug 'simrat39/rust-tools.nvim'
