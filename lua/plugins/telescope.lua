@@ -132,12 +132,16 @@ local find_notes = function(category)
         end
 
         local current_picker = action_state.get_current_picker(prompt_bufnr)
-        local fpath = current_picker.cwd .. os_sep .. file
+        local fpath = current_picker.cwd .. os_sep .. file .. notes_file_ext
+        local header = "# " .. file
 
         if not is_dir(fpath) then
           actions.close(prompt_bufnr)
           Path:new(fpath):touch { parents = true }
-          vim.cmd(string.format(":e %s" .. notes_file_ext, fpath))
+          vim.cmd(string.format(":e %s", fpath))
+
+          local buf = vim.api.nvim_get_current_buf()
+          vim.api.nvim_buf_set_lines(buf, 0, 0, false, {header})
         else
           print("is directory!")
         end
