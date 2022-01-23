@@ -163,4 +163,14 @@ map_helper('<leader>snn', 'sourcegraph_notes_finder')
 helpers.notes_finder = function() find_notes("") end
 map_helper('<leader>nn', 'notes_finder')
 
+
+helpers.notes_grep = function()
+  require('telescope.builtin').live_grep({
+      shorten_path = false,
+      cwd = notes_folder,
+      prompt = "~ LIVE GREP NOTES ~",
+    })
+end
+map_helper('<leader>gn', 'notes_grep')
+
 return helpers
