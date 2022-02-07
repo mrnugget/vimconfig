@@ -115,7 +115,7 @@ for ls, settings in pairs(servers) do
 end
 
 local utils = require("rust-tools.utils.utils")
-local rust_execute_command = function(command, args, cwd)
+local rust_execute_command = function(command, args)
   vim.cmd("T " .. utils.make_command_from_args(command, args))
 end
 
@@ -173,8 +173,16 @@ lspconfig.tsserver.setup {
 
 -- The sumneko lua-language-server setup is based on this:
 -- https://jdhao.github.io/2021/08/12/nvim_sumneko_lua_conf/
-local sumneko_binary_path = "/home/mrnugget/bin/lua-language-server/bin/lua-language-server"
-local sumneko_root_path = "/home/mrnugget/bin/lua-language-server"
+local sumneko_clone_path = ""
+
+if vim.fn.has('macunix') then
+  sumneko_clone_path = "/Users/thorstenball/code/clones/lua-language-server"
+else
+  sumneko_clone_path = "/home/mrnugget/bin/lua-language-server"
+end
+
+local sumneko_binary_path = sumneko_clone_path.."/bin/lua-language-server"
+local sumneko_root_path = sumneko_clone_path
 
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, "lua/?.lua")
