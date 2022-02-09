@@ -62,6 +62,8 @@ local on_attach = function(client, bufnr)
     ts_utils.setup_client(client)
   end
 
+  require "lsp_signature".on_attach()
+
   vim.cmd [[autocmd CursorHold <buffer> lua vim.diagnostic.open_float({ focusable = false })]]
   -- 300ms of no cursor movement to trigger CursorHold
   vim.cmd [[set updatetime=300]]

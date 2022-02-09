@@ -28,7 +28,6 @@ if has('nvim')
 " Collection of common configurations for the Nvim LSP client
 Plug 'neovim/nvim-lspconfig'
 Plug 'rafcamlet/nvim-luapad'
-
 Plug 'simrat39/rust-tools.nvim'
 
 " Telescope
@@ -50,6 +49,8 @@ Plug 'onsails/lspkind-nvim'
 
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
+" LSP signature
+Plug 'ray-x/lsp_signature.nvim'
 
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'folke/lsp-trouble.nvim', { 'branch': 'main' }
