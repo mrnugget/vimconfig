@@ -45,6 +45,7 @@ local on_attach = function(client, bufnr)
 
     buf_set_keymap("n", "gs", ":TSLspOrganize<CR>", opts)
     buf_set_keymap("n", "gi", ":TSLspImportAll<CR>", opts)
+    vim.cmd("nnoremap <leader>es mF:%!eslint_d --stdin --fix-to-stdout --stdin-filename %<CR>`F")
 
     vim.cmd("autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting()")
 
@@ -165,7 +166,10 @@ null_ls.setup({
     }),
     null_ls.builtins.formatting.prettier.with({
       filetypes = { "typescriptreact", "scss", "typescript", "javascript", "javascriptreact"},
-      prefer_local = "node_modules/.bin"
+      prefer_local = "node_modules/.bin",
+      condition = function(utils)
+        return utils.root_has_file({ ".prettierrc", ".prettierignore" })
+      end
     }),
   }
 })
