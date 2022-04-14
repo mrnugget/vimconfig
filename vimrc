@@ -424,7 +424,7 @@ lua <<EOF
     }
   })
 EOF
-autocmd FileType markdown lua require('cmp').setup.buffer { enabled = false }
+autocmd FileType markdown lua require('cmp').setup.buffer { { name = 'path' } }
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
