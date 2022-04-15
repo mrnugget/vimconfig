@@ -332,9 +332,9 @@ nmap <silent> <leader>rl :TestLast<CR>
 
 let g:test#javascript#runner = 'jest'
 let test#rust#cargotest#options = {
-  \ 'nearest': '--lib',
-  \ 'file':    '-q --lib',
-  \ 'suite':   '-q --lib',
+  \ 'nearest': '',
+  \ 'file':    '-q',
+  \ 'suite':   '-q',
 \}
 
 " Markdown
