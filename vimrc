@@ -298,6 +298,7 @@ endfunction
 
 " fugitive.vim
 nmap <leader>gb :Git blame<CR>
+nmap <leader>gs :Git<CR>
 
 " Tabular
 nmap <leader>a= :Tabularize /=<CR>
