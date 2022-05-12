@@ -32,6 +32,10 @@ local on_attach = function(client, bufnr)
     vim.cmd [[autocmd BufEnter,BufNewFile,BufRead <buffer> map <buffer> <leader>fs <cmd>lua require('telescope.builtin').lsp_workspace_symbols { query = vim.fn.input("Query: ") }<cr>]]
   end
 
+  if filetype == 'scss' then
+    vim.cmd("autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting()")
+  end
+
   if filetype == 'typescriptreact' or filetype == 'typescript' then
     -- TypeScript/ESLint/Prettier
     -- Requirements:
