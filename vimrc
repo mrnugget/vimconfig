@@ -184,6 +184,7 @@ nnoremap j gj
 
 " Use Ctrl-[ as Esc in neovim terminal mode
 tnoremap <C-[> <C-\><C-n>
+tnoremap <Esc> <C-\><C-n>
 
 " In visual mode don't include the newline-character when jumping to
 " end-of-line with $
