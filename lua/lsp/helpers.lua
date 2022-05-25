@@ -25,7 +25,7 @@ helpers.goimports = function(wait_ms)
     end
   end
 
-  vim.lsp.buf.formatting_sync()
+  vim.lsp.buf.format()
 end
 
 -- helpers.format_typescript() = function()

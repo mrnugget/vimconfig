@@ -45,7 +45,7 @@ local on_attach = function(client, bufnr)
     -- See the null-ls setup below for prettier/eslint_d config
 
     -- disable tsserver formatting because we use prettier/eslint for that
-    client.resolved_capabilities.document_formatting = false
+    client.server_capabilities.document_formatting = false
 
     buf_set_keymap("n", "gs", ":TSLspOrganize<CR>", opts)
     buf_set_keymap("n", "gi", ":TSLspImportAll<CR>", opts)
