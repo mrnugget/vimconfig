@@ -45,7 +45,7 @@ local on_attach = function(client, bufnr)
     -- See the null-ls setup below for prettier/eslint_d config
 
     -- disable tsserver formatting because we use prettier/eslint for that
-    client.server_capabilities.document_formatting = false
+    -- client.server_capabilities.document_formatting = false
 
     buf_set_keymap("n", "gs", ":TSLspOrganize<CR>", opts)
     buf_set_keymap("n", "gi", ":TSLspImportAll<CR>", opts)
@@ -178,11 +178,15 @@ null_ls.setup({
   }
 })
 
+
 local util = require "lspconfig/util"
 lspconfig.tsserver.setup {
   init_options = require("nvim-lsp-ts-utils").init_options,
   capabilities = capabilities,
-  on_attach = on_attach,
+  on_attach = function(client, bufnr)
+    client.server_capabilities.document_formatting = false
+    on_attach(client, bufnr)
+  end,
   flags = {
     debounce_text_changes = 200,
   },
