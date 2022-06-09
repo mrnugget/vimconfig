@@ -44,14 +44,12 @@ local on_attach = function(client, bufnr)
     --
     -- See the null-ls setup below for prettier/eslint_d config
 
-    -- disable tsserver formatting because we use prettier/eslint for that
-    -- client.server_capabilities.document_formatting = false
-
     buf_set_keymap("n", "gs", ":TSLspOrganize<CR>", opts)
     buf_set_keymap("n", "gi", ":TSLspImportAll<CR>", opts)
     vim.cmd("nnoremap <leader>es mF:%!eslint_d --stdin --fix-to-stdout --stdin-filename %<CR>`F")
 
-    vim.cmd("autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting()")
+    -- Never request tsserver for formatting, because we use prettier/eslint for that
+    vim.cmd("autocmd BufWritePost <buffer> lua vim.lsp.buf.format { filter = function(clients) return vim.tbl_filter( function(client) return client.name ~= \"tsserver\" end, clients) end }")
 
     local ts_utils = require("nvim-lsp-ts-utils")
     ts_utils.setup {
@@ -183,10 +181,7 @@ local util = require "lspconfig/util"
 lspconfig.tsserver.setup {
   init_options = require("nvim-lsp-ts-utils").init_options,
   capabilities = capabilities,
-  on_attach = function(client, bufnr)
-    client.server_capabilities.document_formatting = false
-    on_attach(client, bufnr)
-  end,
+  on_attach = on_attach,
   flags = {
     debounce_text_changes = 200,
   },
