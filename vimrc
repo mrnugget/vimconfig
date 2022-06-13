@@ -55,6 +55,7 @@ Plug 'ray-x/lsp_signature.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'folke/lsp-trouble.nvim', { 'branch': 'main' }
 
+Plug 'nvim-treesitter/playground'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 Plug 'jose-elias-alvarez/null-ls.nvim', {'branch': 'main'}
