@@ -511,6 +511,12 @@ augroup ft_asm
   au FileType asm setlocal commentstring=#\ %s
 augroup END
 
+" Tucan
+augroup ft_tucan
+  au!
+  au BufEnter,BufNewFile,BufRead *.tuc set filetype=tucan
+augroup END
+
 " Merlin setup for Ocaml
 " if executable('opam')
 "   let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
