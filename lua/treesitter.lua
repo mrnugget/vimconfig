@@ -10,11 +10,9 @@ parser_config.tucan = {
     url = "https://github.com/mrnugget/tree-sitter-tucan", -- local path or git repo
     files = {"src/parser.c"},
     -- optional entries:
-    branch = "main", -- default branch in case of git repo if different from master
-    -- generate_requires_npm = true, -- if stand-alone parser without npm dependencies
-    requires_generate_from_grammar = false, -- if folder contains pre-generated src/parser.c
+    branch = "main",
   },
-  -- filetype = "tucan", -- if filetype does not match the parser name
+  filetype = "tucan", -- if filetype does not match the parser name
 }
 
 require'nvim-treesitter.configs'.setup {
