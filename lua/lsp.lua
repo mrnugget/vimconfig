@@ -266,5 +266,11 @@ end
 require("trouble").setup({
   auto_preview = false,
   auto_close = true,
+  action_keys = {
+    -- default binding is <esc> for this and it confuses me endlessly that I
+    -- can't just escape in that window.
+    cancel = {}
+  }
 })
+
 vim.api.nvim_set_keymap("n", "<leader>xx", "<cmd>TroubleToggle workspace_diagnostics<cr>", {silent = true, noremap = true})
