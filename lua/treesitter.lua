@@ -14,6 +14,13 @@ parser_config.tucan = {
   },
   filetype = "tucan", -- if filetype does not match the parser name
 }
+parser_config.sql = {
+  install_info = {
+    url = "https://github.com/DerekStride/tree-sitter-sql",
+    files = { "src/parser.c" },
+    branch = "main",
+  },
+}
 
 require'nvim-treesitter.configs'.setup {
   ensure_installed = {  -- one of "all", "maintained" (parsers with maintainers), or a list of languages
@@ -58,14 +65,16 @@ require'nvim-treesitter.configs'.setup {
     "tsx",
     "typescript",
     "vim",
-    "yaml"
+    "yaml",
+    "tucan",
+    "sql"
   },
   highlight = {
     enable = true,              -- false will disable the whole extension
   },
-  -- indent = {
-  --   enable = true
-  -- },
+  indent = {
+    enable = true
+  },
   incremental_selection = {
     enable = true,
     keymaps = {

@@ -62,6 +62,10 @@ local on_attach = function(client, bufnr)
     ts_utils.setup_client(client)
   end
 
+  if filetype == 'javascript' then
+    vim.cmd("autocmd BufWritePost <buffer> lua vim.lsp.buf.format { }")
+  end
+
   require "lsp_signature".on_attach()
 
   vim.cmd [[autocmd CursorHold <buffer> lua vim.diagnostic.open_float({ focusable = false })]]
@@ -159,6 +163,7 @@ require('rust-tools').setup({
 
 local null_ls = require("null-ls")
 null_ls.setup({
+  on_attach = on_attach,
   sources = {
     null_ls.builtins.diagnostics.eslint_d.with({
       filetypes = { "typescriptreact", "scss", "typescript", "javascript", "javascriptreact"},
