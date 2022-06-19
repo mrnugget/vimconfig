@@ -1,19 +1,29 @@
 vim.filetype.add({
   extension = {
     tuc = "tucan",
+    tucir = "tucanir",
   }
 })
 
 local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
 parser_config.tucan = {
   install_info = {
-    url = "https://github.com/mrnugget/tree-sitter-tucan", -- local path or git repo
+    url = "https://github.com/mrnugget/tree-sitter-tucan",
     files = {"src/parser.c"},
-    -- optional entries:
     branch = "main",
   },
-  filetype = "tucan", -- if filetype does not match the parser name
+  filetype = "tucan",
 }
+
+parser_config.tucanir = {
+  install_info = {
+    url = "https://github.com/mrnugget/tree-sitter-tucanir",
+    files = {"src/parser.c"},
+    branch = "main",
+  },
+  filetype = "tucanir",
+}
+
 parser_config.sql = {
   install_info = {
     url = "https://github.com/DerekStride/tree-sitter-sql",

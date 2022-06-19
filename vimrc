@@ -515,6 +515,7 @@ augroup END
 augroup ft_tucan
   au!
   au BufEnter,BufNewFile,BufRead *.tuc set filetype=tucan
+  au BufEnter,BufNewFile,BufRead *.tucir set filetype=tucanir
 augroup END
 
 " Merlin setup for Ocaml
