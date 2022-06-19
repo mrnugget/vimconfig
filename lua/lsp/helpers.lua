@@ -6,7 +6,7 @@ local helpers = {}
 -- - https://github.com/neovim/neovim/pull/13703
 helpers.format_rust = function()
   local lineno = vim.api.nvim_win_get_cursor(0)
-  vim.lsp.buf.formatting_sync(nil, 1000)
+  vim.lsp.buf.format { timeout_ms =  1000 }
   vim.api.nvim_win_set_cursor(0, lineno)
 end
 
@@ -28,17 +28,13 @@ helpers.goimports = function(wait_ms)
   vim.lsp.buf.format()
 end
 
--- helpers.format_typescript() = function()
---   if err ~= nil or result == nil then return end
-
---   if not vim.api.nvim_buf_get_option(bufnr, "modified") then
---     local view = vim.fn.winsaveview()
---     vim.lsp.util.apply_text_edits(result, bufnr)
---     vim.fn.winrestview(view)
---     if bufnr == vim.api.nvim_get_current_buf() then
---       vim.api.nvim_command("noautocmd :update")
---     end
---   end
--- end
+helpers.format_typescript = function()
+  vim.lsp.buf.format {
+    filter = function(clients)
+      -- Never request tsserver for formatting, because we use prettier/eslint for that
+      return vim.tbl_filter(function(client) return client.name ~= "tsserver" end, clients)
+    end
+  }
+end
 
 return helpers

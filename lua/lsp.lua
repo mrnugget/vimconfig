@@ -33,7 +33,7 @@ local on_attach = function(client, bufnr)
   end
 
   if filetype == 'scss' then
-    vim.cmd("autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting()")
+    vim.cmd("autocmd BufWritePost <buffer> lua vim.lsp.buf.format()")
   end
 
   if filetype == 'typescriptreact' or filetype == 'typescript' then
@@ -48,8 +48,7 @@ local on_attach = function(client, bufnr)
     buf_set_keymap("n", "gi", ":TSLspImportAll<CR>", opts)
     vim.cmd("nnoremap <leader>es mF:%!eslint_d --stdin --fix-to-stdout --stdin-filename %<CR>`F")
 
-    -- Never request tsserver for formatting, because we use prettier/eslint for that
-    vim.cmd("autocmd BufWritePost <buffer> lua vim.lsp.buf.format { filter = function(clients) return vim.tbl_filter( function(client) return client.name ~= \"tsserver\" end, clients) end }")
+    vim.cmd("autocmd BufWritePost <buffer> lua require('lsp.helpers').format_typescript()")
 
     local ts_utils = require("nvim-lsp-ts-utils")
     ts_utils.setup {
@@ -120,12 +119,8 @@ for ls, settings in pairs(servers) do
   }
 end
 
-local utils = require("rust-tools.utils.utils")
-local rust_execute_command = function(command, args)
-  vim.cmd("T " .. utils.make_command_from_args(command, args))
-end
-
-local tools = {
+require('rust-tools').setup({
+  tools = {
     autoSetHints = true,
     runnables = {use_telescope = true},
     inlay_hints = {
@@ -134,12 +129,11 @@ local tools = {
     },
     hover_actions = {auto_focus = true},
     executor = {
-      execute_command = rust_execute_command
+      execute_command = function(command, args)
+        vim.cmd("T " .. require("rust-tools.utils.utils").make_command_from_args(command, args))
+      end
     },
-}
-
-require('rust-tools').setup({
-  tools = tools,
+  },
   server = {
     on_attach = on_attach,
     capabilities = capabilities,
