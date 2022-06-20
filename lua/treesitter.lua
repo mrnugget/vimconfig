@@ -77,7 +77,8 @@ require'nvim-treesitter.configs'.setup {
     "vim",
     "yaml",
     "tucan",
-    "sql"
+    "sql",
+    "tucanir"
   },
   highlight = {
     enable = true,              -- false will disable the whole extension
