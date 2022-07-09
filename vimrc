@@ -4,7 +4,6 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'bronson/vim-visual-star-search'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'benmills/vim-golang-alternate'
-Plug 'plasticboy/vim-markdown'
 
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
