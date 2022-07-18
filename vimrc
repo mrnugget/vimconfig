@@ -299,6 +299,7 @@ endfunction
 
 " fugitive.vim
 nmap <leader>gb :Git blame<CR>
+vmap <leader>go :GBrowse<CR>
 nmap <leader>gs :Git<CR>
 
 " Tabular
