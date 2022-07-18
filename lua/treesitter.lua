@@ -1,3 +1,4 @@
+-- We also need to set the filetype in .vimrc when reading tuc/tucir files
 vim.filetype.add({
   extension = {
     tuc = "tucan",
@@ -24,13 +25,13 @@ parser_config.tucanir = {
   filetype = "tucanir",
 }
 
-parser_config.sql = {
-  install_info = {
-    url = "https://github.com/DerekStride/tree-sitter-sql",
-    files = { "src/parser.c" },
-    branch = "main",
-  },
-}
+-- parser_config.sql = {
+--   install_info = {
+--     url = "https://github.com/DerekStride/tree-sitter-sql",
+--     files = { "src/parser.c" },
+--     branch = "main",
+--   },
+-- }
 
 require'nvim-treesitter.configs'.setup {
   ensure_installed = {  -- one of "all", "maintained" (parsers with maintainers), or a list of languages
@@ -78,14 +79,14 @@ require'nvim-treesitter.configs'.setup {
     "vim",
     "yaml",
     "tucan",
-    "sql",
+    -- "sql",
     "tucanir"
   },
   highlight = {
     enable = true,              -- false will disable the whole extension
   },
   indent = {
-    enable = true
+    enable = false
   },
   incremental_selection = {
     enable = true,
