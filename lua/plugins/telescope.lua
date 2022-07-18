@@ -73,6 +73,8 @@ helpers.find_files_in_directory_of_buffer = function()
 end
 
 map_builtin('<leader>fi', 'find_files')
+-- using gi here to copy `fi` above and to use two different fingers
+map_builtin('<leader>gi', 'git_status')
 map_builtin('<leader>ff', 'find_files')
 map_helper('<leader>fp', 'find_files_in_directory_of_buffer')
 
