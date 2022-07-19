@@ -25,6 +25,7 @@ local on_attach = function(client, bufnr)
     vim.cmd [[autocmd BufEnter,BufNewFile,BufRead <buffer> nmap <buffer> gle <cmd>lua vim.lsp.codelens.refresh()<CR>]]
     vim.cmd [[autocmd BufEnter,BufNewFile,BufRead <buffer> nmap <buffer> glr <cmd>lua vim.lsp.codelens.run()<CR>]]
   end
+
   if filetype == 'go' then
     vim.cmd [[autocmd BufWritePre <buffer> :lua require('lsp.helpers').goimports(2000)]]
 
@@ -49,23 +50,13 @@ local on_attach = function(client, bufnr)
     vim.cmd("nnoremap <leader>es mF:%!eslint_d --stdin --fix-to-stdout --stdin-filename %<CR>`F")
 
     vim.cmd("autocmd BufWritePost <buffer> lua require('lsp.helpers').format_typescript()")
-
-    local ts_utils = require("nvim-lsp-ts-utils")
-    ts_utils.setup {
-        auto_inlay_hints = true,
-        inlay_hints_highlight = "Whitespace",
-        inlay_hints_priority = 200, -- priority of the hint extmarks
-        inlay_hints_throttle = 150, -- throttle the inlay hint request
-    }
-
-    ts_utils.setup_client(client)
   end
 
   if filetype == 'javascript' then
     vim.cmd("autocmd BufWritePost <buffer> lua vim.lsp.buf.format { }")
   end
 
-  require "lsp_signature".on_attach()
+  require "lsp_signature".on_attach(client, bufnr)
 
   vim.cmd [[autocmd CursorHold <buffer> lua vim.diagnostic.open_float({ focusable = false })]]
   -- 300ms of no cursor movement to trigger CursorHold
@@ -77,21 +68,15 @@ end
 
 vim.diagnostic.config({ float = { source = 'always', } })
 
-local servers = {
-  -- NOTE: See below. rust-analyzer is initialized by rust-tools
-  -- rust_analyzer = {
-  --   ["rust-analyzer"] = {
-  --     checkOnSave = {
-  --       command = "clippy",
-  --     },
-  --     completion = {
-  --       autoimport = {
-  --         enable = true
-  --       }
-  --     }
-  --   },
-  -- },
-  gopls = {
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+-------------------------------------------------------------------------------
+-- gopls
+-------------------------------------------------------------------------------
+lspconfig.gopls.setup {
+  on_attach = on_attach,
+  settings = {
     gopls = {
       completeUnimported = true,
       buildFlags = {"-tags=debug"},
@@ -112,22 +97,15 @@ local servers = {
       }
     }
   },
+  capabilities = capabilities,
+  flags = {
+    debounce_text_changes = 200,
+  },
 }
 
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-for ls, settings in pairs(servers) do
-  lspconfig[ls].setup {
-    on_attach = on_attach,
-    settings = settings,
-    capabilities = capabilities,
-    flags = {
-      debounce_text_changes = 200,
-    },
-  }
-end
-
+-------------------------------------------------------------------------------
+-- rust-analyzer
+-------------------------------------------------------------------------------
 require('rust-tools').setup({
   tools = {
     autoSetHints = true,
@@ -164,6 +142,9 @@ require('rust-tools').setup({
   }
 })
 
+-------------------------------------------------------------------------------
+-- null-ls for TypeScript/JS
+-------------------------------------------------------------------------------
 local null_ls = require("null-ls")
 null_ls.setup({
   on_attach = on_attach,
@@ -184,7 +165,9 @@ null_ls.setup({
   }
 })
 
-
+-------------------------------------------------------------------------------
+-- tsserver for TypeScript
+-------------------------------------------------------------------------------
 local util = require "lspconfig/util"
 lspconfig.tsserver.setup {
   init_options = require("nvim-lsp-ts-utils").init_options,
@@ -196,6 +179,9 @@ lspconfig.tsserver.setup {
   root_dir = util.root_pattern(".git"),
 }
 
+-------------------------------------------------------------------------------
+-- sumneko for Lua
+-------------------------------------------------------------------------------
 -- The sumneko lua-language-server setup is based on this:
 -- https://jdhao.github.io/2021/08/12/nvim_sumneko_lua_conf/
 local os = vim.loop.os_uname().sysname

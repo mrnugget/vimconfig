@@ -28,13 +28,14 @@ helpers.goimports = function(wait_ms)
   vim.lsp.buf.format()
 end
 
-helpers.format_typescript = function()
-  vim.lsp.buf.format {
-    filter = function(clients)
-      -- Never request tsserver for formatting, because we use prettier/eslint for that
-      return vim.tbl_filter(function(client) return client.name ~= "tsserver" end, clients)
-    end
-  }
+helpers.format_typescript = function(bufnr)
+    vim.lsp.buf.format({
+        filter = function(client)
+            -- only format typescript with null-ls
+            return client.name == "null-ls"
+        end,
+        bufnr = bufnr,
+    })
 end
 
 return helpers
