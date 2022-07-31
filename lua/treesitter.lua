@@ -1,16 +1,16 @@
 -- We also need to set the filetype in .vimrc when reading tuc/tucir files
-vim.filetype.add({
+vim.filetype.add {
   extension = {
     tuc = "tucan",
     tucir = "tucanir",
-  }
-})
+  },
+}
 
-local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 parser_config.tucan = {
   install_info = {
     url = "https://github.com/mrnugget/tree-sitter-tucan",
-    files = {"src/parser.c"},
+    files = { "src/parser.c" },
     branch = "main",
   },
   filetype = "tucan",
@@ -19,7 +19,7 @@ parser_config.tucan = {
 parser_config.tucanir = {
   install_info = {
     url = "https://github.com/mrnugget/tree-sitter-tucanir",
-    files = {"src/parser.c"},
+    files = { "src/parser.c" },
     branch = "main",
   },
   filetype = "tucanir",
@@ -33,8 +33,8 @@ parser_config.tucanir = {
 --   },
 -- }
 
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = {  -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+require("nvim-treesitter.configs").setup {
+  ensure_installed = { -- one of "all", "maintained" (parsers with maintainers), or a list of languages
     "bash",
     "bibtex",
     "c",
@@ -80,13 +80,13 @@ require'nvim-treesitter.configs'.setup {
     "yaml",
     "tucan",
     -- "sql",
-    "tucanir"
+    "tucanir",
   },
   highlight = {
-    enable = true,              -- false will disable the whole extension
+    enable = true, -- false will disable the whole extension
   },
   indent = {
-    enable = false
+    enable = false,
   },
   incremental_selection = {
     enable = true,
@@ -101,6 +101,6 @@ require'nvim-treesitter.configs'.setup {
   textobjects = {
     move = {
       enable = true,
-    }
-  }
+    },
+  },
 }

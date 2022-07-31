@@ -60,6 +60,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'jose-elias-alvarez/null-ls.nvim', {'branch': 'main'}
 Plug 'jose-elias-alvarez/nvim-lsp-ts-utils', {'branch': 'main'}
 
+Plug 'williamboman/mason.nvim', {'branch': 'main'}
 Plug 'mrnugget/vim-interestingwords', {'branch': 'mrn/simplify-slots'}
 
 end
@@ -350,6 +351,10 @@ let g:vim_markdown_no_default_key_mappings = 1
 " Telescope.nvim, see lua/plugins/telescope.lua
 if has('nvim')
   lua require('plugins.telescope')
+end
+
+if has('nvim')
+  lua require("mason").setup()
 end
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
