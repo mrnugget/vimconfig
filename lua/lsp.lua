@@ -6,6 +6,10 @@ local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_keymap(bufnr, "n", binding, cmd, opts)
   end
 
+  local function create_autocmd(events, callback)
+    vim.api.nvim_create_autocmd(events, { buffer = bufnr, callback = callback })
+  end
+
   -- keybindings
   buf_set_keymap("<c-]>", "<cmd>lua vim.lsp.buf.definition()<CR>")
   buf_set_keymap("K", "<cmd>lua vim.lsp.buf.hover()<CR>")
@@ -22,13 +26,18 @@ local on_attach = function(client, bufnr)
 
   local filetype = vim.api.nvim_buf_get_option(0, "filetype")
   if filetype == "rust" then
-    vim.cmd [[autocmd BufWritePre <buffer> :lua require('lsp.helpers').format_rust()]]
-    vim.cmd [[autocmd BufEnter,BufNewFile,BufRead <buffer> nmap <buffer> gle <cmd>lua vim.lsp.codelens.refresh()<CR>]]
-    vim.cmd [[autocmd BufEnter,BufNewFile,BufRead <buffer> nmap <buffer> glr <cmd>lua vim.lsp.codelens.run()<CR>]]
+    create_autocmd("BufWritePre", require("lsp.helpers").format_rust)
+    buf_set_keymap("gle", "<cmd>lua vim.lsp.codelens.refresh()<CR>")
+    buf_set_keymap("glr", "<cmd>lua vim.lsp.codelens.run()<CR>")
   elseif filetype == "go" then
-    vim.cmd [[autocmd BufWritePre <buffer> :lua require('lsp.helpers').goimports(2000)]]
+    create_autocmd("BufWritePre", function()
+      require("lsp.helpers").goimports(2000)
+    end)
     -- gopls requires a require to list workspace arguments.
-    vim.cmd [[autocmd BufEnter,BufNewFile,BufRead <buffer> map <buffer> <leader>fs <cmd>lua require('telescope.builtin').lsp_workspace_symbols { query = vim.fn.input("Query: ") }<cr>]]
+    buf_set_keymap(
+      "<leader>fs",
+      "lua require('telescope.builtin').lsp_workspace_symbols { query = vim.fn.input('Query: ')"
+    )
   elseif filetype == "typescriptreact" or filetype == "typescript" then
     -- TypeScript/ESLint/Prettier
     -- Requirements:
@@ -38,7 +47,7 @@ local on_attach = function(client, bufnr)
     -- See the null-ls setup below for prettier/eslint_d config
     buf_set_keymap("gs", ":TSLspOrganize<CR>")
     buf_set_keymap("gi", ":TSLspImportAll<CR>")
-    vim.cmd "nnoremap <leader>es mF:%!eslint_d --stdin --fix-to-stdout --stdin-filename %<CR>`F"
+    buf_set_keymap("<leader>es", "mF:%!eslint_d --stdin --fix-to-stdout --stdin-filename %<CR>`F")
 
     local ts_utils = require "nvim-lsp-ts-utils"
     ts_utils.setup {
@@ -50,12 +59,14 @@ local on_attach = function(client, bufnr)
 
     ts_utils.setup_client(client)
   else
-    vim.cmd "autocmd BufWritePost <buffer> lua require('lsp.helpers').format_lsp()"
+    create_autocmd("BufWritePost", require("lsp.helpers").format_lsp)
   end
 
   require("lsp_signature").on_attach(client, bufnr)
 
-  vim.cmd [[autocmd CursorHold <buffer> lua vim.diagnostic.open_float({ focusable = false })]]
+  vim.api.nvim_create_autocmd("CursorHold", function()
+    vim.diagnostic.open_float { focusable = false }
+  end)
   -- 300ms of no cursor movement to trigger CursorHold
   vim.cmd [[set updatetime=300]]
   -- have a fixed column for the diagnostics to appear in
