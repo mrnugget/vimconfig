@@ -1,5 +1,6 @@
 local lspconfig = require "lspconfig"
 
+local formatting_augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(binding, cmd)
     local opts = { noremap = true, silent = true }
@@ -26,13 +27,9 @@ local on_attach = function(client, bufnr)
 
   local filetype = vim.api.nvim_buf_get_option(0, "filetype")
   if filetype == "rust" then
-    create_autocmd("BufWritePre", require("lsp.helpers").format_rust)
     buf_set_keymap("gle", "<cmd>lua vim.lsp.codelens.refresh()<CR>")
     buf_set_keymap("glr", "<cmd>lua vim.lsp.codelens.run()<CR>")
   elseif filetype == "go" then
-    create_autocmd("BufWritePre", function()
-      require("lsp.helpers").goimports(2000)
-    end)
     -- gopls requires a require to list workspace arguments.
     buf_set_keymap(
       "<leader>fs",
@@ -58,13 +55,27 @@ local on_attach = function(client, bufnr)
     }
 
     ts_utils.setup_client(client)
-  else
-    create_autocmd("BufWritePost", require("lsp.helpers").format_lsp)
+  end
+
+  -- formatting
+  if client.supports_method "textDocument/formatting" then
+    vim.api.nvim_clear_autocmds { group = formatting_augroup, buffer = bufnr }
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      group = formatting_augroup,
+      buffer = bufnr,
+      callback = function()
+        if filetype == "go" then
+          require("lsp.helpers").goimports(2000)
+        else
+          require("lsp.helpers").format_lsp()
+        end
+      end,
+    })
   end
 
   require("lsp_signature").on_attach(client, bufnr)
 
-  vim.api.nvim_create_autocmd("CursorHold", function()
+  create_autocmd("CursorHold", function()
     vim.diagnostic.open_float { focusable = false }
   end)
   -- 300ms of no cursor movement to trigger CursorHold
@@ -88,24 +99,22 @@ lspconfig.gopls.setup {
   on_attach = on_attach,
   settings = {
     gopls = {
-      gopls = {
-        completeUnimported = true,
-        buildFlags = { "-tags=debug" },
-        ["local"] = "github.com/sourcegraph/sourcegraph",
-        analyses = {
-          unusedparams = true,
-        },
-        staticcheck = true,
-        experimentalPostfixCompletions = true,
-        hints = {
-          parameterNames = true,
-          assignVariableTypes = true,
-          constantValues = true,
-          rangeVariableTypes = true,
-          compositeLiteralTypes = true,
-          compositeLiteralFields = true,
-          functionTypeParameters = true,
-        },
+      completeUnimported = true,
+      buildFlags = { "-tags=debug" },
+      ["local"] = "github.com/sourcegraph/sourcegraph",
+      analyses = {
+        unusedparams = true,
+      },
+      staticcheck = true,
+      experimentalPostfixCompletions = true,
+      hints = {
+        parameterNames = true,
+        assignVariableTypes = true,
+        constantValues = true,
+        rangeVariableTypes = true,
+        compositeLiteralTypes = true,
+        compositeLiteralFields = true,
+        functionTypeParameters = true,
       },
     },
   },
