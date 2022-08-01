@@ -18,14 +18,13 @@ helpers.goimports = function(wait_ms)
   vim.lsp.buf.format()
 end
 
-helpers.format_lsp = function()
+helpers.format_lsp = function(bufnr)
   vim.lsp.buf.format {
-    filter = function(clients)
-      -- Never request tsserver for formatting, because we use prettier/eslint for that
-      return vim.tbl_filter(function(client)
-        return client.name ~= "tsserver" and client.name ~= "sumneko_lua"
-      end, clients)
+    -- Never request tsserver for formatting, because we use prettier/eslint for that
+    filter = function(client)
+      return client.name ~= "tsserver" and client.name ~= "sumneko_lua"
     end,
+    bufnr = bufnr,
   }
 end
 
