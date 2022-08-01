@@ -180,7 +180,12 @@ local null_ls = require "null-ls"
 null_ls.setup {
   on_attach = on_attach,
   sources = {
-    null_ls.builtins.diagnostics.eslint_d.with { filetypes = js_filetypes },
+    null_ls.builtins.diagnostics.eslint_d.with {
+      filetypes = js_filetypes,
+      condition = function(utils)
+        return utils.root_has_file { ".eslintrc.js" }
+      end,
+    },
     null_ls.builtins.code_actions.eslint_d.with { filetypes = js_filetypes },
     null_ls.builtins.formatting.prettier.with {
       filetypes = js_filetypes,
