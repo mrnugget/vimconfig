@@ -61,7 +61,10 @@ Plug 'jose-elias-alvarez/null-ls.nvim', {'branch': 'main'}
 Plug 'jose-elias-alvarez/nvim-lsp-ts-utils', {'branch': 'main'}
 
 Plug 'williamboman/mason.nvim', {'branch': 'main'}
-Plug 'mrnugget/vim-interestingwords', {'branch': 'mrn/simplify-slots'}
+
+" neo-tree
+Plug 'MunifTanjim/nui.nvim', { 'branch': 'main' }
+Plug 'nvim-neo-tree/neo-tree.nvim', { 'branch': 'v2.x' }
 
 end
 
