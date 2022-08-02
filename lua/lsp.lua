@@ -65,9 +65,9 @@ local on_attach = function(client, bufnr)
       buffer = bufnr,
       callback = function()
         if filetype == "go" then
-          require("lsp.helpers").goimports(2000)
+          R("lsp.helpers").goimports(2000)
         else
-          require("lsp.helpers").format_lsp(bufnr)
+          R("lsp.helpers").format_lsp(bufnr)
         end
       end,
     })
