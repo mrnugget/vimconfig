@@ -58,7 +58,6 @@ Plug 'nvim-treesitter/playground'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 Plug 'jose-elias-alvarez/null-ls.nvim', {'branch': 'main'}
-Plug 'jose-elias-alvarez/nvim-lsp-ts-utils', {'branch': 'main'}
 
 Plug 'williamboman/mason.nvim', {'branch': 'main'}
 

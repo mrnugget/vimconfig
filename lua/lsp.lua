@@ -45,16 +45,6 @@ local on_attach = function(client, bufnr)
     buf_set_keymap("gs", ":TSLspOrganize<CR>")
     buf_set_keymap("gi", ":TSLspImportAll<CR>")
     buf_set_keymap("<leader>es", "mF:%!eslint_d --stdin --fix-to-stdout --stdin-filename %<CR>`F")
-
-    local ts_utils = require "nvim-lsp-ts-utils"
-    ts_utils.setup {
-      auto_inlay_hints = true,
-      inlay_hints_highlight = "Whitespace",
-      inlay_hints_priority = 200, -- priority of the hint extmarks
-      inlay_hints_throttle = 150, -- throttle the inlay hint request
-    }
-
-    ts_utils.setup_client(client)
   end
 
   -- formatting
@@ -205,7 +195,6 @@ null_ls.setup {
 -------------------------------------------------------------------------------
 local util = require "lspconfig/util"
 lspconfig.tsserver.setup {
-  init_options = require("nvim-lsp-ts-utils").init_options,
   capabilities = capabilities,
   on_attach = on_attach,
   flags = {
