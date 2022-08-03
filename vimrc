@@ -376,6 +376,9 @@ if has('nvim')
     }
   })
 EOF
+
+nnoremap <silent> \| :Neotree toggle reveal_force_cwd<CR>
+nnoremap <silent> \ :Neotree toggle diagnostics reveal bottom<CR>
 end
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
