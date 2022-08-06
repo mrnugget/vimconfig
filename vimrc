@@ -37,11 +37,11 @@ Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 
 " Completion
-Plug 'hrsh7th/cmp-nvim-lsp', { 'branch': 'main' }
-Plug 'hrsh7th/cmp-buffer', { 'branch': 'main' }
-Plug 'hrsh7th/cmp-path', { 'branch': 'main' }
-Plug 'hrsh7th/cmp-vsnip', { 'branch': 'main' }
-Plug 'hrsh7th/nvim-cmp', { 'branch': 'main' }
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/nvim-cmp'
 
 " Fancy icons for completion
 Plug 'onsails/lspkind-nvim'
@@ -52,14 +52,14 @@ Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'ray-x/lsp_signature.nvim'
 
 Plug 'kyazdani42/nvim-web-devicons'
-Plug 'folke/lsp-trouble.nvim', { 'branch': 'main' }
+Plug 'folke/lsp-trouble.nvim'
 
 Plug 'nvim-treesitter/playground'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
-Plug 'jose-elias-alvarez/null-ls.nvim', {'branch': 'main'}
+Plug 'jose-elias-alvarez/null-ls.nvim'
 
-Plug 'williamboman/mason.nvim', {'branch': 'main'}
+Plug 'williamboman/mason.nvim',
 
 end
 
