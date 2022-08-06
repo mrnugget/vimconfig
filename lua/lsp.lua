@@ -181,11 +181,20 @@ null_ls.setup {
       filetypes = js_filetypes,
       prefer_local = "node_modules/.bin",
       condition = function(utils)
-        return utils.root_has_file { ".prettierrc", ".prettierignore" }
+        return utils.root_has_file { "prettier.config.js", ".prettierrc", ".prettierignore" }
       end,
     },
     null_ls.builtins.formatting.stylua.with {
       filetypes = { "lua" },
+    },
+    null_ls.builtins.formatting.sql_formatter.with {
+      filetypes = { "sql" },
+      extra_args = function()
+        return {
+          "--config",
+          vim.fn.expand "~/.vim/sql-formatter.json",
+        }
+      end,
     },
   },
 }
