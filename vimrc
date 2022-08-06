@@ -180,10 +180,6 @@ tnoremap <Esc> <C-\><C-n>
 " end-of-line with $
 vnoremap $ $h
 
-" Paste and reformat with = to the last part of the previous
-" paste. Let's see how this works.
-"nnoremap p p=`]
-
 " Select the last pasted text, line/block/characterwise
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
@@ -215,15 +211,9 @@ nmap <leader>sw :set hlsearch<CR>mm*N`m
 nmap <leader>gr :gr! <C-r><C-w><CR>
 " Find duplicate words
 nnoremap <silent> <leader>du /\(\<\w\+\>\)\_s*\<\1\><CR>
-" Converting symbols from ruby 1.8 syntax to 1.9
-nmap <silent> <leader>19 hf:xepld3l
-" Converting ruby symbols to strings
-nmap <silent> <leader>tst f:xviwS"
 " Repeat last command in tmux window below (if two-pane setup)
 nmap <leader>rep :!tmux send-keys -t 2 C-p C-j <CR><CR>
-" `puts` the selected expression in the line above
-" like this: `puts "<myexpression>=#{<myexpression>}"`
-vmap <silent> <leader>pe mz"eyOputs "<ESC>"epa=#{<ESC>"epa}"<ESC>`z
+
 " Pipes the selected region to `jq` for formatting
 vmap <silent> <leader>jq :!cat\|jq . <CR>
 " Pipes the selection region to `pandoc` to convert it to HTML, opens the temp
@@ -250,6 +240,23 @@ nnoremap <silent> <leader>cl :silent cclose<CR>
 nnoremap <silent> <C-n> :silent cnext<CR>
 nnoremap <silent> <C-p> :silent cprevious<CR>
 
+function! OpenURLUnderCursor()
+  let s:uri = expand('<cWORD>')
+  let s:uri = matchstr(s:uri, '[a-z]*:\/\/[^ >,;()]*')
+  let s:uri = substitute(s:uri, '?', '\\?', '')
+  let s:uri = shellescape(s:uri, 1)
+  if s:uri != ''
+    if has('mac') || has('macunix')
+      silent exec "!open '".s:uri."'"
+    else
+      silent exec "!xdg-open '".s:uri."'"
+    endif
+    :redraw!
+  endif
+endfunction
+
+nnoremap gx :call OpenURLUnderCursor()<CR>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Neovim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -274,22 +281,6 @@ runtime macros/matchit.vim
 " netrw
 let g:netrw_liststyle = 3
 let g:netrw_keepj="keepj"
-function! OpenURLUnderCursor()
-  let s:uri = expand('<cWORD>')
-  let s:uri = matchstr(s:uri, '[a-z]*:\/\/[^ >,;()]*')
-  let s:uri = substitute(s:uri, '?', '\\?', '')
-  let s:uri = shellescape(s:uri, 1)
-  if s:uri != ''
-    if has('mac') || has('macunix')
-      silent exec "!open '".s:uri."'"
-    else
-      silent exec "!xdg-open '".s:uri."'"
-    endif
-    :redraw!
-  endif
-endfunction
-nnoremap gx :call OpenURLUnderCursor()<CR>
-
 
 " See https://github.com/christoomey/vim-tmux-navigator/issues/189
 " for context on the following
@@ -306,12 +297,6 @@ endfunction
 nmap <leader>gb :Git blame<CR>
 vmap <leader>go :GBrowse<CR>
 nmap <leader>gs :Git<CR>
-
-" Tabular
-nmap <leader>a= :Tabularize /=<CR>
-vmap <leader>a= :Tabularize /=<CR>
-nmap <leader>ah :Tabularize /=>\?<CR>
-vmap <leader>ah :Tabularize /=>\?<CR>
 
 " neoterm
 let g:neoterm_default_mod = "vert botright"
