@@ -61,11 +61,6 @@ Plug 'jose-elias-alvarez/null-ls.nvim', {'branch': 'main'}
 
 Plug 'williamboman/mason.nvim', {'branch': 'main'}
 
-" neo-tree
-Plug 'MunifTanjim/nui.nvim', { 'branch': 'main' }
-Plug 'nvim-neo-tree/neo-tree.nvim', { 'branch': 'v2.x' }
-Plug 'mrbjarksen/neo-tree-diagnostics.nvim', { 'branch': 'main' }
-
 end
 
 call plug#end()
@@ -362,22 +357,6 @@ end
 
 if has('nvim')
   lua require("mason").setup()
-end
-
-if has('nvim')
-  lua <<EOF
-  require("neo-tree").setup({
-    sources = {
-      "filesystem",
-      "buffers",
-      "git_status",
-      "diagnostics"
-    }
-  })
-EOF
-
-nnoremap <silent> \| :Neotree toggle reveal_force_cwd<CR>
-nnoremap <silent> \ :Neotree toggle diagnostics reveal bottom<CR>
 end
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
