@@ -111,11 +111,6 @@ if !has('nvim')
   set lazyredraw
 end
 
-" Show incremental search/replace
-if has('nvim')
-  set inccommand=nosplit
-end
-
 " Backup
 set undofile
 set undodir=~/.vim/tmp/undo//
@@ -154,10 +149,6 @@ if executable('rg')
   set grepprg=rg\ --vimgrep
 endif
 
-
-if has('nvim')
-  lua require('globals')
-end
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -260,6 +251,17 @@ nnoremap <silent> <C-n> :silent cnext<CR>
 nnoremap <silent> <C-p> :silent cprevious<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Neovim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if has('nvim')
+  " Show incremental search/replace
+  set inccommand=nosplit
+
+  " Load the rest of the Neovim config from setup.lua
+  lua require('setup')
+end
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin Configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable the cfilter plugin that ships with Vim/NeoVim
@@ -350,15 +352,6 @@ let g:vim_markdown_folding_level = 6
 let g:vim_markdown_new_list_item_indent = 2
 let g:vim_markdown_no_default_key_mappings = 1
 
-" Telescope.nvim, see lua/plugins/telescope.lua
-if has('nvim')
-  lua require('plugins.telescope')
-end
-
-if has('nvim')
-  lua require("mason").setup()
-end
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vsnip configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -391,72 +384,6 @@ let g:vsnip_filetypes.javascriptreact = ['javascript']
 let g:vsnip_filetypes.typescriptreact = ['typescript']
 
 let g:vsnip_snippet_dir = "~/.vim/snippets"
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" cmp configuration
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if has('nvim')
-set completeopt=menu,menuone,noselect
-lua <<EOF
-  -- Setup nvim-cmp.
-  local cmp = require('cmp')
-  local lspkind = require('lspkind')
-
-  cmp.setup({
-     formatting = {
-       format = lspkind.cmp_format({
-         with_text = true,
-         menu = ({
-            buffer = "[Buffer]",
-            nvim_lsp = "[LSP]",
-            vsnip = "[vsnip]",
-            nvim_lua = "[Lua]",
-          })
-       }),
-     },
-    snippet = {
-      expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body)
-      end,
-    },
-    mapping = cmp.mapping.preset.insert({
-      ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-      ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<C-e>'] = cmp.mapping.close(),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    }),
-    sources = {
-      { name = 'nvim_lsp' },
-      { name = 'vsnip' },
-      { name = 'buffer', keyword_length = 5 },
-      { name = 'path' },
-    }
-  })
-EOF
-autocmd FileType markdown lua require('cmp').setup.buffer { { name = 'path' } }
-endif
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" LSP configuration
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-if has('nvim')
-  lua R("lsp")
-endif
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Treesitter
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-if has('nvim')
-  lua require("treesitter")
-endif
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Markdown helper
-if has('nvim')
-  lua require("markdown")
-endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Filetypes
