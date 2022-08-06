@@ -52,6 +52,11 @@ markdown.markdown_paste = function(link)
   end
 end
 
-vim.api.nvim_set_keymap("n", "<leader>mdp", "<cmd>lua require('markdown').markdown_paste()<cr>", {silent = true, noremap = true})
+vim.api.nvim_set_keymap(
+  "n",
+  "<leader>mdp",
+  "<cmd>lua require('markdown').markdown_paste()<cr>",
+  { silent = true, noremap = true }
+)
 
 return markdown
