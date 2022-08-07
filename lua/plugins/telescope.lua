@@ -1,4 +1,5 @@
 local actions = require "telescope.actions"
+local fb_actions = require("telescope").extensions.file_browser.actions
 
 require("telescope").setup {
   extensions = {
@@ -20,6 +21,8 @@ require("telescope").setup {
         ["<esc>"] = actions.close,
         ["<C-[>"] = actions.close,
         ["<C-q>"] = actions.send_to_qflist,
+        -- This mapping mirrors what I have for more note taking stuff further down
+        ["<C-e>"] = fb_actions.create_from_prompt,
       },
     },
   },
@@ -27,6 +30,8 @@ require("telescope").setup {
 
 require("telescope").load_extension "fzy_native"
 require("telescope").load_extension "ui-select"
+require("telescope").load_extension "frecency"
+require("telescope").load_extension "file_browser"
 
 local map_options = { noremap = true, silent = true }
 
@@ -72,6 +77,14 @@ helpers.find_files_in_directory_of_buffer = function()
   }
 end
 
+helpers.file_browser = function()
+  require("telescope").extensions.file_browser.file_browser()
+end
+
+helpers.file_browser_in_directory_of_buffer = function()
+  require("telescope").extensions.file_browser.file_browser { path = vim.fn.expand "%:p:h" }
+end
+
 map_builtin("<leader>fi", "find_files")
 -- using gi here to copy `fi` above and to use two different fingers
 map_builtin("<leader>gi", "git_status")
@@ -86,7 +99,9 @@ map_builtin("<leader>fR", "lsp_references")
 map_builtin("<leader>fS", "lsp_document_symbols")
 map_builtin("<leader>fs", "lsp_workspace_symbols")
 map_builtin("<leader>fl", "live_grep")
-map_builtin("<leader>fo", "file_browser")
+
+map_helper("<leader>fo", "file_browser")
+map_helper("<leader>fu", "file_browser_in_directory_of_buffer")
 
 map_helper("<leader>fw", "grep_word_under_cursor")
 map_helper("<leader>fg", "grep_string")
