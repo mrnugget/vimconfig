@@ -461,6 +461,12 @@ augroup ft_yaml
   au FileType yaml setlocal colorcolumn=0
 augroup END
 
+" SQL
+augroup ft_sql
+  au!
+  au FileType sql setlocal commentstring=--\ %s
+augroup END
+
 " Quickfix List
 "
 " Adjust height of quickfix window
