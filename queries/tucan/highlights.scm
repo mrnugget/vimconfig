@@ -54,3 +54,6 @@
 ; Punctuation
 ["(" ")" "{" "}"]  @punctuation.bracket
 ["," ":" ";"] @punctuation.delimiter
+
+; Comments
+(comment) @comment
