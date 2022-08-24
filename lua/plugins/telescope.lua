@@ -11,7 +11,7 @@ require("telescope").setup {
   },
   defaults = {
     file_sorter = require("telescope.sorters").get_fzy_sorter,
-
+    file_ignore_patterns = { "%mock_test_.go", "%mocks_temp.go" },
     file_previewer = require("telescope.previewers").vim_buffer_cat.new,
     grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
     qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
@@ -20,7 +20,8 @@ require("telescope").setup {
         -- Also close on Esc in insert mode
         ["<esc>"] = actions.close,
         ["<C-[>"] = actions.close,
-        ["<C-q>"] = actions.send_to_qflist,
+        -- ["<C-q>"] = actions.send_to_qflist,
+        ["<C-l>"] = actions.send_selected_to_qflist + actions.open_qflist,
         -- This mapping mirrors what I have for more note taking stuff further down
         ["<C-e>"] = fb_actions.create_from_prompt,
       },
