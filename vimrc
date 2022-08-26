@@ -62,7 +62,9 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 Plug 'jose-elias-alvarez/null-ls.nvim'
 
-Plug 'williamboman/mason.nvim',
+Plug 'williamboman/mason.nvim'
+
+Plug 'j-hui/fidget.nvim'
 
 end
 
