@@ -196,6 +196,9 @@ null_ls.setup {
         }
       end,
     },
+    null_ls.builtins.formatting.shfmt.with {
+      filetypes = { "sh" },
+    },
   },
 }
 
