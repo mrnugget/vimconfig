@@ -187,15 +187,6 @@ null_ls.setup {
     null_ls.builtins.formatting.stylua.with {
       filetypes = { "lua" },
     },
-    null_ls.builtins.formatting.sql_formatter.with {
-      filetypes = { "sql" },
-      extra_args = function()
-        return {
-          "--config",
-          vim.fn.expand "~/.vim/sql-formatter.json",
-        }
-      end,
-    },
     null_ls.builtins.formatting.shfmt.with {
       filetypes = { "sh" },
     },
