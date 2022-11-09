@@ -35,6 +35,8 @@ local on_attach = function(client, bufnr)
       "<leader>fs",
       "lua require('telescope.builtin').lsp_workspace_symbols { query = vim.fn.input('Query: ')"
     )
+    -- add inlay hints for Go
+    require("inlay-hints").on_attach(client, bufnr)
   elseif filetype == "typescriptreact" or filetype == "typescript" then
     -- TypeScript/ESLint/Prettier
     -- Requirements:

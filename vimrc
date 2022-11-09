@@ -28,6 +28,7 @@ if has('nvim')
 Plug 'neovim/nvim-lspconfig'
 Plug 'rafcamlet/nvim-luapad'
 Plug 'simrat39/rust-tools.nvim'
+Plug 'simrat39/inlay-hints.nvim'
 
 " Telescope
 Plug 'nvim-lua/popup.nvim'
