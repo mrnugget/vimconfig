@@ -175,7 +175,7 @@ null_ls.setup {
     null_ls.builtins.diagnostics.eslint_d.with {
       filetypes = js_filetypes,
       condition = function(utils)
-        return utils.root_has_file { ".eslintrc.js" }
+        return utils.root_has_file { ".eslintrc.js", ".eslintrc.json" }
       end,
     },
     null_ls.builtins.code_actions.eslint_d.with { filetypes = js_filetypes },
@@ -183,7 +183,7 @@ null_ls.setup {
       filetypes = js_filetypes,
       prefer_local = "node_modules/.bin",
       condition = function(utils)
-        return utils.root_has_file { "prettier.config.js", ".prettierrc", ".prettierignore" }
+        return utils.root_has_file { "prettier.config.js", ".prettierrc", ".prettierignore", ".prettierrc.json" }
       end,
     },
     null_ls.builtins.formatting.stylua.with {
