@@ -1,6 +1,13 @@
 local lspconfig = require "lspconfig"
 
 local formatting_augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+
+AUTO_FORMATTING_ENABLED = true
+local toggle_auto_formatting = function()
+  AUTO_FORMATTING_ENABLED = not AUTO_FORMATTING_ENABLED
+  print(string.format("auto_formatting: %s", AUTO_FORMATTING_ENABLED))
+end
+
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(binding, cmd)
     local opts = { noremap = true, silent = true }
@@ -50,12 +57,16 @@ local on_attach = function(client, bufnr)
   end
 
   -- formatting
+  buf_set_keymap("<leader>ft", "<cmd>lua require('lsp')['toggle_auto_formatting']()<CR>")
   if client.supports_method "textDocument/formatting" then
     vim.api.nvim_clear_autocmds { group = formatting_augroup, buffer = bufnr }
     vim.api.nvim_create_autocmd("BufWritePre", {
       group = formatting_augroup,
       buffer = bufnr,
       callback = function()
+        if not AUTO_FORMATTING_ENABLED then
+          return
+        end
         if filetype == "go" then
           R("lsp.helpers").goimports(2000)
         else
@@ -205,7 +216,7 @@ lspconfig.tsserver.setup {
   flags = {
     debounce_text_changes = 200,
   },
-  root_dir = util.root_pattern ".git",
+  root_dir = util.root_pattern "tsconfig.json",
 }
 
 -------------------------------------------------------------------------------
@@ -290,3 +301,7 @@ function _G.workspace_diagnostics_status()
 
   return table.concat(status, " | ")
 end
+
+return {
+  toggle_auto_formatting = toggle_auto_formatting,
+}
