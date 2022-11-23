@@ -59,8 +59,7 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'folke/lsp-trouble.nvim'
 
 Plug 'nvim-treesitter/playground'
-" Pin treesitter here because I suspect https://github.com/nvim-treesitter/nvim-treesitter/commit/42ab95d5e11f247c6f0c8f5181b02e816caa4a4f broke highlighting in my markdown files
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate', 'commit': '325de25'}
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 Plug 'jose-elias-alvarez/null-ls.nvim'
 
