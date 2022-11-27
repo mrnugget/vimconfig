@@ -67,8 +67,6 @@ Plug 'williamboman/mason.nvim'
 
 Plug 'j-hui/fidget.nvim'
 
-Plug 'ggandor/leap.nvim'
-
 end
 
 call plug#end()
