@@ -60,6 +60,7 @@ Plug 'folke/lsp-trouble.nvim'
 
 Plug 'nvim-treesitter/playground'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'Wansmer/treesj'
 
 Plug 'jose-elias-alvarez/null-ls.nvim'
 

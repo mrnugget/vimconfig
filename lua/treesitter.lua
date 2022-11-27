@@ -19,7 +19,9 @@ parser_config.tucan = {
 parser_config.tucanir = {
   install_info = {
     url = "https://github.com/mrnugget/tree-sitter-tucanir",
-    files = { "src/parser.c" },
+    files = {
+      "src/parser.c",
+    },
     branch = "main",
   },
   filetype = "tucanir",
@@ -32,6 +34,27 @@ parser_config.tucanir = {
 --     branch = "main",
 --   },
 -- }
+
+-- From: https://github.com/Wansmer/treesj/discussions/19
+require("treesj").setup {
+  use_default_keymaps = false,
+}
+
+local langs = require("treesj.langs")["presets"]
+
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = "*",
+  callback = function()
+    local opts = { buffer = true }
+    if langs[vim.bo.filetype] then
+      vim.keymap.set("n", "gS", "<Cmd>TSJSplit<CR>", opts)
+      vim.keymap.set("n", "gJ", "<Cmd>TSJJoin<CR>", opts)
+    else
+      vim.keymap.set("n", "gS", "<Cmd>SplitjoinSplit<CR>", opts)
+      vim.keymap.set("n", "gJ", "<Cmd>SplitjoinJoin<CR>", opts)
+    end
+  end,
+})
 
 require("nvim-treesitter.configs").setup {
   ensure_installed = { -- one of "all", "maintained" (parsers with maintainers), or a list of languages
