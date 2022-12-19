@@ -52,7 +52,7 @@ local map_builtin = function(key, f)
 end
 
 local map_helper = function(key, f)
-  local rhs = string.format("<cmd>lua R('plugins.telescope')['%s']()<CR>", f)
+  local rhs = string.format("<cmd>lua R('mrnugget.telescope')['%s']()<CR>", f)
   vim.api.nvim_set_keymap("n", key, rhs, map_options)
 end
 
