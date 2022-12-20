@@ -1,7 +1,10 @@
 vim.opt["completeopt"] = { "menu", "menuone", "noselect" }
 
+require("luasnip.loaders.from_vscode").lazy_load()
+
 local cmp = require "cmp"
 local lspkind = require "lspkind"
+local luasnip = require "luasnip"
 
 cmp.setup {
   formatting = {
@@ -10,14 +13,13 @@ cmp.setup {
       menu = {
         buffer = "[Buffer]",
         nvim_lsp = "[LSP]",
-        vsnip = "[vsnip]",
         nvim_lua = "[Lua]",
       },
     },
   },
   snippet = {
     expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body)
+      luasnip.lsp_expand(args.body)
     end,
   },
   mapping = cmp.mapping.preset.insert {
@@ -25,10 +27,19 @@ cmp.setup {
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-e>"] = cmp.mapping.close(),
     ["<CR>"] = cmp.mapping.confirm { select = true },
+    ["<Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
   },
   sources = {
     { name = "nvim_lsp" },
-    { name = "vsnip" },
+    { name = "luasnip" },
     { name = "buffer", keyword_length = 5 },
     { name = "path" },
   },
