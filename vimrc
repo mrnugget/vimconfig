@@ -24,6 +24,9 @@ Plug 'jonathanfilip/vim-lucius'
 Plug 'gruvbox-community/gruvbox'
 
 if has('nvim')
+
+Plug 'chomosuke/term-edit.nvim', {'tag': 'v1.*'}
+
 " Collection of common configurations for the Nvim LSP client
 Plug 'neovim/nvim-lspconfig'
 Plug 'rafcamlet/nvim-luapad'
