@@ -226,10 +226,15 @@ nmap <leader>rep :!tmux send-keys -t 2 C-p C-j <CR><CR>
 
 " Pipes the selected region to `jq` for formatting
 vmap <silent> <leader>jq :!cat\|jq . <CR>
+
 " Pipes the selection region to `pandoc` to convert it to HTML, opens the temp
 " file.
 vmap <silent> <leader>pan :w !cat\|pandoc -s -f markdown --metadata title="foo" -o ~/tmp/pandoc_out.html && open ~/tmp/pandoc_out.html <CR>
 vmap <silent> <leader>word :w !cat\|pandoc -s -f markdown --toc --metadata title="foo" -o ~/tmp/pandoc_out.docx && open ~/tmp/pandoc_out.docx <CR>
+
+" Pipes the selected region to `awk` to turn hard line-break paragraphs in
+" Markdown to single-line-per-paragraph.
+vmap <silent> <leader>lw :!cat \|awk 'BEGIN { RS="\n\n"; ORS="\n\n" } { gsub("\n", " "); print $0 }'<CR>
 
 " Wrap selected text in `backticks` using vim-surround, saving 2 (!)
 " keystrokes
