@@ -425,7 +425,7 @@ function _G.workspace_diagnostics_status()
 
   local status = {}
   local errors =
-  #vim.diagnostic.get(0, { severity = { min = vim.diagnostic.severity.ERROR, max = vim.diagnostic.severity.ERROR } })
+    #vim.diagnostic.get(0, { severity = { min = vim.diagnostic.severity.ERROR, max = vim.diagnostic.severity.ERROR } })
   if errors > 0 then
     table.insert(status, "E: " .. errors)
   end
@@ -439,13 +439,13 @@ function _G.workspace_diagnostics_status()
   end
 
   local hints =
-  #vim.diagnostic.get(0, { severity = { min = vim.diagnostic.severity.HINT, max = vim.diagnostic.severity.HINT } })
+    #vim.diagnostic.get(0, { severity = { min = vim.diagnostic.severity.HINT, max = vim.diagnostic.severity.HINT } })
   if hints > 0 then
     table.insert(status, "H: " .. hints)
   end
 
   local infos =
-  #vim.diagnostic.get(0, { severity = { min = vim.diagnostic.severity.INFO, max = vim.diagnostic.severity.INFO } })
+    #vim.diagnostic.get(0, { severity = { min = vim.diagnostic.severity.INFO, max = vim.diagnostic.severity.INFO } })
   if infos > 0 then
     table.insert(status, "I: " .. infos)
   end
