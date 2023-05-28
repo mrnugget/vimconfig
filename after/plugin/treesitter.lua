@@ -104,6 +104,7 @@ require("nvim-treesitter.configs").setup {
     "tucan",
     -- "sql",
     "tucanir",
+    "zig",
   },
   highlight = {
     enable = true, -- false will disable the whole extension
