@@ -23,6 +23,8 @@ Plug 'camdencheek/sgbrowse'
 Plug 'jonathanfilip/vim-lucius'
 Plug 'gruvbox-community/gruvbox'
 
+Plug 'ziglang/zig.vim'
+
 if has('nvim')
 
 Plug 'chomosuke/term-edit.nvim', {'tag': 'v1.*'}
