@@ -72,7 +72,7 @@ Plug 'jose-elias-alvarez/null-ls.nvim'
 
 Plug 'williamboman/mason.nvim'
 
-Plug 'j-hui/fidget.nvim'
+Plug 'j-hui/fidget.nvim', { 'tag': 'legacy' }
 
 end
 
