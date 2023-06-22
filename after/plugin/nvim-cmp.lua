@@ -38,10 +38,10 @@ cmp.setup {
     end, { "i", "s" }),
   },
   sources = {
-    { name = "nvim_lsp" },
-    { name = "luasnip" },
+    { name = "nvim_lsp", keyword_length = 3 },
+    { name = "luasnip", keyword_length = 3 },
     { name = "buffer", keyword_length = 5 },
-    { name = "path" },
+    { name = "path", keyword_length = 3 },
   },
 }
 cmp.setup.filetype("markdown", {
@@ -58,8 +58,8 @@ cmp.setup.cmdline("/", {
 
 cmp.setup.cmdline(":", {
   sources = cmp.config.sources({
-    { name = "path" },
+    { name = "path", keyword_length = 5 },
   }, {
-    { name = "cmdline" },
+    { name = "cmdline", keyword_length = 4 },
   }),
 })
