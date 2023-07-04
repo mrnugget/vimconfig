@@ -57,7 +57,7 @@ local on_attach = function(client, bufnr)
   end
 
   -- formatting
-  buf_set_keymap("<leader>ft", "<cmd>lua require('lsp')['toggle_auto_formatting']()<CR>")
+  buf_set_keymap("<leader>ft", "<cmd>lua require('mrnugget.lsp')['toggle_auto_formatting']()<CR>")
   if client.supports_method "textDocument/formatting" then
     vim.api.nvim_clear_autocmds { group = formatting_augroup, buffer = bufnr }
     vim.api.nvim_create_autocmd("BufWritePre", {
@@ -299,82 +299,6 @@ lspconfig.lua_ls.setup {
     },
   },
 }
-
--------------------------------------------------------------------------------
--- Cody via llmsp
--------------------------------------------------------------------------------
-local configs = require "lspconfig.configs"
-if not configs.llmsp then
-  configs.llmsp = {
-    default_config = {
-      cmd = { "llmsp" },
-      filetypes = { "go" },
-      root_dir = function(fname)
-        return lspconfig.util.find_git_ancestor(fname)
-      end,
-      settings = {},
-    },
-  }
-end
-
-lspconfig.llmsp.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  settings = {
-    llmsp = {
-      sourcegraph = {
-        url = "https://sourcegraph.sourcegraph.com",
-        accessToken = vim.env.SOURCEGRAPH_API_TOKEN,
-        repos = { "github.com/sourcegraph/sourcegraph" }, -- any repos you want context for
-      },
-    },
-  },
-}
-
-vim.api.nvim_create_user_command("CodyR", function(command)
-  local p = "file://" .. vim.fn.expand "%:p"
-
-  for _, client in pairs(vim.lsp.get_active_clients { name = "llmsp" }) do
-    client.request("workspace/executeCommand", {
-      command = "cody",
-      arguments = { p, command.line1 - 1, command.line2 - 1, command.args, true, true },
-    }, function() end, 0)
-  end
-end, { range = 2, nargs = 1 })
-
-vim.api.nvim_create_user_command("CodyC", function(command)
-  local p = "file://" .. vim.fn.expand "%:p"
-
-  for _, client in pairs(vim.lsp.get_active_clients { name = "llmsp" }) do
-    client.request("workspace/executeCommand", {
-      command = "cody",
-      arguments = { p, command.line1 - 1, command.line2 - 1, command.args, false, true },
-    }, function() end, 0)
-  end
-end, { range = 2, nargs = 1 })
-
-vim.api.nvim_create_user_command("CodyE", function(command)
-  local p = "file://" .. vim.fn.expand "%:p"
-
-  for _, client in pairs(vim.lsp.get_active_clients { name = "llmsp" }) do
-    client.request("workspace/executeCommand", {
-      command = "cody.explain",
-      arguments = { p, command.line1 - 1, command.line2 - 1, command.args },
-    }, function(_, result, _, _)
-      vim.lsp.util.open_floating_preview(result.message, "markdown", {
-        height = #result.message,
-        width = 80,
-        focus_id = "codyResponse",
-      })
-      -- Call it again so that it focuses the window immediately
-      vim.lsp.util.open_floating_preview(result.message, "markdown", {
-        height = #result.message,
-        width = 80,
-        focus_id = "codyResponse",
-      })
-    end, 0)
-  end
-end, { range = 2, nargs = 1 })
 
 -------------------------------------------------------------------------------
 -- LSP enhancements
