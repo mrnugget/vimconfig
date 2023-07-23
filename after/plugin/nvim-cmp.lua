@@ -49,17 +49,3 @@ cmp.setup.filetype("markdown", {
     { name = "path" }, -- You can specify the `cmp_git` source if you were installed it.
   },
 })
-cmp.setup.cmdline("/", {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = "buffer" },
-  },
-})
-
-cmp.setup.cmdline(":", {
-  sources = cmp.config.sources({
-    { name = "path", keyword_length = 5 },
-  }, {
-    { name = "cmdline", keyword_length = 4 },
-  }),
-})
