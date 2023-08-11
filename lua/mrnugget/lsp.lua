@@ -42,8 +42,6 @@ local on_attach = function(client, bufnr)
       "<leader>fs",
       "lua require('telescope.builtin').lsp_workspace_symbols { query = vim.fn.input('Query: ')"
     )
-    -- add inlay hints for Go
-    require("inlay-hints").on_attach(client, bufnr)
   elseif filetype == "typescriptreact" or filetype == "typescript" then
     -- TypeScript/ESLint/Prettier
     -- Requirements:
@@ -74,6 +72,10 @@ local on_attach = function(client, bufnr)
         end
       end,
     })
+  end
+
+  if client.server_capabilities.inlayHintProvider then
+    require("inlay-hints").on_attach(client, bufnr)
   end
 
   require("lsp_signature").on_attach(client, bufnr)
@@ -163,6 +165,14 @@ lspconfig.zls.setup {
   capabilities = capabilities,
   flags = { debounce_text_changes = 200 },
   on_attach = on_attach,
+  settings = {
+    zls = {
+      enable_inlay_hints = true,
+      inlay_hints_show_builtin = true,
+      include_at_in_builtins = true,
+      warn_style = true,
+    },
+  },
 }
 
 -------------------------------------------------------------------------------
