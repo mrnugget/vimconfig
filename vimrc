@@ -73,6 +73,9 @@ Plug 'williamboman/mason.nvim'
 
 Plug 'j-hui/fidget.nvim', { 'tag': 'legacy' }
 
+" Plug 'sourcegraph/sg.nvim', { 'do': 'nvim -l build/init.lua' }
+Plug 'sourcegraph/sg.nvim', { 'tag': 'master', 'do': 'nvim -l build/init.lua' }
+
 end
 
 call plug#end()
@@ -348,6 +351,10 @@ let test#rust#cargotest#options = {
   \ 'suite':   '-q',
 \}
 
+
+" cody
+nmap <silent> <leader>cg :CodyToggle<CR>
+command CA CodyAsk
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Filetypes
