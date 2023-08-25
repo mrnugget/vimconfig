@@ -8,16 +8,6 @@ require("telescope").setup {
         -- even more opts
       },
     },
-    frecency = {
-      -- db_root = "home/my_username/path/to/db_root",
-      -- show_scores = false,
-      show_unindexed = true,
-      ignore_patterns = { "*.git/*", "*/tmp/*" },
-      disable_devicons = false,
-      workspaces = {
-        ["dot"] = "/Users/thorstenball/.dotfiles",
-      },
-    },
   },
   defaults = {
     file_sorter = require("telescope.sorters").get_fzy_sorter,
@@ -41,7 +31,6 @@ require("telescope").setup {
 
 require("telescope").load_extension "fzy_native"
 require("telescope").load_extension "ui-select"
-require("telescope").load_extension "frecency"
 require("telescope").load_extension "file_browser"
 
 local map_options = { noremap = true, silent = true }
@@ -103,13 +92,6 @@ map_builtin("<leader>ff", "find_files")
 map_helper("<leader>fp", "find_files_in_directory_of_buffer")
 
 map_builtin("<leader>fr", "oldfiles")
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>fe",
-  "<Cmd>lua require('telescope').extensions.frecency.frecency()<CR>",
-  { noremap = true, silent = true }
-)
-
 map_builtin("<leader>fb", "buffers")
 map_builtin("<leader>fh", "help_tags")
 map_builtin("<leader>fR", "lsp_references")
