@@ -23,6 +23,13 @@ cmp.setup {
     end,
   },
   mapping = cmp.mapping.preset.insert {
+    ["<c-a>"] = cmp.mapping.complete {
+      config = {
+        sources = {
+          { name = "cody" },
+        },
+      },
+    },
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-e>"] = cmp.mapping.close(),
@@ -39,6 +46,7 @@ cmp.setup {
   },
   sources = {
     { name = "nvim_lsp", keyword_length = 3 },
+    { name = "cody" },
     { name = "luasnip", keyword_length = 3 },
     { name = "buffer", keyword_length = 5 },
     { name = "path", keyword_length = 3 },
