@@ -14,6 +14,7 @@ cmp.setup {
         buffer = "[Buffer]",
         nvim_lsp = "[LSP]",
         nvim_lua = "[Lua]",
+        cody = "[Cody]",
       },
     },
   },
