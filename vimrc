@@ -21,7 +21,7 @@ Plug 'kassio/neoterm'
 Plug 'camdencheek/sgbrowse'
 
 Plug 'jonathanfilip/vim-lucius'
-Plug 'gruvbox-community/gruvbox'
+Plug 'gruvbox-community/gruvbox', {'commit': 'dd4bf4cbc764d280886f1bc1881b23ab7c25b556'}
 
 Plug 'ziglang/zig.vim'
 
