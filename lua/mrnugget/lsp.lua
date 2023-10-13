@@ -66,7 +66,7 @@ local on_attach = function(client, bufnr)
           return
         end
         if filetype == "go" then
-          R("mrnugget.lsp.helpers").goimports(2000)
+          R("mrnugget.lsp.helpers").goimports(10000)
         else
           R("mrnugget.lsp.helpers").format_lsp(bufnr)
         end
