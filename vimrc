@@ -27,6 +27,8 @@ Plug 'ziglang/zig.vim'
 
 if has('nvim')
 
+Plug 'stevearc/oil.nvim'
+
 Plug 'chomosuke/term-edit.nvim', {'tag': 'v1.*'}
 
 " Collection of common configurations for the Nvim LSP client
