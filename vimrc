@@ -65,7 +65,7 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'folke/lsp-trouble.nvim'
 
 Plug 'nvim-treesitter/playground'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter', {'tag': '9567185621e532a9e29a671c66a11011334b80ea', 'do': ':TSUpdate'}
 Plug 'Wansmer/treesj'
 
 Plug 'jose-elias-alvarez/null-ls.nvim'
@@ -74,7 +74,6 @@ Plug 'williamboman/mason.nvim'
 
 Plug 'j-hui/fidget.nvim', { 'tag': 'legacy' }
 
-" Plug 'sourcegraph/sg.nvim', { 'do': 'nvim -l build/init.lua' }
 Plug 'sourcegraph/sg.nvim', { 'tag': 'master', 'do': 'nvim -l build/init.lua' }
 
 end
@@ -318,6 +317,7 @@ endfunction
 nmap <leader>gb :Git blame<CR>
 vmap <leader>go :GBrowse<CR>
 nmap <leader>gs :Git<CR>
+nmap <leader>gm :Gsplit main:%<CR>
 
 " neoterm
 let g:neoterm_default_mod = "vert botright"
