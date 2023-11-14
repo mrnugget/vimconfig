@@ -7,7 +7,6 @@ Plug 'benmills/vim-golang-alternate'
 
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-abolish'
