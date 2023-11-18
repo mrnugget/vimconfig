@@ -488,7 +488,7 @@ endif
 " Statusline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-set statusline=%<\ %{mode()}\ \|\ %f%m\ \|\ %{fugitive#statusline()\ }
+set statusline=%<\ %{mode()}\ \|\ %f%m
 if has('nvim')
   set statusline+=\ \|\ %{v:lua.workspace_diagnostics_status()}
 endif
