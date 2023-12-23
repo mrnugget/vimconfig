@@ -74,7 +74,8 @@ local on_attach = function(client, bufnr)
     })
   end
 
-  if client.server_capabilities.inlayHintProvider then
+  -- for rust files, rust-tools.nvim already render inlay hints
+  if filetype ~= "rust" and client.server_capabilities.inlayHintProvider then
     require("inlay-hints").on_attach(client, bufnr)
   end
 
