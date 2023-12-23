@@ -77,12 +77,12 @@ Plug 'sourcegraph/sg.nvim', { 'tag': 'master', 'do': 'nvim -l build/init.lua' }
 
 end
 
-call plug#end()
-
 " Ghostty config
 if isdirectory($GHOSTTY_RESOURCES_DIR . "/vim/vimfiles")
   set runtimepath^=$GHOSTTY_RESOURCES_DIR/vim/vimfiles
 endif
+
+call plug#end()
 
 " Syntax and filetype specific indentation and plugins on
 syntax enable
