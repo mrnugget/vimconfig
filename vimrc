@@ -79,6 +79,11 @@ end
 
 call plug#end()
 
+" Ghostty config
+if isdirectory($GHOSTTY_RESOURCES_DIR . "/vim/vimfiles")
+  set runtimepath^=$GHOSTTY_RESOURCES_DIR/vim/vimfiles
+endif
+
 " Syntax and filetype specific indentation and plugins on
 syntax enable
 filetype on
