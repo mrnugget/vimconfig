@@ -121,7 +121,7 @@ local action_state = require "telescope.actions.state"
 local Path = require "plenary.path"
 local os_sep = Path.path.sep
 
-local notes_folder = "~/Dropbox/notes"
+local notes_folder = "~/drive/notes"
 local notes_file_ext = ".md"
 
 local find_notes = function(category)
