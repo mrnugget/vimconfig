@@ -508,9 +508,9 @@ set termguicolors
 set t_Co=256
 set t_ut=
 
-let kitty_profile = $KITTY_COLORS
+let color_profile = $COLOR_PROFILE
 
-if kitty_profile == "dark"
+if color_profile == "dark"
   set background=dark
 
   let g:gruvbox_contrast_dark = "hard"
