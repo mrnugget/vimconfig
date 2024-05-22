@@ -1,3 +1,8 @@
+-- vim.lsp.set_log_level "debug"
+-- -- if vim.fn.has "nvim-0.5.1" == 1 then
+-- require("vim.lsp.log").set_format_func(vim.inspect)
+-- -- end
+
 local lspconfig = require "lspconfig"
 
 local formatting_augroup = vim.api.nvim_create_augroup("LspFormatting", {})

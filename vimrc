@@ -20,7 +20,7 @@ Plug 'kassio/neoterm'
 Plug 'camdencheek/sgbrowse'
 
 Plug 'jonathanfilip/vim-lucius'
-Plug 'gruvbox-community/gruvbox', {'commit': 'dd4bf4cbc764d280886f1bc1881b23ab7c25b556'}
+Plug 'gruvbox-community/gruvbox', {'commit': '143a3b8'}
 
 Plug 'ziglang/zig.vim'
 
@@ -525,11 +525,6 @@ if color_profile == "dark"
   hi! link LspReferenceText DiffChange
   hi! link LspReferenceWrite DiffChange
   hi! link LspSignatureActiveParameter GruvboxOrange
-
-  hi! link TelescopeBorder GruvboxYellowBold
-  hi! link TelescopePromptBorder Normal
-  hi! link TelescopeResultsBorder FloatBorder
-  hi! link TelescopePreviewBorder FloatBorder
 else
   set background=light
   let g:lucius_style  = 'light'
