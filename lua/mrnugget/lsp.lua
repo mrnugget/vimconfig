@@ -254,19 +254,6 @@ null_ls.setup {
 }
 
 -------------------------------------------------------------------------------
--- tsserver for TypeScript
--------------------------------------------------------------------------------
-local util = require "lspconfig/util"
-lspconfig.tsserver.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  flags = {
-    debounce_text_changes = 200,
-  },
-  root_dir = util.root_pattern "tsconfig.json",
-}
-
--------------------------------------------------------------------------------
 -- sumneko for Lua
 -------------------------------------------------------------------------------
 -- The sumneko lua-language-server setup is based on this:

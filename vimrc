@@ -107,7 +107,7 @@ set history=500
 set nocompatible
 set hidden
 set wildmenu
-set scrolloff=5
+set scrolloff=3
 set number
 " set cursorline
 set colorcolumn=80
