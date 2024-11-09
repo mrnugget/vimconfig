@@ -1,11 +1,9 @@
-(
- (let_declaration
-   pattern: (identifier) @_id
-   ;; capture content
-   value: (raw_string_literal) @content)
-
- ;; remove the r#" at the start and the "# at the end
- (#offset! @content 0 3 0 -2)
- (#set! "language" "tucan")
- (#eq? @_id "tucan")
-)
+;; Inject the tucan grammar into Rust strings that are bound to `let tucan =`
+((let_declaration
+   pattern: (identifier) @_new
+   (#eq? @_new "tucan")
+   value: [(raw_string_literal
+             (string_content) @injection.content)
+           (string_literal
+             (string_content) @injection.content)])
+ (#set! injection.language "tucan"))
