@@ -64,7 +64,7 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'folke/lsp-trouble.nvim'
 
 Plug 'nvim-treesitter/playground'
-Plug 'nvim-treesitter/nvim-treesitter', {'tag': '9567185621e532a9e29a671c66a11011334b80ea', 'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'Wansmer/treesj'
 
 Plug 'jose-elias-alvarez/null-ls.nvim'
