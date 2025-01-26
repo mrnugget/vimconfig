@@ -19,7 +19,6 @@ Plug 'kassio/neoterm'
 
 Plug 'camdencheek/sgbrowse'
 
-Plug 'jonathanfilip/vim-lucius'
 Plug 'gruvbox-community/gruvbox', {'commit': '143a3b8'}
 
 Plug 'ziglang/zig.vim'
@@ -73,7 +72,7 @@ Plug 'williamboman/mason.nvim'
 
 Plug 'j-hui/fidget.nvim', { 'tag': 'legacy' }
 
-Plug 'sourcegraph/sg.nvim', { 'tag': 'master', 'do': 'nvim -l build/init.lua' }
+" Plug 'sourcegraph/sg.nvim', { 'tag': 'master', 'do': 'nvim -l build/init.lua' }
 
 end
 
@@ -288,6 +287,9 @@ if has('nvim')
   " Show incremental search/replace
   set inccommand=nosplit
 
+  " Always show the gutter
+  set signcolumn=yes
+
   " Load the rest of the Neovim config from setup.lua
   lua require('setup')
 end
@@ -498,7 +500,7 @@ if has('nvim')
   set statusline+=\ \|\ %{v:lua.workspace_diagnostics_status()}
 endif
 set statusline+=%{&paste?'\ \ \|\ PASTE\ ':'\ '}
-set statusline+=%=\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %l/%L\(%c\)\ 
+set statusline+=%=\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %l/%L\(%c\)\
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Colors/colorscheme/etc.
@@ -508,43 +510,20 @@ set termguicolors
 set t_Co=256
 set t_ut=
 
-let color_profile = $COLOR_PROFILE
+set background=dark
 
-if color_profile == "dark"
-  set background=dark
+let g:gruvbox_contrast_dark = "hard"
+colorscheme gruvbox
 
-  let g:gruvbox_contrast_dark = "hard"
-  colorscheme gruvbox
+highlight DiagnosticUnderlineError cterm=undercurl gui=undercurl
+highlight DiagnosticUnderlineWarn cterm=undercurl gui=undercurl
+highlight DiagnosticUnderlineInfo cterm=undercurl gui=undercurl
+highlight DiagnosticUnderlineHint cterm=undercurl gui=undercurl
 
-  highlight DiagnosticUnderlineError cterm=undercurl gui=undercurl
-  highlight DiagnosticUnderlineWarn cterm=undercurl gui=undercurl
-  highlight DiagnosticUnderlineInfo cterm=undercurl gui=undercurl
-  highlight DiagnosticUnderlineHint cterm=undercurl gui=undercurl
-
-  hi! link LspReferenceRead DiffChange
-  hi! link LspReferenceText DiffChange
-  hi! link LspReferenceWrite DiffChange
-  hi! link LspSignatureActiveParameter GruvboxOrange
-else
-  set background=light
-  let g:lucius_style  = 'light'
-  let g:lucius_contrast  = 'high'
-  let g:lucius_contrast_bg  = 'high'
-  let g:lucius_no_term_bg  = 1
-  colorscheme lucius
-
-  " Give the active window a blue background and white foreground statusline
-  hi StatusLine ctermfg=15 ctermbg=32 guifg=#FFFFFF guibg=#005FAF gui=bold cterm=bold
-  hi SignColumn ctermfg=255 ctermbg=15 guifg=#E4E4E4 guibg=#FFFFFF
-
-  " Tweak popup colors
-  highlight Pmenu guibg=#E4E4E4 guifg=#000000
-
-  highlight link LspDiagnosticsFloatingError ErrorMsg
-  highlight link LspDiagnosticsFloatingWarning WarningMsg
-  highlight link LspDiagnosticsFloatingHint Directory
-  highlight link LspDiagnosticsFloatingInformation Directory
-endif
+hi! link LspReferenceRead DiffChange
+hi! link LspReferenceText DiffChange
+hi! link LspReferenceWrite DiffChange
+hi! link LspSignatureActiveParameter GruvboxOrange
 
 highlight TelescopeSelection gui=bold " selected item
 
