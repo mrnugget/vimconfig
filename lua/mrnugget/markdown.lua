@@ -55,7 +55,7 @@ end
 vim.api.nvim_set_keymap(
   "n",
   "<leader>mdp",
-  "<cmd>lua require('markdown').markdown_paste()<cr>",
+  "<cmd>lua require('mrnugget.markdown').markdown_paste()<cr>",
   { silent = true, noremap = true }
 )
 

@@ -2,10 +2,12 @@
 
 set -ex
 
-ln -fs ~/.vim/vimrc ~/.vimrc
-
+# Create config directory for Neovim
 mkdir -p ~/.config/nvim
-ln -fs ~/.vim/nvim_init.vim ~/.config/nvim/init.vim
 
+# Link the Lua configuration
+ln -fs ~/.vim/init.lua ~/.config/nvim/init.lua
+
+# Create necessary directories for undo and backup
 mkdir -p ~/.vim/tmp/undo
 mkdir -p ~/.vim/tmp/backup
