@@ -170,11 +170,10 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" <leader> is ,
-let mapleader = ","
-noremap \ ,
-map <space> <leader>
-let maplocalleader = ","
+" <leader> is space
+let mapleader = " "
+noremap , <leader>
+let maplocalleader = " "
 
 " Move around splits with <C-[hjkl]> in normal mode
 nnoremap <C-j> <C-w>j
