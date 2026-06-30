@@ -4,6 +4,15 @@ vim.g.maplocalleader = ' '
 vim.cmd.syntax('enable')
 vim.cmd('filetype plugin indent on')
 
+vim.filetype.add({
+  extension = {
+    svx = 'svelte',
+  },
+  pattern = {
+    ['.*%.md%.njk'] = 'markdown',
+  },
+})
+
 local state_dir = vim.fn.stdpath('state')
 local backup_dir = state_dir .. '/backup'
 local undo_dir = state_dir .. '/undo'
@@ -127,6 +136,7 @@ require('oil').setup()
 local treesitter_languages = {
   'bash',
   'c',
+  'css',
   'go',
   'html',
   'javascript',
@@ -137,6 +147,7 @@ local treesitter_languages = {
   'python',
   'query',
   'rust',
+  'svelte',
   'toml',
   'tsx',
   'typescript',
@@ -170,15 +181,18 @@ vim.api.nvim_create_autocmd('VimEnter', {
 vim.api.nvim_create_autocmd('FileType', {
   pattern = {
     'c',
+    'css',
     'go',
     'html',
     'javascript',
     'json',
+    'jsonc',
     'lua',
     'markdown',
     'python',
     'rust',
     'sh',
+    'svelte',
     'toml',
     'typescript',
     'typescriptreact',
@@ -199,6 +213,165 @@ require('treesj').setup({
 vim.diagnostic.config({
   float = { source = 'always' },
   severity_sort = true,
+})
+
+local format_on_save_enabled = true
+local formatting_augroup = vim.api.nvim_create_augroup('FormatOnSave', {})
+
+local function project_root(bufnr)
+  return vim.fs.root(bufnr, {
+    'pnpm-lock.yaml',
+    'package-lock.json',
+    'yarn.lock',
+    'bun.lock',
+    'bun.lockb',
+    'package.json',
+    '.git',
+  }) or vim.fn.getcwd()
+end
+
+local function project_executable(bufnr, name)
+  local local_executable = vim.fs.joinpath(project_root(bufnr), 'node_modules/.bin', name)
+  if vim.fn.executable(local_executable) == 1 then
+    return local_executable
+  end
+
+  if vim.fn.executable(name) == 1 then
+    return name
+  end
+end
+
+local function start_project_executable(name, args)
+  return function(dispatchers, config)
+    local cmd = name
+    if config and config.root_dir then
+      local local_executable = vim.fs.joinpath(config.root_dir, 'node_modules/.bin', name)
+      if vim.fn.executable(local_executable) == 1 then
+        cmd = local_executable
+      end
+    end
+
+    local rpc_cmd = { cmd }
+    vim.list_extend(rpc_cmd, args)
+    return vim.lsp.rpc.start(rpc_cmd, dispatchers)
+  end
+end
+
+local function run_formatter(bufnr, command, args)
+  local path = vim.api.nvim_buf_get_name(bufnr)
+  if path == '' then
+    return false
+  end
+
+  local executable = project_executable(bufnr, command)
+  if not executable then
+    return false
+  end
+
+  local cmd = { executable }
+  vim.list_extend(cmd, args(path))
+
+  local input = table.concat(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false), '\n')
+  if vim.bo[bufnr].endofline then
+    input = input .. '\n'
+  end
+
+  local result = vim.system(cmd, {
+    cwd = project_root(bufnr),
+    stdin = input,
+    text = true,
+  }):wait(10000)
+
+  if result.code ~= 0 or result.stdout == input then
+    if result.code ~= 0 then
+      vim.notify(result.stderr, vim.log.levels.WARN)
+    end
+    return result.code == 0
+  end
+
+  local lines = vim.split(result.stdout, '\n', { plain = true })
+  if result.stdout:sub(-1) == '\n' then
+    table.remove(lines)
+  end
+
+  local view = vim.fn.winsaveview()
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+  vim.fn.winrestview(view)
+  return true
+end
+
+local function format_with_lsp(bufnr, filter)
+  local has_formatter = false
+  for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
+    if client.server_capabilities.documentFormattingProvider and filter(client) then
+      has_formatter = true
+      break
+    end
+  end
+
+  if not has_formatter then
+    return false
+  end
+
+  vim.lsp.buf.format({
+    bufnr = bufnr,
+    timeout_ms = 10000,
+    filter = filter,
+  })
+  return true
+end
+
+local biome_filetypes = {
+  javascript = true,
+  javascriptreact = true,
+  json = true,
+  jsonc = true,
+  typescript = true,
+  typescriptreact = true,
+}
+
+local prettier_filetypes = {
+  css = true,
+  svelte = true,
+}
+
+local function format_buffer(bufnr)
+  if not format_on_save_enabled then
+    return
+  end
+
+  local filetype = vim.bo[bufnr].filetype
+  if biome_filetypes[filetype] then
+    if run_formatter(bufnr, 'biome', function(path)
+      return { 'check', '--write', '--stdin-file-path', path }
+    end) then
+      return
+    end
+
+    format_with_lsp(bufnr, function(client)
+      return client.name == 'biome'
+    end)
+    return
+  end
+
+  if prettier_filetypes[filetype] then
+    if run_formatter(bufnr, 'prettier', function(path)
+      return { '--stdin-filepath', path }
+    end) then
+      return
+    end
+  end
+
+  format_with_lsp(bufnr, function(client)
+    return client.name ~= 'ts_ls' and client.name ~= 'svelte'
+  end)
+end
+
+vim.api.nvim_create_autocmd('BufWritePre', {
+  group = formatting_augroup,
+  callback = function(ev)
+    format_buffer(ev.buf)
+  end,
 })
 
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -223,10 +396,40 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map('g]', function()
       vim.diagnostic.jump({ count = 1, float = true })
     end, 'Next diagnostic')
+    map('<leader>ft', function()
+      format_on_save_enabled = not format_on_save_enabled
+      print(string.format('format on save: %s', format_on_save_enabled))
+    end, 'Toggle format on save')
   end,
 })
 
+vim.lsp.config('svelte', {
+  cmd = start_project_executable('svelteserver', { '--stdio' }),
+})
+
+vim.lsp.config('ts_ls', {
+  settings = {
+    javascript = {
+      preferences = {
+        quoteStyle = 'single',
+      },
+      updateImportsOnFileMove = 'always',
+    },
+    typescript = {
+      preferences = {
+        quoteStyle = 'single',
+      },
+      tsserver = {
+        maxTsServerMemory = 24000,
+      },
+      updateImportsOnFileMove = 'always',
+    },
+  },
+})
+
 local lsp_executables = {
+  biome = 'biome',
+  svelte = 'svelteserver',
   ts_ls = 'typescript-language-server',
 }
 
@@ -241,14 +444,22 @@ local function enable_lsp_if_executable(name)
     return
   end
 
-  if command and vim.fn.executable(command) == 1 then
+  if command and project_executable(0, command) then
     vim.lsp.enable(name)
   end
 end
 
-for _, server in ipairs({ 'clangd', 'pyright', 'marksman', 'zls', 'ts_ls' }) do
+for _, server in ipairs({ 'biome', 'clangd', 'pyright', 'marksman', 'svelte', 'zls', 'ts_ls' }) do
   enable_lsp_if_executable(server)
 end
+
+vim.schedule(function()
+  for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_loaded(bufnr) and vim.bo[bufnr].filetype ~= '' then
+      vim.api.nvim_exec_autocmds('FileType', { buffer = bufnr, modeline = false })
+    end
+  end
+end)
 
 vim.keymap.set('n', 'n', 'nzzzv', { desc = 'Next search result centered' })
 vim.keymap.set('n', 'N', 'Nzzzv', { desc = 'Previous search result centered' })
