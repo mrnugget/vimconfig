@@ -49,12 +49,7 @@ brew_install_if_missing() {
 
 mkdir -p "$HOME/.config"
 
-link_path "$repo_dir" "$HOME/.vim"
-link_path "$repo_dir/vimrc" "$HOME/.vimrc"
 link_path "$repo_dir/nvim" "$HOME/.config/nvim"
-
-mkdir -p "$HOME/.vim/tmp/undo"
-mkdir -p "$HOME/.vim/tmp/backup"
 
 brew_install_if_missing nvim neovim
 brew_install_if_missing rg ripgrep
@@ -65,6 +60,4 @@ if command -v nvim >/dev/null 2>&1; then
   nvim --headless "+lua require('nvim-treesitter').install({ 'bash', 'c', 'go', 'html', 'javascript', 'json', 'lua', 'markdown', 'markdown_inline', 'python', 'query', 'rust', 'toml', 'tsx', 'typescript', 'vim', 'vimdoc', 'yaml' }):wait(300000)" +qa
 fi
 
-echo "Installed Vim config: $HOME/.vim -> $repo_dir"
-echo "Installed Vim config: $HOME/.vimrc -> $repo_dir/vimrc"
 echo "Installed Neovim config: $HOME/.config/nvim -> $repo_dir/nvim"

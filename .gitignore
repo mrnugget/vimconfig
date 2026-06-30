@@ -1,8 +1,2 @@
 *.swp
 .netrwhist
-/doc/tags
-/tmp/backup
-/tmp/undo
-spell/*
-bundle/vim-fzz
-plugged/*
