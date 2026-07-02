@@ -6,7 +6,7 @@ vim.cmd('filetype plugin indent on')
 
 vim.filetype.add({
   extension = {
-    svx = 'svelte',
+    svx = 'markdown',
   },
   pattern = {
     ['.*%.md%.njk'] = 'markdown',

@@ -54,10 +54,12 @@ link_path "$repo_dir/nvim" "$HOME/.config/nvim"
 brew_install_if_missing nvim neovim
 brew_install_if_missing rg ripgrep
 brew_install_if_missing tree-sitter tree-sitter-cli
+brew_install_if_missing prettier prettier
+brew_install_if_missing svelteserver svelte-language-server
 brew_install_if_missing typescript-language-server typescript-language-server
 
 if command -v nvim >/dev/null 2>&1; then
-  nvim --headless "+lua require('nvim-treesitter').install({ 'bash', 'c', 'go', 'html', 'javascript', 'json', 'lua', 'markdown', 'markdown_inline', 'python', 'query', 'rust', 'toml', 'tsx', 'typescript', 'vim', 'vimdoc', 'yaml' }):wait(300000)" +qa
+  nvim --headless "+lua require('nvim-treesitter').install({ 'bash', 'c', 'css', 'go', 'html', 'javascript', 'json', 'lua', 'markdown', 'markdown_inline', 'python', 'query', 'rust', 'svelte', 'toml', 'tsx', 'typescript', 'vim', 'vimdoc', 'yaml' }):wait(300000)" +qa
 fi
 
 echo "Installed Neovim config: $HOME/.config/nvim -> $repo_dir/nvim"

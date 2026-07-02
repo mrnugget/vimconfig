@@ -14,6 +14,8 @@ It also installs missing Homebrew dependencies when `brew` is available:
 - `neovim`
 - `ripgrep`
 - `tree-sitter-cli`
+- `prettier`
+- `svelte-language-server`
 - `typescript-language-server`
 
 Then it starts Neovim headlessly once so built-in `vim.pack` installs plugins
