@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1d2021">
+  <meta name="description" content="Thorsten Ball’s Neovim configuration: a field guide to the plugins, keybindings, and little details.">
+  <title>vimconfig — Thorsten Ball</title>
+  <style>
+    :root { color-scheme: dark; --bg: #1d2021; --panel: #242727; --line: #3c3836; --text: #ebdbb2; --muted: #bdae93; --green: #b8bb26; --orange: #fe8019; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.65 ui-monospace, SFMono-Regular, Consolas, monospace; }
+    a { color: inherit; text-decoration-color: #665c54; text-underline-offset: 5px; }
+    a:focus-visible { outline: 2px solid var(--green); outline-offset: 6px; }
+    .shell { max-width: 1160px; margin: auto; padding: 0 36px; }
+    header { border-bottom: 1px solid var(--line); }
+    header .shell { display: flex; align-items: center; justify-content: space-between; min-height: 88px; gap: 24px; }
+    .brand { text-decoration: none; font-weight: 700; font-size: 18px; letter-spacing: -1px; }
+    .brand span, .green { color: var(--green); }
+    nav { display: flex; gap: 28px; font-size: 12px; }
+    nav a { text-decoration: none; color: var(--muted); }
+    .hero { padding: 78px 0 62px; display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: 55px; }
+    .eyebrow { color: var(--green); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 22px; }
+    h1 { font: 500 clamp(40px, 5vw, 62px)/1.08 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: -4px; margin: 0 0 24px; }
+    h1 span { color: var(--orange); }
+    .intro { max-width: 450px; color: var(--muted); font-size: 14px; line-height: 1.9; }
+    .byline { margin-top: 27px; font-size: 12px; color: var(--muted); }
+    .byline span { color: var(--text); }
+    .editor { border: 1px solid #504945; background: #191c1d; border-radius: 7px; overflow: hidden; box-shadow: 10px 10px 0 #161819; min-width: 0; }
+    .editor-title { padding: 11px 18px; font-size: 11px; color: var(--muted); border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; }
+    .editor pre { margin: 0; padding: 25px 20px; font-size: 12px; line-height: 2; overflow-x: auto; }
+    .ln { color: #928374; user-select: none; padding-right: 18px; }
+    .comment { color: #a89984; }
+    .str { color: var(--green); }
+    .fn { color: #fabd2f; }
+    .purple { color: #d3869b; }
+    .status { background: #3c3836; display: flex; justify-content: space-between; font-size: 10px; padding-right: 12px; align-items: center; }
+    .status b { background: var(--green); color: #1d2021; padding: 4px 12px; letter-spacing: 1px; }
+    .facts { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .fact { padding: 24px 20px; border-right: 1px solid var(--line); }
+    .fact:first-child { padding-left: 0; }
+    .fact:last-child { border: 0; }
+    .fact strong { display: block; font-size: 22px; font-weight: 400; color: var(--text); }
+    .fact span { color: var(--muted); font-size: 11px; }
+    section { padding: 56px 0; scroll-margin-top: 24px; border-bottom: 1px solid var(--line); }
+    .section-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 26px; }
+    h2 { font-size: 20px; letter-spacing: -1px; margin: 0; font-weight: 500; }
+    h2 span { color: var(--orange); font-size: 12px; margin-right: 16px; }
+    .section-note { margin: 0; font-size: 11px; color: var(--muted); }
+    .plugins { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .plugin { padding: 20px 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 4px; }
+    .plugin .category { font-size: 10px; color: #83a598; text-transform: uppercase; letter-spacing: 1px; }
+    .plugin h3 { font-size: 13px; font-weight: 500; margin: 12px 0 8px; }
+    .plugin p { font-size: 11px; color: var(--muted); margin: 0; }
+    .keys { display: grid; grid-template-columns: 1fr 1fr; gap: 0 42px; }
+    .key { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 12px; }
+    .key span { color: var(--muted); }
+    kbd { font: inherit; color: #fabd2f; white-space: nowrap; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+    h3 { font-size: 14px; font-weight: 500; }
+    .details p { font-size: 12px; color: var(--muted); }
+    .details code { color: #8ec07c; }
+    .install { margin: 0; padding: 24px; background: #191c1d; border: 1px solid var(--line); border-radius: 4px; font-size: 12px; overflow-x: auto; line-height: 2; }
+    .install .prompt { color: var(--orange); user-select: none; }
+    footer { display: flex; justify-content: space-between; gap: 20px; padding: 28px 0 36px; font-size: 11px; color: var(--muted); }
+    @media (max-width: 900px) { .hero { gap: 30px; } .plugins { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px) {
+      .shell { padding: 0 22px; }
+      header .shell { min-height: 76px; flex-wrap: wrap; gap: 10px; padding-top: 18px; padding-bottom: 18px; }
+      nav { gap: 18px; font-size: 11px; }
+      .hero { grid-template-columns: 1fr; padding: 48px 0 40px; gap: 30px; }
+      h1 { letter-spacing: -2px; }
+      .facts { grid-template-columns: repeat(2, 1fr); }
+      .fact { padding: 18px 12px; }
+      .fact:nth-child(2) { border-right: 0; }
+      .fact:nth-child(3) { padding-left: 0; }
+      .fact:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+      .fact strong { font-size: 20px; }
+      .keys, .two-col { grid-template-columns: 1fr; gap: 0; }
+      .section-heading { display: block; }
+      .section-note { margin-top: 10px; }
+      section { padding: 36px 0; }
+      .plugin { padding: 16px 12px; }
+      .plugin h3 { overflow-wrap: anywhere; }
+      footer { flex-direction: column; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <header><div class="shell">
+    <a class="brand" href="#"><span>~/</span>vimconfig<span>_</span></a>
+    <nav aria-label="Main navigation"><a href="#plugins">Plugins</a><a href="#keybindings">Keybindings</a><a href="#setup">Setup</a><a href="/init.lua">Source ↗</a></nav>
+  </div></header>
+  <main class="shell">
+    <div class="hero">
+      <div>
+        <p class="eyebrow">A personal editor, in plain Lua</p>
+        <h1>A place to<br>think <span>in code.</span></h1>
+        <p class="intro">Thorsten Ball’s Neovim configuration.<br>A small set of plugins, familiar motions, and a few carefully chosen defaults. Nothing between you and the buffer.</p>
+        <p class="byline">Built around <span>Neovim + vim.pack</span></p>
+      </div>
+      <div class="editor" aria-label="Excerpt from nvim/init.lua">
+        <div class="editor-title"><span>nvim/init.lua</span><span>lua</span></div>
+        <pre><code><span class="ln">1</span><span class="comment">-- Start with a little space.</span>
+<span class="ln">2</span>vim.g.mapleader = <span class="str">' '</span>
+<span class="ln">3</span>vim.g.maplocalleader = <span class="str">' '</span>
+<span class="ln">4</span>
+<span class="ln">5</span><span class="fn">require</span>(<span class="str">'gruvbox'</span>).setup({
+<span class="ln">6</span>  contrast = <span class="str">'hard'</span>,
+<span class="ln">7</span>})
+<span class="ln">8</span>
+<span class="ln">9</span>vim.o.background = <span class="str">'dark'</span>
+<span class="ln">10</span>vim.cmd.colorscheme(<span class="str">'gruvbox'</span>)</code></pre>
+        <div class="status"><b>NORMAL</b><span>init.lua &nbsp; utf-8 &nbsp; Lua</span></div>
+      </div>
+    </div>
+    <div class="facts" aria-label="Configuration at a glance">
+      <div class="fact"><strong>8 plugins</strong><span>Built-in package management</span></div>
+      <div class="fact"><strong>Space</strong><span>Leader &amp; local leader</span></div>
+      <div class="fact"><strong>Gruvbox</strong><span>Dark, hard contrast</span></div>
+      <div class="fact"><strong>2 spaces</strong><span>Default indentation</span></div>
+    </div>
+    <section id="plugins">
+      <div class="section-heading"><h2><span>01 /</span>The toolkit</h2><p class="section-note">Pinned revisions. No third-party package manager.</p></div>
+      <div class="plugins">
+        <article class="plugin"><div class="category">Color</div><h3><a href="https://github.com/ellisonleao/gruvbox.nvim">gruvbox.nvim</a></h3><p>Warm colors, hard contrast, and a dark background.</p></article>
+        <article class="plugin"><div class="category">Find</div><h3><a href="https://github.com/dmtrKovalenko/fff.nvim">fff.nvim</a></h3><p>File finding, live grep, and fuzzy text search.</p></article>
+        <article class="plugin"><div class="category">Navigate</div><h3><a href="https://github.com/stevearc/oil.nvim">oil.nvim</a></h3><p>Edit your filesystem like a regular buffer.</p></article>
+        <article class="plugin"><div class="category">Parse</div><h3><a href="https://github.com/nvim-treesitter/nvim-treesitter">nvim-treesitter</a></h3><p>Syntax-aware highlighting and indentation.</p></article>
+        <article class="plugin"><div class="category">Reshape</div><h3><a href="https://github.com/Wansmer/treesj">treesj</a></h3><p>Split and join syntax nodes without the busywork.</p></article>
+        <article class="plugin"><div class="category">Language</div><h3><a href="https://github.com/neovim/nvim-lspconfig">nvim-lspconfig</a></h3><p>Server configurations for Neovim’s native LSP.</p></article>
+        <article class="plugin"><div class="category">Surround</div><h3><a href="https://github.com/tpope/vim-surround">vim-surround</a></h3><p>Change the brackets, quotes, and tags around text.</p></article>
+        <article class="plugin"><div class="category">Search</div><h3><a href="https://github.com/bronson/vim-visual-star-search">vim-visual-star-search</a></h3><p>Use * and # to search for a visual selection.</p></article>
+      </div>
+    </section>
+    <section id="keybindings">
+      <div class="section-heading"><h2><span>02 /</span>Under your fingers</h2><p class="section-note">Selected mappings · leader = Space</p></div>
+      <div class="keys">
+        <div class="key"><span>Find files</span><kbd>Space Space</kbd></div>
+        <div class="key"><span>Open parent directory</span><kbd>-</kbd></div>
+        <div class="key"><span>Live grep</span><kbd>Space f g</kbd></div>
+        <div class="key"><span>Fuzzy grep</span><kbd>Space f z</kbd></div>
+        <div class="key"><span>Search word / selection</span><kbd>Space f w</kbd></div>
+        <div class="key"><span>Toggle search highlight</span><kbd>Space h</kbd></div>
+        <div class="key"><span>Split / join syntax node</span><kbd>gS / gJ</kbd></div>
+        <div class="key"><span>Open / close quickfix</span><kbd>Space co / cl</kbd></div>
+        <div class="key"><span>Go to definition · LSP</span><kbd>Ctrl ]</kbd></div>
+        <div class="key"><span>Hover documentation · LSP</span><kbd>K</kbd></div>
+        <div class="key"><span>References · LSP</span><kbd>gR</kbd></div>
+        <div class="key"><span>Rename symbol · LSP</span><kbd>gr</kbd></div>
+        <div class="key"><span>Code action · LSP</span><kbd>ga</kbd></div>
+        <div class="key"><span>Previous / next diagnostic · LSP</span><kbd>g[ / g]</kbd></div>
+        <div class="key"><span>Toggle format on save · LSP</span><kbd>Space f t</kbd></div>
+        <div class="key"><span>Delete trailing whitespace</span><kbd>Space t w</kbd></div>
+      </div>
+    </section>
+    <section class="details">
+      <div class="section-heading"><h2><span>03 /</span>The little details</h2></div>
+      <div class="two-col">
+        <div><h3>Formatting that follows the project</h3><p>JavaScript, TypeScript, and JSON use Biome. CSS and Svelte try Prettier first. Other filetypes use an available LSP formatter, excluding ts_ls and svelte. Project-local executables take precedence.</p><h3>Language servers, when available</h3><p>Biome, clangd, Pyright, Marksman, Svelte, ZLS, and TypeScript are enabled when their executables are found. Install the servers you need.</p></div>
+        <div><h3>Keep the useful things</h3><p>Persistent undo and backups in Neovim’s state directory. System clipboard integration. Smart-case search. Centered search results. No swap files.</p><h3>Defaults, with exceptions</h3><p>Two-space indentation and an 80-column guide. C and Python use four spaces; Go uses tabs. Markdown wraps text at 80 columns. Treesitter installs missing parsers on startup.</p></div>
+      </div>
+    </section>
+    <section id="setup" class="details">
+      <div class="section-heading"><h2><span>04 /</span>Make yourself at home</h2><p class="section-note">Requires a Neovim version with vim.pack</p></div>
+      <pre class="install"><code><span class="prompt">$ </span>git clone git@github.com:mrnugget/vimconfig.git ~/.vimconfig
+<span class="prompt">$ </span>~/.vimconfig/setup.sh</code></pre>
+      <p>The setup script links <code>~/.config/nvim</code> to this configuration, backs up an existing directory, and installs missing dependencies when Homebrew is available. It then starts Neovim headlessly to install plugins and Treesitter parsers.</p>
+    </section>
+    <footer><span>Thorsten Ball’s editor, documented.</span><span><a href="/init.lua">Read init.lua</a> &nbsp; / &nbsp; <a href="https://github.com/mrnugget/vimconfig">View repository ↗</a></span></footer>
+  </main>
+</body>
+</html>

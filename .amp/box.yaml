@@ -1,0 +1,7 @@
+source: false
+artifacts:
+  - web
+  - nvim/init.lua
+services:
+  web:
+    command: node web/server.mjs
