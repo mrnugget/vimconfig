@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "default": {
+      "on": "thorstenball/vimconfig-box",
+      "name": "vimconfig",
+      "branch": "vimconfig-web",
+      "private": true,
+      "widget": true
+    }
+  }
+}
